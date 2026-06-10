@@ -1,6 +1,7 @@
 // Service worker — offline cache for the PWA.
 // All app logic + JSZip are inlined in index.html, so nothing user-related is fetched.
-const CACHE = 'iuf-v1';
+// Strategy: NETWORK-FIRST so new deploys show immediately; cache is only a fallback when offline.
+const CACHE = 'iuf-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -21,14 +22,14 @@ self.addEventListener('activate', e => {
   );
 });
 
-// cache-first for app shell; never touches user files (they are read locally, not via fetch)
+// Network-first: always try the latest from the server; fall back to cache only when offline.
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).then(resp => {
+    fetch(e.request).then(resp => {
       const copy = resp.clone();
       caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
       return resp;
-    }).catch(() => caches.match('./index.html')))
+    }).catch(() => caches.match(e.request).then(c => c || caches.match('./index.html')))
   );
 });
