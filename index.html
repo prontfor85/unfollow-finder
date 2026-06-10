@@ -456,11 +456,12 @@ function snapStats(s){
 
 /* ---------- 분석 시작 선택 (새 분석 / 비교분석) ---------- */
 function openAnalyzeChoice(){
-  const hasHistory = getHistory().length > 0;
+  // 저장된 지난 기록이 없으면 선택지가 무의미하므로 팝업 없이 바로 새 분석으로
+  if(getHistory().length === 0){ startAnalyze(false); return; }
   openModal('<h3>어떻게 분석할까요?</h3>'+
     '<div class="choices">'+
       '<div class="choice" onclick="startAnalyze(false)"><b>새 분석 시작</b><span>이번 파일만으로 맞팔·팬·언팔을 분석해요.</span></div>'+
-      '<div class="choice primary" onclick="startAnalyze(true)"><b>지난 내역과 비교분석</b><span>'+(hasHistory?'그 사이에 나를 언팔한 사람을 찾아요.':'(저장된 지난 기록이 아직 없어요)')+'</span></div>'+
+      '<div class="choice primary" onclick="startAnalyze(true)"><b>지난 내역과 비교분석</b><span>그 사이에 나를 언팔한 사람을 찾아요.</span></div>'+
     '</div>'+
     '<button class="close" onclick="closeModal()">닫기</button>');
 }
