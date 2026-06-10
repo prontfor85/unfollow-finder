@@ -277,8 +277,6 @@ function renderButton(name){
   const mk = (label, fn, ghost) => { const b=document.createElement('button'); b.textContent=label; if(ghost)b.className='ghost'; b.onclick=fn; return b; };
   if(name==='analyze' || name==='history'){ $('#bottom').classList.add('hidden'); return; }
   if(name==='onboard'){
-    tip.textContent='지난 기록과 비교해볼까요? 그 사이에 나를 언팔한 사람·새 팔로워를 찾을 수 있어요.';
-    tip.classList.remove('hidden');
     row.appendChild(mk('지난 내역', openHistory, true));
     row.appendChild(mk('분석하기', openAnalyzeChoice));
   }
