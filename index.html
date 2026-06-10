@@ -33,7 +33,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     --card2:#1F1F26; --line:#2A2A33; --txt:#F3F3F5; --sub:#9A9AA6; --green:#33D17A;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
-  body{background:#000; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; color:var(--txt); display:flex; justify-content:center;}
+  body{background:#000; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; color:var(--txt); display:flex; justify-content:center; word-break:keep-all;}
   .phone{width:100%; max-width:430px; min-height:100vh; background:var(--bg); position:relative; overflow:hidden; display:flex; flex-direction:column;}
   .topbar{display:flex; align-items:center; gap:10px; padding:16px 18px 12px; border-bottom:1px solid var(--line);}
   .logo{width:30px; height:30px; border-radius:9px; background:var(--pink); display:flex; align-items:center; justify-content:center; font-size:16px;}
@@ -111,8 +111,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .compareBtn{display:flex; align-items:center; justify-content:space-between; border:1px solid var(--pink); border-radius:14px; padding:15px 18px; margin-bottom:16px; cursor:pointer; transition:.15s;}
   .compareBtn:hover{background:rgba(255,45,111,.08);} .compareBtn b{color:var(--pink); font-size:15px;} .compareBtn span{color:var(--pink); font-size:18px;}
   /* overlay + sheet */
-  .overlay{position:fixed; inset:0; max-width:430px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.6); z-index:50; display:flex; align-items:flex-end; animation:fade .2s;}
-  .sheet{width:100%; background:var(--card); border-radius:22px 22px 0 0; padding:22px 20px calc(26px + env(safe-area-inset-bottom)); max-height:82vh; overflow:auto; animation:up .25s ease;}
+  .overlay{position:fixed; inset:0; max-width:430px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.6); z-index:50; display:flex; align-items:center; justify-content:center; padding:20px; animation:fade .2s;}
+  .sheet{width:100%; max-width:380px; background:var(--card); border-radius:22px; padding:24px 20px; max-height:82vh; overflow:auto; animation:up .25s ease;}
   @keyframes up{from{transform:translateY(40px);} to{transform:none;}}
   .sheet h3{font-size:19px; font-weight:800; margin-bottom:6px;}
   .sheet .sd{color:var(--sub); font-size:13px; line-height:1.5; margin-bottom:16px;}
@@ -140,8 +140,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .rec2 .del2{flex:none; font-size:12.5px; font-weight:700; color:var(--pink); background:rgba(255,45,111,.14); border:none; padding:9px 14px; border-radius:9px; cursor:pointer;}
   .rec2 .chev{flex:none; color:var(--sub); font-size:17px;}
   /* analyze choice cards */
-  .choices{display:flex; gap:10px; margin-bottom:14px;}
-  .choice{flex:1; background:var(--card2); border-radius:15px; padding:16px 15px; cursor:pointer; transition:.15s; border:1px solid transparent;}
+  .choices{display:flex; gap:10px; margin-bottom:14px; word-break:keep-all;}
+  .choice{flex:1; background:var(--card2); border-radius:15px; padding:16px 15px; cursor:pointer; transition:.15s; border:1px solid transparent; word-break:keep-all;}
   .choice:hover{border-color:var(--pink);}
   .choice b{display:block; font-size:15px; margin-bottom:6px;} .choice span{color:var(--sub); font-size:12px; line-height:1.5;}
   .choice.primary{background:var(--pink);} .choice.primary b{color:#fff;} .choice.primary span{color:rgba(255,255,255,.9);}
