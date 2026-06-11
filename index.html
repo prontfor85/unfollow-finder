@@ -677,11 +677,11 @@ function compareWith(idx, from){
   const acct = picked.account||null;
   const back = (from==='list') ? "openCompareList()" : "closeModal()";
   const backLabel = (from==='list') ? '‹ 기록 목록' : '확인';
-  const row = (u, sub, badge) => '<a class="row-u" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>'+sub+'</span></div>'+badge+'</a>';
+  const visited = getVisited(); const recent = mostRecentVisited();
+  const vbadge = (u)=> (u===recent) ? '<span class="visit recent">최근 방문</span>' : (visited[u] ? '<span class="visit">방문함</span>' : '');
+  const row = (u, sub) => '<a class="row-u" data-u="'+escapeHtml(u)+'" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>'+sub+'</span></div>'+vbadge(u)+'<span class="chev" style="color:var(--sub);font-size:18px;margin-left:8px;">›</span></a>';
   const head = (color,text) => '<div style="display:flex;align-items:center;gap:7px;margin:18px 0 8px;"><span style="width:8px;height:8px;border-radius:50%;background:'+color+';"></span><span style="font-size:13px;font-weight:700;color:'+color+';">'+text+'</span></div>';
-  const listOf = (arr,sub,badge) => arr.length ? arr.slice(0,80).map(u=>row(u,sub,badge)).join('') : '<div class="empty">없어요</div>';
-  const bLost = '<span class="cbadge lost">언팔</span>';
-  const bNew = '<span class="cbadge new">NEW</span>';
+  const listOf = (arr,sub) => arr.length ? arr.slice(0,80).map(u=>row(u,sub)).join('') : '<div class="empty">없어요</div>';
 
   // 같은 계정 기록을 날짜 내림차순 정렬해 older/newer 결정
   const same = h.map((s,i)=>({s,i})).filter(x=>(x.s.account||null)===acct).sort((a,b)=>effDate(b.s)-effDate(a.s));
@@ -712,9 +712,23 @@ function compareWith(idx, from){
       '<div class="c minus'+(dft==='lost'?' on':'')+'" id="cmpTabLost" onclick="cmpTab(\'lost\')"><b>'+lost.length+'</b><span>나를 언팔함</span></div>'+
       '<div class="c plus'+(dft==='new'?' on':'')+'" id="cmpTabNew" onclick="cmpTab(\'new\')"><b>'+gained.length+'</b><span>새 팔로워</span></div>'+
     '</div>'+
-    '<div id="cmpLost" style="display:'+(dft==='lost'?'block':'none')+'">'+head('var(--pink)','나를 언팔한 사람')+ listOf(lost,'이전엔 나를 팔로우했어요',bLost)+'</div>'+
-    '<div id="cmpNew" style="display:'+(dft==='new'?'block':'none')+'">'+head('var(--green)','새로 생긴 팔로워')+ listOf(gained,'새로 나를 팔로우했어요',bNew)+'</div>'+
+    '<div id="cmpLost" style="display:'+(dft==='lost'?'block':'none')+'">'+head('var(--pink)','나를 언팔한 사람')+ listOf(lost,'이전엔 나를 팔로우했어요')+'</div>'+
+    '<div id="cmpNew" style="display:'+(dft==='new'?'block':'none')+'">'+head('var(--green)','새로 생긴 팔로워')+ listOf(gained,'새로 나를 팔로우했어요')+'</div>'+
     '<button class="close" onclick="'+back+'">'+backLabel+'</button>');
+  document.querySelectorAll('#cmpLost a.row-u, #cmpNew a.row-u').forEach(a=> a.addEventListener('click', ()=>{ markVisited(a.getAttribute('data-u')); setTimeout(refreshCmpVisited, 60); }));
+}
+// 비교 목록의 방문함/최근 방문 뱃지를 즉석 갱신 (탭/스크롤 유지)
+function refreshCmpVisited(){
+  const visited=getVisited(), recent=mostRecentVisited();
+  document.querySelectorAll('#cmpLost a.row-u, #cmpNew a.row-u').forEach(a=>{
+    const u=a.getAttribute('data-u'); if(!u) return;
+    let b=a.querySelector('.visit');
+    const need = (u===recent)?'recent':(visited[u]?'on':null);
+    if(!need){ if(b) b.remove(); return; }
+    if(!b){ b=document.createElement('span'); a.insertBefore(b, a.querySelector('.chev')); }
+    b.className = 'visit'+(need==='recent'?' recent':'');
+    b.textContent = (need==='recent') ? '최근 방문' : '방문함';
+  });
 }
 function cmpTab(which){
   const L=document.getElementById('cmpLost'), N=document.getElementById('cmpNew');
