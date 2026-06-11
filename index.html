@@ -151,7 +151,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 </head>
 <body>
 <div class="phone">
-  <div class="topbar"><div class="logo">🤍</div><h1>인스타 언팔 찾기 · 안전 분석</h1></div>
+  <div class="topbar"><div class="logo" id="homeLogo" style="cursor:pointer">🤍</div><h1>인스타 언팔 찾기 · 안전 분석</h1></div>
 
   <!-- 1. ONBOARDING -->
   <section class="screen active" id="s-onboard">
@@ -633,6 +633,7 @@ function compareWith(idx, from){
 }
 
 /* ---------- wire up ---------- */
+$('#homeLogo').onclick = ()=>{ closeModal(); go('onboard'); };
 $('#goHome').onclick = goHome;
 $('#shareApp').onclick = shareApp;
 $('#contact').onclick = openContact;
