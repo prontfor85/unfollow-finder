@@ -789,7 +789,6 @@ function renderButton(name){
   const mk = (label, fn, ghost) => { const b=document.createElement('button'); b.textContent=label; if(ghost)b.className='ghost'; b.onclick=fn; return b; };
   if(name==='analyze' || name==='history'){ $('#bottom').classList.add('hidden'); return; }
   if(name==='onboard'){
-    row.appendChild(mk(T[window.lang].btn_history, openHistory, true));
     row.appendChild(mk(T[window.lang].btn_analyze, ()=> go(getHistory().length>0?'upload':'guide')));
   }
   else if(name==='guide'){ row.appendChild(mk(T[window.lang].btn_go_upload, ()=>go('upload'))); }
