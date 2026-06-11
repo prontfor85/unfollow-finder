@@ -92,6 +92,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .row-u .nm{flex:1;}
   .visit{flex:none; font-size:11px; font-weight:600; color:var(--sub); background:var(--card2); padding:5px 11px; border-radius:999px; white-space:nowrap;}
   .visit.recent{color:#fff; background:var(--pink);}
+  .cbadge{flex:none; margin-left:auto; font-size:11px; font-weight:700; padding:5px 11px; border-radius:999px; white-space:nowrap;}
+  .cbadge.lost{color:#FF8A8A; background:rgba(255,92,92,.16);}
+  .cbadge.new{color:#7BE0A8; background:rgba(51,209,122,.16);}
   /* toolbar: 편집 / 정렬 */
   .toolbar{display:flex; align-items:center; justify-content:space-between; padding:4px 2px 10px; position:relative;}
   .tbtn{font-size:13.5px; font-weight:600; color:var(--txt); cursor:pointer; user-select:none;}
@@ -676,9 +679,11 @@ function compareWith(idx, from){
   const acct = picked.account||null;
   const back = (from==='list') ? "openCompareList()" : "closeModal()";
   const backLabel = (from==='list') ? '‹ 기록 목록' : '확인';
-  const row = (u, sub) => '<a class="row-u" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>'+sub+'</span></div><span class="chev" style="margin-left:auto;color:var(--sub);font-size:18px;">›</span></a>';
+  const row = (u, sub, badge) => '<a class="row-u" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>'+sub+'</span></div>'+badge+'</a>';
   const head = (color,text) => '<div style="display:flex;align-items:center;gap:7px;margin:18px 0 8px;"><span style="width:8px;height:8px;border-radius:50%;background:'+color+';"></span><span style="font-size:13px;font-weight:700;color:'+color+';">'+text+'</span></div>';
-  const listOf = (arr,sub) => arr.length ? arr.slice(0,80).map(u=>row(u,sub)).join('') : '<div class="empty">없어요</div>';
+  const listOf = (arr,sub,badge) => arr.length ? arr.slice(0,80).map(u=>row(u,sub,badge)).join('') : '<div class="empty">없어요</div>';
+  const bLost = '<span class="cbadge lost">언팔</span>';
+  const bNew = '<span class="cbadge new">NEW</span>';
 
   // 같은 계정 기록을 날짜 내림차순 정렬해 older/newer 결정
   const same = h.map((s,i)=>({s,i})).filter(x=>(x.s.account||null)===acct).sort((a,b)=>effDate(b.s)-effDate(a.s));
@@ -705,8 +710,8 @@ function compareWith(idx, from){
   openModal('<h3>'+fmtDate(effDate(older))+' 대비 변화</h3>'+
     '<div class="sd">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+fmtDate(effDate(older))+' → '+fmtDate(effDate(newer))+'</div>'+
     '<div class="cmpbox"><div class="c minus"><b>'+lost.length+'</b><span>나를 언팔함</span></div><div class="c plus"><b>'+gained.length+'</b><span>새 팔로워</span></div></div>'+
-    head('var(--pink)','나를 언팔한 사람')+ listOf(lost,'이전엔 나를 팔로우했어요')+
-    head('var(--green)','새로 생긴 팔로워')+ listOf(gained,'새로 나를 팔로우했어요')+
+    head('var(--pink)','나를 언팔한 사람')+ listOf(lost,'이전엔 나를 팔로우했어요',bLost)+
+    head('var(--green)','새로 생긴 팔로워')+ listOf(gained,'새로 나를 팔로우했어요',bNew)+
     '<button class="close" onclick="'+back+'">'+backLabel+'</button>');
 }
 
