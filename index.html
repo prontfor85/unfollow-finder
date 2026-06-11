@@ -169,9 +169,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .hacts span{color:var(--pink);cursor:pointer;}
   #histClear{color:#FF5C5C;}
   .hidden{display:none !important;}
-  /* lang toggle */
-  #langToggle{position:fixed;top:max(12px, env(safe-area-inset-top));right:14px;z-index:200;font-size:11.5px;font-weight:700;color:var(--sub);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;letter-spacing:.5px;-webkit-user-select:none;user-select:none;}
-  #langToggle span.active{color:var(--txt);}
+
   /* ===== Native App UI ===== */
   /* touch feedback */
   .btn button:active{transform:scale(0.97);}
@@ -199,8 +197,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 </head>
 <body>
 <div class="phone">
-  <button id="langToggle" onclick="toggleLang()"><span id="ltKO" class="active">KO</span> / <span id="ltEN">EN</span></button>
-
   <!-- 1. ONBOARDING -->
   <section class="screen active" id="s-onboard">
     <h2 class="title" id="onboard-title"></h2>
@@ -293,6 +289,41 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     <div id="historyList"></div>
   </section>
 
+  <!-- SETTINGS SCREEN -->
+  <section class="screen" id="s-settings">
+    <div class="app-header">
+      <span class="hdr-right"></span>
+      <span class="hdr-title" id="settings-hdr-title"></span>
+      <span class="hdr-right"></span>
+    </div>
+    <div style="padding: 0 20px;">
+      <!-- 언어 설정 카드 -->
+      <div style="margin-bottom: 12px; margin-top: 8px;">
+        <div style="font-size:12px; color:var(--sub); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;" id="settings-section-lang"></div>
+        <div style="background:var(--card); border-radius:16px; overflow:hidden;">
+          <div onclick="setLang('ko')" id="lang-ko-row" style="display:flex; align-items:center; justify-content:space-between; padding:16px; cursor:pointer; border-bottom:1px solid var(--line);">
+            <span style="font-size:15px; color:var(--txt);">한국어</span>
+            <span id="lang-ko-check" style="color:var(--pink); font-size:18px;">✓</span>
+          </div>
+          <div onclick="setLang('en')" id="lang-en-row" style="display:flex; align-items:center; justify-content:space-between; padding:16px; cursor:pointer;">
+            <span style="font-size:15px; color:var(--txt);">English</span>
+            <span id="lang-en-check" style="color:var(--pink); font-size:18px; display:none;">✓</span>
+          </div>
+        </div>
+      </div>
+      <!-- 문의하기 카드 -->
+      <div>
+        <div style="font-size:12px; color:var(--sub); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;" id="settings-section-support"></div>
+        <div style="background:var(--card); border-radius:16px; overflow:hidden;">
+          <div onclick="openContact()" style="display:flex; align-items:center; justify-content:space-between; padding:16px; cursor:pointer;">
+            <span id="settings-contact-label" style="font-size:15px; color:var(--txt);"></span>
+            <span style="color:var(--sub);">›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- TAB BAR -->
   <nav class="tab-bar" id="tabBar">
     <div class="tb-item active" id="tab-home" onclick="switchTab('home')">
@@ -302,6 +333,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     <div class="tb-item" id="tab-history" onclick="switchTab('history')">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
       <span id="tab-history-label">기록</span>
+    </div>
+    <div class="tb-item" id="tab-settings" onclick="switchTab('settings')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span id="tab-settings-label"></span>
     </div>
   </nav>
 
@@ -473,6 +508,12 @@ const T = {
     hdr_upload: '파일 올리기',
     hdr_result: '분석 결과',
     hdr_history: '지난 내역',
+    // settings
+    tab_settings: '설정',
+    hdr_settings: '설정',
+    settings_lang_section: '언어',
+    settings_support_section: '지원',
+    settings_contact: '문의하기',
   },
   en: {
     page_title: 'Instagram Unfollow Finder · Safe Analysis',
@@ -621,6 +662,12 @@ const T = {
     hdr_upload: 'Upload File',
     hdr_result: 'Results',
     hdr_history: 'History',
+    // settings
+    tab_settings: 'Settings',
+    hdr_settings: 'Settings',
+    settings_lang_section: 'Language',
+    settings_support_section: 'Support',
+    settings_contact: 'Contact us',
   }
 };
 
@@ -637,9 +684,7 @@ function applyLang(){
   document.getElementById('pageTitle').textContent = L.page_title;
   document.documentElement.lang = window.lang;
   // topbar (removed)
-  // lang toggle active state
-  document.getElementById('ltKO').classList.toggle('active', window.lang==='ko');
-  document.getElementById('ltEN').classList.toggle('active', window.lang==='en');
+  // lang toggle removed
   // onboarding
   const ot = document.getElementById('onboard-title'); if(ot) ot.innerHTML = L.onboard_title;
   const ol = document.getElementById('onboard-lead'); if(ol) ol.innerHTML = L.onboard_lead;
@@ -710,6 +755,17 @@ function applyLang(){
   const uhdr = document.getElementById('upload-hdr-title'); if(uhdr) uhdr.textContent = L.hdr_upload;
   const rhdr = document.getElementById('result-hdr-title'); if(rhdr) rhdr.textContent = L.hdr_result;
   const histHdr = document.getElementById('history-hdr-title'); if(histHdr) histHdr.textContent = L.hdr_history;
+  // settings screen
+  const settHdr = document.getElementById('settings-hdr-title'); if(settHdr) settHdr.textContent = L.hdr_settings;
+  const tSettL = document.getElementById('tab-settings-label'); if(tSettL) tSettL.textContent = L.tab_settings;
+  const sLang = document.getElementById('settings-section-lang'); if(sLang) sLang.textContent = L.settings_lang_section;
+  const sSupp = document.getElementById('settings-section-support'); if(sSupp) sSupp.textContent = L.settings_support_section;
+  const sCont = document.getElementById('settings-contact-label'); if(sCont) sCont.textContent = L.settings_contact;
+  // sync lang checkmarks
+  const koCheck = document.getElementById('lang-ko-check');
+  const enCheck = document.getElementById('lang-en-check');
+  if(koCheck) koCheck.style.display = window.lang==='ko' ? '' : 'none';
+  if(enCheck) enCheck.style.display = window.lang==='en' ? '' : 'none';
 }
 
 function toggleLang(){
@@ -720,6 +776,17 @@ function toggleLang(){
   renderButton($('.screen.active') ? $('.screen.active').id.replace('s-','') : 'onboard');
   if(state.result) renderList();
   if(document.getElementById('s-history').classList.contains('active')) renderHistory();
+}
+
+function setLang(l) {
+  window.lang = l;
+  localStorage.setItem('iuf_lang', l);
+  applyLang();
+  // 체크마크 업데이트
+  const koCheck = document.getElementById('lang-ko-check');
+  const enCheck = document.getElementById('lang-en-check');
+  if(koCheck) koCheck.style.display = l==='ko' ? '' : 'none';
+  if(enCheck) enCheck.style.display = l==='en' ? '' : 'none';
 }
 
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
@@ -780,7 +847,14 @@ function switchTab(tab){
   } else if(tab==='history'){
     renderHistory();
     go('history');
+  } else if(tab==='settings'){
+    go('settings');
   }
+  // 탭 활성화 상태 업데이트
+  ['home','history','settings'].forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    if(el) el.classList.toggle('active', t===tab);
+  });
 }
 
 function renderButton(name){
