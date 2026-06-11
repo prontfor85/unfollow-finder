@@ -293,7 +293,7 @@ function renderButton(name){
   if(name==='analyze' || name==='history'){ $('#bottom').classList.add('hidden'); return; }
   if(name==='onboard'){
     row.appendChild(mk('지난 내역', openHistory, true));
-    row.appendChild(mk('분석하기', openAnalyzeChoice));
+    row.appendChild(mk('분석하기', ()=>go('guide')));
   }
   else if(name==='guide'){ row.appendChild(mk('이전', ()=>go('onboard'), true)); row.appendChild(mk('파일 올리러 가기', ()=>go('upload'))); }
   else if(name==='upload'){
@@ -460,13 +460,10 @@ function runAnalyze(){
     state.result = { mutual:dedupe(mutual), iDontFollow:dedupe(iDontFollow), notFollowMe:dedupe(notFollowMe) };
     saveSnapshot();
     showResult();
-    if(state.compareMode){
-      state.compareMode = false;
-      const h = getHistory(); const acct = h[0] ? (h[0].account||null) : null;
-      const sameCount = h.filter(s=>(s.account||null)===acct).length;
-      if(sameCount>=2){ compareWith(0, 'auto'); } // 날짜 기준 자동 정렬은 compareWith가 처리
-      else { openModal('<h3>비교할 지난 기록이 없어요</h3><div class="sd">'+(acct?'@'+escapeHtml(acct)+' 계정의 ':'')+'이전 기록이 아직 없어요. 이번 결과를 저장해 뒀으니, 다음에 같은 계정으로 다시 분석하면 그 사이 변화를 자동으로 비교해 드려요.</div><button class="close" onclick="closeModal()">확인</button>'); }
-    }
+    // 같은 계정의 이전 기록이 있으면 분석 직후 변화(언팔/새 팔로워)를 자동 비교
+    const h = getHistory(); const acct = h[0] ? (h[0].account||null) : null;
+    const sameCount = h.filter(s=>(s.account||null)===acct).length;
+    if(sameCount>=2){ compareWith(0, 'auto'); } // 첫 분석(이전 기록 없음)이면 결과만 보여줌
   }, 1100);
 }
 
