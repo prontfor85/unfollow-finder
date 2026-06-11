@@ -460,10 +460,7 @@ function runAnalyze(){
     state.result = { mutual:dedupe(mutual), iDontFollow:dedupe(iDontFollow), notFollowMe:dedupe(notFollowMe) };
     saveSnapshot();
     showResult();
-    // 같은 계정의 이전 기록이 있으면 분석 직후 변화(언팔/새 팔로워)를 자동 비교
-    const h = getHistory(); const acct = h[0] ? (h[0].account||null) : null;
-    const sameCount = h.filter(s=>(s.account||null)===acct).length;
-    if(sameCount>=2){ compareWith(0, 'auto'); } // 첫 분석(이전 기록 없음)이면 결과만 보여줌
+    // 자동 비교 안 함 — 결과 화면의 "지난 기록과 비교하기" 버튼으로만 비교
   }, 1100);
 }
 
