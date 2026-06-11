@@ -160,6 +160,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .confirm .cancel{background:var(--card2); color:var(--txt);}
   .confirm .danger{background:#FF5C5C; color:#fff;}
   .link{color:var(--pink); cursor:pointer; text-decoration:underline; font-size:12.5px;}
+  .ico{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-4px;}
+  .feat .ic{color:var(--pink);}
+  .moreBtn{width:100%;margin-top:12px;background:var(--card);border:1px solid var(--line);color:var(--txt);font-size:13.5px;font-weight:600;padding:13px;border-radius:12px;cursor:pointer;}
+  .hacts{display:flex;gap:16px;margin-bottom:14px;font-size:12.5px;}
+  .hacts span{color:var(--pink);cursor:pointer;}
+  #histClear{color:#FF5C5C;}
   .hidden{display:none !important;}
 </style>
 </head>
@@ -171,10 +177,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   <section class="screen active" id="s-onboard">
     <h2 class="title">팔로워를 <span class="hl">안전하게</span><br>분석해 드려요</h2>
     <p class="lead">나를 언팔했거나, 내가 팔로우하지 않는 사람을 찾아요. 모든 분석은 <b>이 브라우저 안에서만</b> 처리됩니다.</p>
-    <div class="feat"><div class="ic">🔒</div><div><b>로그인·비밀번호 없음</b><span>인스타 계정 정보를 절대 입력하지 않아요.</span></div></div>
-    <div class="feat"><div class="ic">📦</div><div><b>공식 데이터로 정확하게</b><span>인스타그램이 직접 보낸 내보내기 파일을 그대로 분석해요.</span></div></div>
-    <div class="feat"><div class="ic">🖥️</div><div><b>서버로 전송하지 않음</b><span>파일은 기기를 벗어나지 않아요. 인터넷이 끊겨도 분석돼요.</span></div></div>
-    <div class="feat"><div class="ic">🎁</div><div><b>결과 전부 무료</b><span>핵심 수치도, 전체 목록도 가립니다(블러) 없이 보여드려요.</span></div></div>
+    <div class="feat"><div class="ic"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg></div><div><b>로그인·비밀번호 없음</b><span>인스타 계정 정보를 절대 입력하지 않아요.</span></div></div>
+    <div class="feat"><div class="ic"><svg class="ico" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"></path><path d="M3 7l9 4 9-4"></path><path d="M12 11v10"></path></svg></div><div><b>공식 데이터로 정확하게</b><span>인스타그램이 직접 보낸 내보내기 파일을 그대로 분석해요.</span></div></div>
+    <div class="feat"><div class="ic"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg></div><div><b>서버로 전송하지 않음</b><span>파일은 기기를 벗어나지 않아요. 인터넷이 끊겨도 분석돼요.</span></div></div>
+    <div class="feat"><div class="ic"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"></path></svg></div><div><b>결과 전부 무료</b><span>핵심 수치도, 전체 목록도 가립니다(블러) 없이 보여드려요.</span></div></div>
   </section>
 
   <!-- 2. GUIDE -->
@@ -194,13 +200,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     <h2 class="title">파일을 <span class="hl">올려주세요</span></h2>
     <p class="lead">인스타그램에서 받은 ZIP 파일을 올려주세요. 분석은 이 기기 안에서만 이뤄져요.</p>
     <div class="drop" id="dropZip">
-      <div class="big">📦</div>
+      <div class="big"><svg class="ico" style="width:40px;height:40px" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"></path><path d="M3 7l9 4 9-4"></path><path d="M12 11v10"></path></svg></div>
       <b>인스타 내보내기 ZIP 올리기</b>
       <span>instagram-아이디-날짜.zip · 탭해서 선택 (PC는 끌어다 놓기)</span>
     </div>
     <div id="zipStatus"></div>
     <input class="search" id="acctInput" placeholder="분석할 계정 아이디 (선택 · 여러 계정 구분용)" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin:4px 0 14px;">
-    <div class="note"><span>🔒</span><div>업로드한 파일은 <b>이 브라우저 안에서만</b> 읽고 분석합니다. 서버로 전송하거나 저장하지 않아요. 분석 결과는 새로고침하면 사라집니다.</div></div>
+    <div class="note"><span><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg></span><div>업로드한 파일은 <b>이 브라우저 안에서만</b> 읽고 분석합니다. 서버로 전송하거나 저장하지 않아요. 분석 결과 화면은 새로고침하면 사라져요(지난 내역만 따로 기기에 저장돼요).</div></div>
   </section>
 
   <!-- 4. ANALYZING -->
@@ -208,7 +214,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     <div class="spin"></div>
     <h2 class="title" style="text-align:center; font-size:22px;">분석하고 있어요</h2>
     <p class="lead" style="text-align:center;" id="analyzeMeta"></p>
-    <div class="secline">🔒 데이터는 이 기기를 벗어나지 않습니다. 네트워크 연결 없이 처리 중이에요.</div>
+    <div class="secline"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg> 데이터는 이 기기를 벗어나지 않습니다. 네트워크 연결 없이 처리 중이에요.</div>
   </section>
 
   <!-- 5. RESULT -->
@@ -220,7 +226,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     <div class="compareBtn" id="compareBtn"><b>지난 기록과 비교하기</b><span>›</span></div>
     <span class="free">✓ 모든 결과 무료 · 잠금 없음</span>
     <div class="hero">
-      <div class="lbl">나를 팔로우 안 하는 사람</div>
+      <div class="lbl" id="heroLbl">나를 팔로우 안 하는 사람</div>
       <div class="num" id="rNotFollowMe">0<small>명</small></div>
       <div class="sub" id="rNotFollowMeSub"></div>
     </div>
@@ -229,7 +235,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <div class="tab" data-tab="mutual"><b id="cMutual">0</b><span>맞팔 중</span></div>
       <div class="tab" data-tab="notthem"><b id="cNotThem">0</b><span>내가 팔로우<br>안 하는 사람</span></div>
     </div>
-    <div class="disc"><span>ℹ️</span><div>상대가 비활성·탈퇴·차단한 경우 실제와 다를 수 있어요. 내보내기 기간을 <b>전체</b>로 받지 않았다면 결과가 부정확할 수 있어요.</div></div>
+    <div class="disc"><span><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg></span><div>상대가 비활성·탈퇴·차단한 경우 실제와 다를 수 있어요. 내보내기 기간을 <b>전체</b>로 받지 않았다면 결과가 부정확할 수 있어요.</div></div>
     <input class="search" id="search" placeholder="인스타 아이디 검색">
     <div class="toolbar">
       <span class="tbtn" id="editToggle">편집</span>
@@ -251,7 +257,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <h2 class="rtitle">지난 내역</h2>
       <div class="rlinks"><span id="goHome2">처음으로</span> · <span id="shareApp2">공유하기</span></div>
     </div>
-    <div class="hnote">🔒 지난 내역은 이 기기에만 저장돼요. 서버로 전송되지 않아요.</div>
+    <div class="hnote"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg> 지난 내역은 이 기기에만 저장돼요. 서버로 전송되지 않아요.</div>
+    <div class="hacts"><span id="histExport">기록 내보내기</span><span id="histImport">기록 가져오기</span><span id="histClear">전체 삭제</span></div>
     <div id="historyList"></div>
   </section>
 
@@ -268,10 +275,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 </div>
 
 <input type="file" id="fileZip" accept=".zip" class="hidden">
+<input type="file" id="histFile" accept=".json,application/json" class="hidden">
 
 <script>
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
-                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null };
+                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50 };
 const $ = s => document.querySelector(s);
 const screens = ['onboard','guide','upload','analyze','result','history'];
 
@@ -288,12 +296,13 @@ function renderButton(name){
   if(name==='analyze' || name==='history'){ $('#bottom').classList.add('hidden'); return; }
   if(name==='onboard'){
     row.appendChild(mk('지난 내역', openHistory, true));
-    row.appendChild(mk('분석하기', ()=>go('guide')));
+    row.appendChild(mk('분석하기', ()=> go(getHistory().length>0?'upload':'guide')));
   }
   else if(name==='guide'){ row.appendChild(mk('이전', ()=>go('onboard'), true)); row.appendChild(mk('파일 올리러 가기', ()=>go('upload'))); }
   else if(name==='upload'){
+    row.appendChild(mk('이전', ()=>go('guide'), true));
     const ready = !!(state.followers && state.followers.length && state.following && state.following.length);
-    const b = mk(ready?'분석하기':'팔로워·팔로잉 파일이 필요해요', runAnalyze); b.disabled=!ready; row.appendChild(b);
+    const b = mk(ready?'분석하기':'파일이 필요해요', runAnalyze); b.disabled=!ready; row.appendChild(b);
     note.textContent = ready ? '🔒 분석은 이 브라우저 안에서만 실행됩니다.' : '';
   }
   else if(name==='result'){ row.appendChild(mk('다시 분석하기', resetAll, true)); }
@@ -372,9 +381,12 @@ async function readDataFile(file){
 }
 
 async function handleZip(file){
-  $('#zipStatus').innerHTML = '<div class="note"><span>⏳</span><div>'+file.name+' 읽는 중…</div></div>';
+  const loading = (m)=> $('#zipStatus').innerHTML = '<div class="note"><span>⏳</span><div>'+m+'</div></div>';
+  loading('압축 푸는 중…');
   try{
     const zip = await JSZip.loadAsync(file);
+    loading('팔로워·팔로잉 분석 중…');
+    await new Promise(r=>setTimeout(r,0));
     let followers = [], following = [];
     const allFiles = [];
     for(const path of Object.keys(zip.files)){
@@ -509,7 +521,7 @@ function renderHistory(){
   box.innerHTML = h.map((s,i)=>{
     const st = snapStats(s);
     return '<div class="rec2" onclick="viewSnapshot('+i+')">'+
-      '<div class="ic2">📋</div>'+
+      '<div class="ic2"><svg class="ico" viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="16" rx="2"></rect><path d="M9 4h6v3H9z"></path><path d="M9 11h6M9 15h4"></path></svg></div>'+
       '<div class="m2"><b>팔로잉 '+st.following+'명 · 팔로워 '+st.followers+'명</b>'+
       '<span class="s2">언팔 '+st.unfollow+'명 · 맞팔 '+st.mutual+'명 · 팬 '+st.fans+'명</span>'+
       '<span class="dt2">'+fmtDateTime(s.date)+'</span>'+
@@ -530,9 +542,25 @@ function confirmDelete(i){
 function doDelete(i){
   const h = getHistory(); h.splice(i,1); setHistory(h); closeModal(); renderHistory();
 }
+function exportHistory(){
+  try{ const blob=new Blob([JSON.stringify(getHistory())],{type:'application/json'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    a.href=url; a.download='unfollow-finder-history.json'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000); toast('기록을 파일로 내보냈어요');
+  }catch(e){ alert('내보내기에 실패했어요.'); }
+}
+async function importHistory(file){
+  try{ const arr=JSON.parse(await file.text()); if(!Array.isArray(arr)) throw 0;
+    setHistory(arr); renderHistory(); toast('기록을 불러왔어요');
+  }catch(e){ alert('기록 파일을 읽지 못했어요.'); }
+}
+function clearAllHistory(){
+  openModal('<h3>지난 내역을 모두 지울까요?</h3><div class="sd">이 기기에 저장된 모든 분석 내역이 삭제돼요. 되돌릴 수 없어요.</div><div class="confirm"><button class="cancel" onclick="closeModal()">취소</button><button class="danger" onclick="doClearHistory()">전체 삭제</button></div>');
+}
+function doClearHistory(){ setHistory([]); closeModal(); renderHistory(); }
 
 function showResult(){
-  state.tab='notme'; state.sort='rec'; state.editMode=false; state.removed=new Set();
+  state.tab='notme'; state.sort='rec'; state.editMode=false; state.removed=new Set(); state.shown=50;
   $('#editToggle').textContent='편집'; $('#editToggle').classList.remove('done');
   $('#sortBtn').textContent='추천순 ▾';
   $('#sortMenu').querySelectorAll('[data-sort]').forEach(x=>x.classList.toggle('active', x.dataset.sort==='rec'));
@@ -560,13 +588,15 @@ function daysFor(u, tab){
 function catCount(tab){ return baseArray(tab).filter(u=>!state.removed.has(u)).length; }
 
 function updateCounts(){
-  const total = state.following.length || 1;
-  const n = catCount('notme');
-  $('#rNotFollowMe').innerHTML = n+'<small>명</small>';
-  $('#rNotFollowMeSub').textContent = '전체 팔로잉 '+state.following.length+'명 중 '+Math.round(n/total*1000)/10+'%';
-  $('#cNotMe').textContent = n;
+  $('#cNotMe').textContent = catCount('notme');
   $('#cMutual').textContent = catCount('mutual');
   $('#cNotThem').textContent = catCount('notthem');
+  const labels = {notme:'나를 팔로우 안 하는 사람', mutual:'맞팔 중', notthem:'내가 팔로우 안 하는 사람'};
+  if($('#heroLbl')) $('#heroLbl').textContent = labels[state.tab];
+  const n = catCount(state.tab);
+  $('#rNotFollowMe').innerHTML = n+'<small>명</small>';
+  if(state.tab==='notthem'){ const t=state.followers.length||1; $('#rNotFollowMeSub').textContent='전체 팔로워 '+state.followers.length+'명 중 '+Math.round(n/t*1000)/10+'%'; }
+  else { const t=state.following.length||1; $('#rNotFollowMeSub').textContent='전체 팔로잉 '+state.following.length+'명 중 '+Math.round(n/t*1000)/10+'%'; }
 }
 
 function currentList(){
@@ -584,13 +614,15 @@ function currentList(){
 
 function renderList(){
   updateCounts();
-  const arr = currentList();
+  const all = currentList();
   const box = $('#list');
   const lab = state.tab==='mutual' ? '맞팔 중' : '팔로우 중';
-  if(!arr.length){ box.innerHTML = '<div class="empty">해당하는 사람이 없어요.</div>'; return; }
+  if(!all.length){ box.innerHTML = '<div class="empty">해당하는 사람이 없어요.</div>'; return; }
+  const shown = Math.min(state.shown, all.length);
+  const arr = all.slice(0, shown);
   const visited = getVisited();
   const recent = mostRecentVisited();
-  box.innerHTML = arr.map(u=>{
+  let html = arr.map(u=>{
     const d = daysFor(u, state.tab);
     const sub = (d!=null) ? (d+'일째 '+lab) : ('instagram.com/'+escapeHtml(u));
     if(state.editMode){
@@ -600,11 +632,15 @@ function renderList(){
                 : (visited[u]) ? '<span class="visit">방문함</span>' : '';
     return `<a class="row-u" data-u="${escapeHtml(u)}" href="https://instagram.com/${encodeURIComponent(u)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@${escapeHtml(u)}</b><span>${sub}</span></div>${badge}<span class="chev" style="color:var(--sub);font-size:18px;margin-left:8px;">›</span></a>`;
   }).join('');
+  if(all.length > shown){ html += '<button class="moreBtn" id="moreBtn">더 보기 ('+(all.length-shown)+'명 남음)</button>'; }
+  box.innerHTML = html;
   if(state.editMode){
     box.querySelectorAll('.del').forEach(btn=> btn.onclick=()=>{ state.removed.add(btn.dataset.u); renderList(); });
   } else {
     box.querySelectorAll('.row-u[data-u]').forEach(a=> a.addEventListener('click', ()=>{ markVisited(a.dataset.u); setTimeout(renderList, 60); }));
   }
+  const more = box.querySelector('#moreBtn');
+  if(more) more.onclick = ()=>{ state.shown += 50; renderList(); };
 }
 function escapeHtml(s){ return s.replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -739,11 +775,11 @@ $('#fileZip').onchange = e=>{ if(e.target.files[0]) handleZip(e.target.files[0])
 $('#dropZip').addEventListener('drop', e=>{ const f=e.dataTransfer.files[0]; if(f) handleZip(f); });
 
 document.querySelectorAll('.tab').forEach(t=> t.onclick = ()=>{
-  state.tab = t.dataset.tab;
+  state.tab = t.dataset.tab; state.shown=50;
   document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active', x===t));
   renderList();
 });
-$('#search').oninput = renderList;
+$('#search').oninput = ()=>{ state.shown=50; renderList(); };
 
 // edit mode (편집 ↔ 완료) — shows 삭제 buttons
 $('#editToggle').onclick = ()=>{
@@ -755,13 +791,18 @@ $('#editToggle').onclick = ()=>{
 // sort dropdown (추천순 / 최신순 / 오래된순)
 $('#sortBtn').onclick = e=>{ e.stopPropagation(); $('#sortMenu').classList.toggle('hidden'); };
 $('#sortMenu').querySelectorAll('[data-sort]').forEach(it=> it.onclick = ()=>{
-  state.sort = it.dataset.sort;
+  state.sort = it.dataset.sort; state.shown=50;
   $('#sortBtn').textContent = {rec:'추천순',new:'최신순',old:'오래된순'}[state.sort] + ' ▾';
   $('#sortMenu').querySelectorAll('[data-sort]').forEach(x=>x.classList.toggle('active', x===it));
   $('#sortMenu').classList.add('hidden');
   renderList();
 });
 document.addEventListener('click', ()=> $('#sortMenu').classList.add('hidden'));
+
+$('#histExport').onclick = exportHistory;
+$('#histImport').onclick = ()=> $('#histFile').click();
+$('#histClear').onclick = clearAllHistory;
+$('#histFile').onchange = e=>{ if(e.target.files[0]) importHistory(e.target.files[0]); };
 
 go('onboard');
 
