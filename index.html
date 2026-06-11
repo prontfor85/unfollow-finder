@@ -145,6 +145,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .choice:hover{border-color:var(--pink);}
   .choice b{display:block; font-size:15px; margin-bottom:6px;} .choice span{color:var(--sub); font-size:12px; line-height:1.5;}
   .choice.primary{background:var(--pink);} .choice.primary b{color:#fff;} .choice.primary span{color:rgba(255,255,255,.9);}
+  /* delete confirm modal */
+  .infobox{background:var(--card2); border-radius:12px; padding:14px 16px; font-size:14px; color:var(--txt); margin:4px 0 18px;}
+  .confirm{display:flex; gap:10px;}
+  .confirm button{flex:1; border:none; border-radius:13px; padding:15px; font-size:15px; font-weight:700; cursor:pointer;}
+  .confirm .cancel{background:var(--card2); color:var(--txt);}
+  .confirm .danger{background:#FF5C5C; color:#fff;}
   .link{color:var(--pink); cursor:pointer; text-decoration:underline; font-size:12.5px;}
   .hidden{display:none !important;}
 </style>
@@ -440,9 +446,25 @@ let memHistory = [];
 function getHistory(){ try{ const v=localStorage.getItem('iuf_history'); if(v!=null) return JSON.parse(v); }catch(e){} return memHistory; }
 function setHistory(h){ try{ localStorage.setItem('iuf_history', JSON.stringify(h.slice(0,30))); }catch(e){ memHistory = h.slice(0,30); } }
 function saveSnapshot(){
-  const snap = { date: Date.now(), followers: state.followers.length, unfollow: state.result.notFollowMe.length,
-                 listFollowers: state.followers.slice(), listFollowing: state.following.slice() };
+  const snap = { date: Date.now(),
+                 listFollowers: state.followers.slice(), listFollowing: state.following.slice(),
+                 tsFollower: Object.fromEntries(state.tsFollower), tsFollowing: Object.fromEntries(state.tsFollowing) };
   const h = getHistory(); h.unshift(snap); setHistory(h);
+}
+// 저장된 스냅샷을 분석 결과(풀페이지)로 다시 보여주기
+function viewSnapshot(i){
+  const h = getHistory(); const s = h[i]; if(!s) return;
+  state.followers = (s.listFollowers||[]).slice();
+  state.following = (s.listFollowing||[]).slice();
+  state.tsFollower = new Map(Object.entries(s.tsFollower||{}));
+  state.tsFollowing = new Map(Object.entries(s.tsFollowing||{}));
+  const F = new Set(state.followers), G = new Set(state.following);
+  state.result = {
+    mutual: dedupe(state.following.filter(u=>F.has(u))),
+    iDontFollow: dedupe(state.followers.filter(u=>!G.has(u))),
+    notFollowMe: dedupe(state.following.filter(u=>!F.has(u)))
+  };
+  showResult();
 }
 function fmtDate(ts){ const d=new Date(ts); return (d.getMonth()+1)+'월 '+d.getDate()+'일'; }
 function fmtDateTime(ts){ const d=new Date(ts); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes()); }
@@ -475,17 +497,26 @@ function renderHistory(){
   if(!h.length){ box.innerHTML='<div class="empty">아직 저장된 분석 내역이 없어요.<br>분석을 한 번 하면 여기에 기록돼요.</div>'; return; }
   box.innerHTML = h.map((s,i)=>{
     const st = snapStats(s);
-    return '<div class="rec2" onclick="compareWith('+i+",'screen')\">"+
+    return '<div class="rec2" onclick="viewSnapshot('+i+')">'+
       '<div class="ic2">📋</div>'+
       '<div class="m2"><b>팔로잉 '+st.following+'명 · 팔로워 '+st.followers+'명</b>'+
       '<span class="s2">언팔 '+st.unfollow+'명 · 맞팔 '+st.mutual+'명 · 팬 '+st.fans+'명</span>'+
       '<span class="dt2">'+fmtDateTime(s.date)+'</span></div>'+
-      '<button class="del2" onclick="event.stopPropagation();deleteRecord('+i+')">삭제</button>'+
+      '<button class="del2" onclick="event.stopPropagation();confirmDelete('+i+')">삭제</button>'+
       '<span class="chev">›</span></div>';
   }).join('');
 }
-function deleteRecord(i){
-  const h = getHistory(); h.splice(i,1); setHistory(h); renderHistory();
+function confirmDelete(i){
+  const h = getHistory(); const s = h[i]; if(!s) return;
+  const st = snapStats(s);
+  openModal('<h3>내역을 삭제할까요?</h3>'+
+    '<div class="sd">앱에 저장된 이 분석 내역이 삭제돼요.</div>'+
+    '<div class="infobox">'+fmtDateTime(s.date)+' · 언팔 '+st.unfollow+'명</div>'+
+    '<div class="confirm"><button class="cancel" onclick="closeModal()">취소</button>'+
+    '<button class="danger" onclick="doDelete('+i+')">삭제</button></div>');
+}
+function doDelete(i){
+  const h = getHistory(); h.splice(i,1); setHistory(h); closeModal(); renderHistory();
 }
 
 function showResult(){
