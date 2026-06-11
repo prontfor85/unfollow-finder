@@ -642,7 +642,7 @@ function compareWith(idx, from){
   const h = getHistory(); const older = h[idx]; const newer = h[0]; if(!older || !newer) return;
   const back = (from==='list') ? "openCompareList()" : "closeModal()";
   const backLabel = (from==='list') ? '‹ 기록 목록' : '확인';
-  const li = arr => arr.length ? arr.slice(0,50).map(u=>'<div class="row-u"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>instagram.com/'+escapeHtml(u)+'</span></div></div>').join('') : '<div class="empty">없어요</div>';
+  const li = arr => arr.length ? arr.slice(0,50).map(u=>'<a class="row-u" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>instagram.com/'+escapeHtml(u)+'</span></div><span class="chev" style="margin-left:auto;color:var(--sub);font-size:18px;">›</span></a>').join('') : '<div class="empty">없어요</div>';
   if(idx===0){
     const st = snapStats(older);
     openModal('<h3>'+fmtDateTime(older.date)+'</h3>'+
