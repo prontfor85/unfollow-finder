@@ -281,7 +281,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   <section class="screen" id="s-history">
     <div class="app-header"><span class="hdr-right"></span><span class="hdr-title" id="history-hdr-title"></span><span class="hdr-right"></span></div>
     <div class="rhead">
-      <h2 class="rtitle" id="history-title"></h2>
       <div class="rlinks"><span id="goHome2"></span> · <span id="shareApp2"></span></div>
     </div>
     <div class="hnote"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg> <span id="history-note"></span></div>
@@ -792,7 +791,7 @@ function setLang(l) {
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
                 result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null };
 const $ = s => document.querySelector(s);
-const screens = ['onboard','guide','upload','analyze','result','history'];
+const screens = ['onboard','guide','upload','analyze','result','history','settings'];
 
 // 화면 히스토리 스택 (슬라이드 방향 결정용)
 const screenStack = [];
