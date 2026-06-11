@@ -205,7 +205,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <span>instagram-아이디-날짜.zip · 탭해서 선택 (PC는 끌어다 놓기)</span>
     </div>
     <div id="zipStatus"></div>
-    <input class="search" id="acctInput" placeholder="분석할 계정 아이디 (선택 · 여러 계정 구분용)" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin:4px 0 14px;">
     <div class="note"><span><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg></span><div>업로드한 파일은 <b>이 브라우저 안에서만</b> 읽고 분석합니다. 서버로 전송하거나 저장하지 않아요. 분석 결과 화면은 새로고침하면 사라져요(지난 내역만 따로 기기에 저장돼요).</div></div>
   </section>
 
@@ -279,7 +278,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
 <script>
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
-                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50 };
+                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null };
 const $ = s => document.querySelector(s);
 const screens = ['onboard','guide','upload','analyze','result','history'];
 
@@ -410,7 +409,7 @@ async function handleZip(file){
     setFollowers(followers);
     setFollowing(following);
     const detected = accountFromZipName(file.name);
-    if(detected && $('#acctInput') && !$('#acctInput').value.trim()){ $('#acctInput').value = detected; }
+    state.account = detected || null;
     state.exportDate = dateFromZipName(file.name);
     $('#zipStatus').innerHTML = '<div class="note"><span>✅</span><div><b>'+escapeHtml(file.name)+'</b> 인식 완료 — 팔로워 '+state.followers.length+'명 · 팔로잉 '+state.following.length+'명'+(detected?' · 계정 @'+escapeHtml(detected):'')+'</div></div>';
     renderButton('upload');
@@ -424,7 +423,7 @@ function dedupe(a){ return Array.from(new Set(a.filter(Boolean))); }
 /* ---------- account identity (2+ accounts support) ---------- */
 function normAcct(s){ return (s||'').trim().toLowerCase().replace(/^@/,'').replace(/\s+/g,''); }
 function accountFromZipName(name){ const m=(name||'').toLowerCase().match(/instagram-([a-z0-9._]+)-\d/); return m?m[1]:''; }
-function currentAccount(){ const el=document.querySelector('#acctInput'); return normAcct(el?el.value:''); }
+function currentAccount(){ return normAcct(state.account||''); }
 function acctLabel(a){ return a ? '@'+a : '계정 미상'; }
 
 /* ---------- visited profiles (방문함 / 최근 방문) — device only ---------- */
@@ -648,7 +647,7 @@ function resetAll(){
   state.followers=null; state.following=null; state.result=null;
   state.tsFollower=new Map(); state.tsFollowing=new Map();
   state.editMode=false; state.sort='rec'; state.removed=new Set(); state.compareMode=false; state.exportDate=null;
-  $('#zipStatus').innerHTML=''; $('#search').value=''; if($('#acctInput')) $('#acctInput').value='';
+  $('#zipStatus').innerHTML=''; $('#search').value=''; state.account=null;
   go('upload');
 }
 
