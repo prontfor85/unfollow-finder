@@ -1326,8 +1326,7 @@ $('#goHome').onclick = goHome;
 $('#shareApp').onclick = shareApp;
 $('#contact').onclick = openContact;
 $('#compareBtn').onclick = openCompareList;
-$('#goHome2').onclick = ()=>{ closeModal(); go('onboard'); };
-$('#shareApp2').onclick = shareApp;
+const goHome2El = $('#goHome2'); if(goHome2El) goHome2El.onclick = ()=>{ closeModal(); go('onboard'); };
 $('#overlay').onclick = e=>{ if(e.target.id==='overlay') closeModal(); };
 
 $('#dropZip').onclick = ()=> $('#fileZip').click();
