@@ -272,7 +272,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
 <script>
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
-                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false };
+                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null };
 const $ = s => document.querySelector(s);
 const screens = ['onboard','guide','upload','analyze','result','history'];
 
@@ -400,6 +400,7 @@ async function handleZip(file){
     setFollowing(following);
     const detected = accountFromZipName(file.name);
     if(detected && $('#acctInput') && !$('#acctInput').value.trim()){ $('#acctInput').value = detected; }
+    state.exportDate = dateFromZipName(file.name);
     $('#zipStatus').innerHTML = '<div class="note"><span>✅</span><div><b>'+escapeHtml(file.name)+'</b> 인식 완료 — 팔로워 '+state.followers.length+'명 · 팔로잉 '+state.following.length+'명'+(detected?' · 계정 @'+escapeHtml(detected):'')+'</div></div>';
     markManual();
     renderButton('upload');
@@ -421,6 +422,10 @@ function getVisited(){ try{ const v=localStorage.getItem('iuf_visited'); if(v!=n
 function setVisited(o){ try{ localStorage.setItem('iuf_visited', JSON.stringify(o)); }catch(e){} }
 function markVisited(u){ const o=getVisited(); o[u]=Date.now(); setVisited(o); }
 function mostRecentVisited(){ const o=getVisited(); let best=null,bt=0; for(const k in o){ if(o[k]>bt){ bt=o[k]; best=k; } } return best; }
+
+/* ---------- export date from filename (auto-order comparisons) ---------- */
+function dateFromZipName(name){ const m=(name||'').toLowerCase().match(/instagram-[a-z0-9._]+-(\d{4})-(\d{2})-(\d{2})/); if(!m) return null; const t=new Date(+m[1], +m[2]-1, +m[3]).getTime(); return isNaN(t)?null:t; }
+function effDate(s){ return (s && (s.exportDate || s.date)) || 0; } // 내보내기 날짜 우선, 없으면 분석 시각
 
 // entries: [{u, ts}] -> dedup by username, keep first non-null timestamp
 function buildMap(entries){
@@ -454,9 +459,8 @@ function runAnalyze(){
     if(state.compareMode){
       state.compareMode = false;
       const h = getHistory(); const acct = h[0] ? (h[0].account||null) : null;
-      let prev = -1; // 같은 계정의 직전 기록 찾기
-      for(let i=1;i<h.length;i++){ if((h[i].account||null)===acct){ prev=i; break; } }
-      if(prev>=0){ compareWith(prev, 'auto'); }
+      const sameCount = h.filter(s=>(s.account||null)===acct).length;
+      if(sameCount>=2){ compareWith(0, 'auto'); } // 날짜 기준 자동 정렬은 compareWith가 처리
       else { openModal('<h3>비교할 지난 기록이 없어요</h3><div class="sd">'+(acct?'@'+escapeHtml(acct)+' 계정의 ':'')+'이전 기록이 아직 없어요. 이번 결과를 저장해 뒀으니, 다음에 같은 계정으로 다시 분석하면 그 사이 변화를 자동으로 비교해 드려요.</div><button class="close" onclick="closeModal()">확인</button>'); }
     }
   }, 1100);
@@ -467,7 +471,7 @@ let memHistory = [];
 function getHistory(){ try{ const v=localStorage.getItem('iuf_history'); if(v!=null) return JSON.parse(v); }catch(e){} return memHistory; }
 function setHistory(h){ try{ localStorage.setItem('iuf_history', JSON.stringify(h.slice(0,30))); }catch(e){ memHistory = h.slice(0,30); } }
 function saveSnapshot(){
-  const snap = { date: Date.now(), account: currentAccount() || null,
+  const snap = { date: Date.now(), exportDate: state.exportDate || null, account: currentAccount() || null,
                  listFollowers: state.followers.slice(), listFollowing: state.following.slice(),
                  tsFollower: Object.fromEntries(state.tsFollower), tsFollowing: Object.fromEntries(state.tsFollowing) };
   const h = getHistory(); h.unshift(snap); setHistory(h);
@@ -621,7 +625,7 @@ function escapeHtml(s){ return s.replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;'
 function resetAll(){
   state.followers=null; state.following=null; state.result=null;
   state.tsFollower=new Map(); state.tsFollowing=new Map();
-  state.editMode=false; state.sort='rec'; state.removed=new Set(); state.compareMode=false;
+  state.editMode=false; state.sort='rec'; state.removed=new Set(); state.compareMode=false; state.exportDate=null;
   $('#zipStatus').innerHTML=''; $('#search').value=''; if($('#acctInput')) $('#acctInput').value='';
   $('#mFollower').classList.remove('ok'); $('#mFollowing').classList.remove('ok');
   $('#mFollower').querySelector('.pick').textContent='파일 선택';
@@ -666,33 +670,40 @@ function openCompareList(){
   openModal('<h3>비교할 지난 기록</h3><div class="sd">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+'이 기록과 이번 분석을 비교해서 변화를 찾아드려요.</div>'+body+'<button class="close" onclick="closeModal()">닫기</button>');
 }
 
-// Compare snapshot h[idx] (older) against the most recent record of the SAME account.
+// 같은 계정 기록끼리, 내보내기 날짜(없으면 분석 시각) 기준으로 older→newer를 자동 정렬해 비교.
 function compareWith(idx, from){
-  const h = getHistory(); const older = h[idx]; if(!older) return;
-  const acct = older.account||null;
-  let newerIdx = -1;
-  for(let i=0;i<h.length;i++){ if((h[i].account||null)===acct){ newerIdx=i; break; } }
-  const newer = h[newerIdx];
+  const h = getHistory(); const picked = h[idx]; if(!picked) return;
+  const acct = picked.account||null;
   const back = (from==='list') ? "openCompareList()" : "closeModal()";
   const backLabel = (from==='list') ? '‹ 기록 목록' : '확인';
   const row = (u, sub) => '<a class="row-u" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>'+sub+'</span></div><span class="chev" style="margin-left:auto;color:var(--sub);font-size:18px;">›</span></a>';
   const head = (color,text) => '<div style="display:flex;align-items:center;gap:7px;margin:18px 0 8px;"><span style="width:8px;height:8px;border-radius:50%;background:'+color+';"></span><span style="font-size:13px;font-weight:700;color:'+color+';">'+text+'</span></div>';
   const listOf = (arr,sub) => arr.length ? arr.slice(0,80).map(u=>row(u,sub)).join('') : '<div class="empty">없어요</div>';
-  if(newerIdx===idx){
-    const st = snapStats(older);
-    openModal('<h3>'+fmtDateTime(older.date)+'</h3>'+
+
+  // 같은 계정 기록을 날짜 내림차순 정렬해 older/newer 결정
+  const same = h.map((s,i)=>({s,i})).filter(x=>(x.s.account||null)===acct).sort((a,b)=>effDate(b.s)-effDate(a.s));
+  let older=null, newer=null;
+  if(same.length>=2){
+    if(same[0].i===idx){ older=same[1].s; newer=picked; } // 고른 게 최신 → 직전 기록과 비교
+    else { older=picked; newer=same[0].s; }               // 고른 게 과거 → 최신과 비교
+  }
+
+  if(!older || !newer){
+    const st = snapStats(picked);
+    openModal('<h3>'+fmtDate(effDate(picked))+'</h3>'+
       (acct?'<div class="sd">'+escapeHtml(acctLabel(acct))+'</div>':'')+
       '<div class="cmpbox"><div class="c"><b>'+st.mutual+'</b><span>맞팔</span></div><div class="c minus"><b>'+st.unfollow+'</b><span>언팔</span></div><div class="c plus"><b>'+st.fans+'</b><span>팬</span></div></div>'+
-      '<div class="sd">이 계정의 가장 최근 기록이에요. 더 이전 기록을 고르면 그 사이 변화를 비교해 드려요.</div>'+
+      '<div class="sd">이 계정의 비교할 다른 기록이 없어요. 다른 시점 파일을 분석하면 그 사이 변화를 비교해 드려요.</div>'+
       '<button class="close" onclick="'+back+'">'+backLabel+'</button>');
     return;
   }
+
   const newerF = new Set(newer.listFollowers||[]);
   const olderF = new Set(older.listFollowers||[]);
   const lost = (older.listFollowers||[]).filter(u=>!newerF.has(u));   // 그 사이 나를 언팔한 사람
   const gained = (newer.listFollowers||[]).filter(u=>!olderF.has(u)); // 새로 생긴 팔로워
-  openModal('<h3>'+fmtDate(older.date)+' 대비 변화</h3>'+
-    '<div class="sd">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+fmtDateTime(older.date)+' → '+fmtDateTime(newer.date)+'</div>'+
+  openModal('<h3>'+fmtDate(effDate(older))+' 대비 변화</h3>'+
+    '<div class="sd">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+fmtDate(effDate(older))+' → '+fmtDate(effDate(newer))+'</div>'+
     '<div class="cmpbox"><div class="c minus"><b>'+lost.length+'</b><span>나를 언팔함</span></div><div class="c plus"><b>'+gained.length+'</b><span>새 팔로워</span></div></div>'+
     head('var(--pink)','나를 언팔한 사람')+ listOf(lost,'이전엔 나를 팔로우했어요')+
     head('var(--green)','새로 생긴 팔로워')+ listOf(gained,'새로 나를 팔로우했어요')+
@@ -718,7 +729,7 @@ $('#dropZip').addEventListener('drop', e=>{ const f=e.dataTransfer.files[0]; if(
 $('#mFollower').onclick = ()=> $('#fileFollower').click();
 $('#mFollowing').onclick = ()=> $('#fileFollowing').click();
 $('#fileFollower').onchange = async e=>{
-  try{ let all=[]; for(const f of e.target.files){ all=all.concat(await readDataFile(f)); }
+  try{ state.exportDate=null; let all=[]; for(const f of e.target.files){ all=all.concat(await readDataFile(f)); }
     setFollowers(all); markManual(); renderButton('upload');
   }catch(err){ alert(err.message); }
 };
