@@ -35,12 +35,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   body{background:#000; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; color:var(--txt); display:flex; justify-content:center; word-break:keep-all;}
   .phone{width:100%; max-width:430px; min-height:100vh; background:var(--bg); position:relative; overflow:hidden; display:flex; flex-direction:column;}
-  .topbar{display:flex; align-items:center; gap:10px; padding:16px 18px 12px; border-bottom:1px solid var(--line);}
-  .logo{width:30px; height:30px; border-radius:9px; background:var(--pink); display:flex; align-items:center; justify-content:center; font-size:16px;}
-  .topbar h1{font-size:16px; font-weight:700;}
-  .screen{flex:1; padding:22px 20px 110px; display:none; animation:fade .25s ease;}
-  .screen.active{display:block;}
+  /* topbar replaced by app-header */
+  .screen{flex:1; padding:max(22px, env(safe-area-inset-top)) 20px calc(110px + 56px + env(safe-area-inset-bottom)); display:none;}
+  .screen.active{display:block; animation:slideIn .28s ease;}
+  .screen.slide-back{animation:slideInBack .28s ease;}
+  @keyframes slideIn{from{transform:translateX(100%); opacity:.6;} to{transform:translateX(0); opacity:1;}}
+  @keyframes slideInBack{from{transform:translateX(-30%); opacity:.6;} to{transform:translateX(0); opacity:1;}}
   @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+  .screen::-webkit-scrollbar{display:none;}
   h2.title{font-size:25px; font-weight:800; line-height:1.32; margin-bottom:10px;}
   h2.title .hl{color:var(--pink);}
   p.lead{color:var(--sub); font-size:14px; line-height:1.6; margin-bottom:22px;}
@@ -64,7 +66,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .manual .l b{font-size:13.5px;} .manual .l span{display:block; color:var(--sub); font-size:11.5px; margin-top:2px;}
   .manual .pick{background:var(--card2); border:1px solid var(--line); color:var(--txt); font-size:12.5px; font-weight:600; padding:9px 14px; border-radius:9px; cursor:pointer;}
   .manual.ok{border:1px solid rgba(51,209,122,.4);} .manual.ok .pick{color:var(--green);}
-  .btn{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; padding:16px 20px calc(16px + env(safe-area-inset-bottom)); background:linear-gradient(180deg,transparent,var(--bg) 30%);}
+  .btn{position:fixed; bottom:calc(56px + env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%); width:100%; max-width:430px; padding:16px 20px 16px; background:linear-gradient(180deg,transparent,var(--bg) 30%);}
   .btn button{width:100%; border:none; border-radius:15px; padding:17px; font-size:16px; font-weight:700; color:#fff; background:var(--pink); cursor:pointer; transition:.15s;}
   .btn button:disabled{background:var(--card2); color:var(--sub); cursor:not-allowed;}
   .btn button.ghost{background:var(--card2);}
@@ -168,13 +170,36 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   #histClear{color:#FF5C5C;}
   .hidden{display:none !important;}
   /* lang toggle */
-  #langToggle{position:fixed;top:12px;right:14px;z-index:100;font-size:11.5px;font-weight:700;color:var(--sub);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;letter-spacing:.5px;}
+  #langToggle{position:fixed;top:max(12px, env(safe-area-inset-top));right:14px;z-index:200;font-size:11.5px;font-weight:700;color:var(--sub);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;letter-spacing:.5px;-webkit-user-select:none;user-select:none;}
   #langToggle span.active{color:var(--txt);}
+  /* ===== Native App UI ===== */
+  /* touch feedback */
+  .btn button:active{transform:scale(0.97);}
+  .feat:active,.step:active{transform:scale(0.98);}
+  .rec2:active{transform:scale(0.98);}
+  .choice:active{transform:scale(0.98);}
+  /* app header */
+  .app-header{display:flex;align-items:center;padding:max(14px, env(safe-area-inset-top)) 18px 12px;gap:10px;min-height:52px;border-bottom:1px solid var(--line);background:var(--bg);z-index:10;-webkit-user-select:none;user-select:none;}
+  .app-header .back-btn{width:36px;height:36px;border-radius:50%;background:var(--card2);border:none;color:var(--txt);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;}
+  .app-header .back-btn:active{transform:scale(0.92);}
+  .app-header .hdr-title{flex:1;text-align:center;font-size:16px;font-weight:700;color:var(--txt);}
+  .app-header .hdr-right{width:36px;flex:none;}
+  /* s-onboard: 헤더 없으므로 safe-area 패딩만 */
+  #s-onboard{padding-top:max(22px, env(safe-area-inset-top));}
+  /* 헤더 있는 화면은 헤더 높이만큼 상단 패딩 줄임 */
+  #s-guide, #s-upload, #s-analyze, #s-result, #s-history{padding-top:16px;}
+  /* tab bar */
+  .tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:calc(56px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);display:flex;z-index:150;-webkit-user-select:none;user-select:none;}
+  .tab-bar .tb-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:env(safe-area-inset-bottom);cursor:pointer;gap:3px;color:var(--sub);transition:color .15s;}
+  .tab-bar .tb-item:active{opacity:.7;}
+  .tab-bar .tb-item.active{color:var(--pink);}
+  .tab-bar .tb-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .tab-bar .tb-item span{font-size:10px;font-weight:600;}
 </style>
 </head>
 <body>
 <div class="phone">
-  <div class="topbar"><div class="logo" id="homeLogo" style="cursor:pointer"><svg viewBox="0 0 48 48" width="23" height="23" aria-hidden="true"><circle cx="21" cy="16" r="7" fill="#fff"/><path d="M8 37 a13 11 0 0 1 26 0 z" fill="#fff"/><circle cx="37" cy="33" r="10" fill="#03C75A"/><circle cx="37" cy="33" r="8" fill="#fff"/><line x1="33" y1="33" x2="41" y2="33" stroke="#03C75A" stroke-width="3" stroke-linecap="round"/></svg></div><h1 id="topbarTitle">인스타 언팔 찾기 · 안전 분석</h1></div><button id="langToggle" onclick="toggleLang()"><span id="ltKO" class="active">KO</span> / <span id="ltEN">EN</span></button>
+  <button id="langToggle" onclick="toggleLang()"><span id="ltKO" class="active">KO</span> / <span id="ltEN">EN</span></button>
 
   <!-- 1. ONBOARDING -->
   <section class="screen active" id="s-onboard">
@@ -188,6 +213,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   <!-- 2. GUIDE -->
   <section class="screen" id="s-guide">
+    <div class="app-header"><button class="back-btn" id="guideBack" onclick="goBack('guide')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="hdr-title" id="guide-hdr-title"></span><span class="hdr-right"></span></div>
     <h2 class="title" id="guide-title"></h2>
     <p class="lead" id="guide-lead"></p>
     <div class="step"><div class="tag">STEP 1</div><b id="step1-title"></b><span id="step1-desc"></span></div>
@@ -200,6 +226,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   <!-- 3. UPLOAD -->
   <section class="screen" id="s-upload">
+    <div class="app-header"><button class="back-btn" id="uploadBack" onclick="goBack('upload')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="hdr-title" id="upload-hdr-title"></span><span class="hdr-right"></span></div>
     <h2 class="title" id="upload-title"></h2>
     <p class="lead" id="upload-lead"></p>
     <div class="drop" id="dropZip">
@@ -221,6 +248,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   <!-- 5. RESULT -->
   <section class="screen" id="s-result">
+    <div class="app-header"><button class="back-btn" id="resultBack" onclick="goBack('result')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="hdr-title" id="result-hdr-title"></span><span class="hdr-right"></span></div>
     <div class="rhead">
       <h2 class="rtitle" id="result-title"></h2>
       <div class="rlinks"><span id="goHome"></span> · <span id="shareApp"></span> · <span id="contact"></span></div>
@@ -255,6 +283,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   <!-- 6. HISTORY -->
   <section class="screen" id="s-history">
+    <div class="app-header"><button class="back-btn" id="historyBack" onclick="goBack('history')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="hdr-title" id="history-hdr-title"></span><span class="hdr-right"></span></div>
     <div class="rhead">
       <h2 class="rtitle" id="history-title"></h2>
       <div class="rlinks"><span id="goHome2"></span> · <span id="shareApp2"></span></div>
@@ -263,6 +292,18 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     <div class="hacts"><span id="histExport"></span><span id="histImport"></span><span id="histClear"></span></div>
     <div id="historyList"></div>
   </section>
+
+  <!-- TAB BAR -->
+  <nav class="tab-bar" id="tabBar">
+    <div class="tb-item active" id="tab-home" onclick="switchTab('home')">
+      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M9 21V12h6v9"/></svg>
+      <span id="tab-home-label">홈</span>
+    </div>
+    <div class="tb-item" id="tab-history" onclick="switchTab('history')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      <span id="tab-history-label">기록</span>
+    </div>
+  </nav>
 
   <!-- BOTTOM BUTTON -->
   <div class="btn" id="bottom">
@@ -424,6 +465,14 @@ const T = {
     toast_import_fail: '기록 파일을 읽지 못했어요.',
     toast_link_copied: '앱 링크를 복사했어요',
     toast_copied: '복사했어요',
+    // tab bar
+    tab_home: '홈',
+    tab_history_tab: '기록',
+    // app headers
+    hdr_guide: '데이터 내보내기',
+    hdr_upload: '파일 올리기',
+    hdr_result: '분석 결과',
+    hdr_history: '지난 내역',
   },
   en: {
     page_title: 'Instagram Unfollow Finder · Safe Analysis',
@@ -564,6 +613,14 @@ const T = {
     toast_import_fail: 'Could not read history file.',
     toast_link_copied: 'App link copied',
     toast_copied: 'Copied',
+    // tab bar
+    tab_home: 'Home',
+    tab_history_tab: 'History',
+    // app headers
+    hdr_guide: 'Export Guide',
+    hdr_upload: 'Upload File',
+    hdr_result: 'Results',
+    hdr_history: 'History',
   }
 };
 
@@ -579,8 +636,7 @@ function applyLang(){
   // page title
   document.getElementById('pageTitle').textContent = L.page_title;
   document.documentElement.lang = window.lang;
-  // topbar
-  const tbt = document.getElementById('topbarTitle'); if(tbt) tbt.textContent = L.topbar_title;
+  // topbar (removed)
   // lang toggle active state
   document.getElementById('ltKO').classList.toggle('active', window.lang==='ko');
   document.getElementById('ltEN').classList.toggle('active', window.lang==='en');
@@ -646,6 +702,14 @@ function applyLang(){
   const he = document.getElementById('histExport'); if(he) he.textContent = L.link_export;
   const hi = document.getElementById('histImport'); if(hi) hi.textContent = L.link_import;
   const hc = document.getElementById('histClear'); if(hc) hc.textContent = L.link_clear;
+  // tab bar labels
+  const thl = document.getElementById('tab-home-label'); if(thl) thl.textContent = L.tab_home;
+  const tHistL = document.getElementById('tab-history-label'); if(tHistL) tHistL.textContent = L.tab_history_tab;
+  // app header titles
+  const ghdr = document.getElementById('guide-hdr-title'); if(ghdr) ghdr.textContent = L.hdr_guide;
+  const uhdr = document.getElementById('upload-hdr-title'); if(uhdr) uhdr.textContent = L.hdr_upload;
+  const rhdr = document.getElementById('result-hdr-title'); if(rhdr) rhdr.textContent = L.hdr_result;
+  const histHdr = document.getElementById('history-hdr-title'); if(histHdr) histHdr.textContent = L.hdr_history;
 }
 
 function toggleLang(){
@@ -663,10 +727,60 @@ const state = { followers:null, following:null, tsFollower:new Map(), tsFollowin
 const $ = s => document.querySelector(s);
 const screens = ['onboard','guide','upload','analyze','result','history'];
 
-function go(name){
-  screens.forEach(s => $('#s-'+s).classList.toggle('active', s===name));
+// 화면 히스토리 스택 (슬라이드 방향 결정용)
+const screenStack = [];
+
+function go(name, isBack){
+  const prev = screenStack[screenStack.length-1];
+  if(isBack){
+    screenStack.pop();
+  } else {
+    if(prev !== name) screenStack.push(name);
+  }
+  screens.forEach(s => {
+    const el = $('#s-'+s);
+    el.classList.remove('slide-back');
+    if(s===name){
+      el.classList.add('active');
+      if(isBack) { el.classList.add('slide-back'); }
+    } else {
+      el.classList.remove('active');
+    }
+  });
+  // 탭바 활성 탭 업데이트
+  const homeScreens = ['onboard','guide','upload','analyze','result'];
+  const isHomeTab = homeScreens.includes(name);
+  const tabHome = document.getElementById('tab-home');
+  const tabHist = document.getElementById('tab-history');
+  if(tabHome){ tabHome.classList.toggle('active', isHomeTab); }
+  if(tabHist){ tabHist.classList.toggle('active', name==='history'); }
   renderButton(name);
   window.scrollTo(0,0);
+}
+
+function goBack(currentScreen){
+  // 화면별 명시적 이전 화면 맵핑
+  const backMap = {
+    'guide': 'onboard',
+    'upload': 'guide',
+    'result': 'onboard',
+    'history': 'onboard',
+    'analyze': 'upload',
+  };
+  const prev = backMap[currentScreen] || screenStack[screenStack.length-2] || 'onboard';
+  go(prev, true);
+}
+
+function switchTab(tab){
+  if(tab==='home'){
+    go('onboard');
+    // 스택 초기화
+    screenStack.length = 0;
+    screenStack.push('onboard');
+  } else if(tab==='history'){
+    renderHistory();
+    go('history');
+  }
 }
 
 function renderButton(name){
@@ -678,9 +792,8 @@ function renderButton(name){
     row.appendChild(mk(T[window.lang].btn_history, openHistory, true));
     row.appendChild(mk(T[window.lang].btn_analyze, ()=> go(getHistory().length>0?'upload':'guide')));
   }
-  else if(name==='guide'){ row.appendChild(mk(T[window.lang].btn_back, ()=>go('onboard'), true)); row.appendChild(mk(T[window.lang].btn_go_upload, ()=>go('upload'))); }
+  else if(name==='guide'){ row.appendChild(mk(T[window.lang].btn_go_upload, ()=>go('upload'))); }
   else if(name==='upload'){
-    row.appendChild(mk('이전', ()=>go('guide'), true));
     const ready = !!(state.followers && state.followers.length && state.following && state.following.length);
     const b = mk(ready?T[window.lang].btn_analyze:T[window.lang].btn_need_file, runAnalyze); b.disabled=!ready; row.appendChild(b);
     note.textContent = ready ? T[window.lang].upload_secline : '';
@@ -1139,7 +1252,7 @@ function cmpTab(which){
 }
 
 /* ---------- wire up ---------- */
-$('#homeLogo').onclick = ()=>{ closeModal(); go('onboard'); };
+// homeLogo removed
 $('#goHome').onclick = goHome;
 $('#shareApp').onclick = shareApp;
 $('#contact').onclick = openContact;
@@ -1185,6 +1298,7 @@ $('#histClear').onclick = clearAllHistory;
 $('#histFile').onchange = e=>{ if(e.target.files[0]) importHistory(e.target.files[0]); };
 
 applyLang();
+screenStack.push('onboard');
 go('onboard');
 
 if('serviceWorker' in navigator){ window.addEventListener('load', ()=> navigator.serviceWorker.register('sw.js').catch(()=>{})); }
