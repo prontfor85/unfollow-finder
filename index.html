@@ -200,9 +200,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     </div>
     <div id="zipStatus"></div>
     <input class="search" id="acctInput" placeholder="분석할 계정 아이디 (여러 계정 구분용)" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin:4px 0 14px;">
-    <div class="or">또는 파일 직접 올리기</div>
-    <div class="manual" id="mFollower"><div class="l"><b>팔로워</b><span>followers_1.json (여러 개면 다 선택)</span></div><button class="pick">파일 선택</button></div>
-    <div class="manual" id="mFollowing"><div class="l"><b>팔로잉</b><span>following.json</span></div><button class="pick">파일 선택</button></div>
     <div class="note"><span>🔒</span><div>업로드한 파일은 <b>이 브라우저 안에서만</b> 읽고 분석합니다. 서버로 전송하거나 저장하지 않아요. 분석 결과는 새로고침하면 사라집니다.</div></div>
   </section>
 
@@ -271,8 +268,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 </div>
 
 <input type="file" id="fileZip" accept=".zip" class="hidden">
-<input type="file" id="fileFollower" accept=".json,.html" multiple class="hidden">
-<input type="file" id="fileFollowing" accept=".json,.html" class="hidden">
 
 <script>
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
@@ -406,7 +401,6 @@ async function handleZip(file){
     if(detected && $('#acctInput') && !$('#acctInput').value.trim()){ $('#acctInput').value = detected; }
     state.exportDate = dateFromZipName(file.name);
     $('#zipStatus').innerHTML = '<div class="note"><span>✅</span><div><b>'+escapeHtml(file.name)+'</b> 인식 완료 — 팔로워 '+state.followers.length+'명 · 팔로잉 '+state.following.length+'명'+(detected?' · 계정 @'+escapeHtml(detected):'')+'</div></div>';
-    markManual();
     renderButton('upload');
   }catch(err){
     $('#zipStatus').innerHTML = '<div class="note warn"><span>⚠️</span><div>'+err.message+'</div></div>';
@@ -440,12 +434,6 @@ function buildMap(entries){
 function setFollowers(entries){ state.tsFollower = buildMap(entries); state.followers = [...state.tsFollower.keys()]; }
 function setFollowing(entries){ state.tsFollowing = buildMap(entries); state.following = [...state.tsFollowing.keys()]; }
 
-function markManual(){
-  $('#mFollower').classList.toggle('ok', !!(state.followers && state.followers.length));
-  $('#mFollowing').classList.toggle('ok', !!(state.following && state.following.length));
-  if(state.followers && state.followers.length) $('#mFollower').querySelector('.pick').textContent = state.followers.length+'명 ✓';
-  if(state.following && state.following.length) $('#mFollowing').querySelector('.pick').textContent = state.following.length+'명 ✓';
-}
 
 /* ---------- analyze ---------- */
 function runAnalyze(){
@@ -625,9 +613,6 @@ function resetAll(){
   state.tsFollower=new Map(); state.tsFollowing=new Map();
   state.editMode=false; state.sort='rec'; state.removed=new Set(); state.compareMode=false; state.exportDate=null;
   $('#zipStatus').innerHTML=''; $('#search').value=''; if($('#acctInput')) $('#acctInput').value='';
-  $('#mFollower').classList.remove('ok'); $('#mFollowing').classList.remove('ok');
-  $('#mFollower').querySelector('.pick').textContent='파일 선택';
-  $('#mFollowing').querySelector('.pick').textContent='파일 선택';
   go('upload');
 }
 
@@ -753,17 +738,6 @@ $('#fileZip').onchange = e=>{ if(e.target.files[0]) handleZip(e.target.files[0])
 ['dragleave','drop'].forEach(ev=>$('#dropZip').addEventListener(ev,e=>{e.preventDefault();$('#dropZip').classList.remove('over');}));
 $('#dropZip').addEventListener('drop', e=>{ const f=e.dataTransfer.files[0]; if(f) handleZip(f); });
 
-$('#mFollower').onclick = ()=> $('#fileFollower').click();
-$('#mFollowing').onclick = ()=> $('#fileFollowing').click();
-$('#fileFollower').onchange = async e=>{
-  try{ state.exportDate=null; let all=[]; for(const f of e.target.files){ all=all.concat(await readDataFile(f)); }
-    setFollowers(all); markManual(); renderButton('upload');
-  }catch(err){ alert(err.message); }
-};
-$('#fileFollowing').onchange = async e=>{
-  try{ setFollowing(await readDataFile(e.target.files[0])); markManual(); renderButton('upload'); }
-  catch(err){ alert(err.message); }
-};
 document.querySelectorAll('.tab').forEach(t=> t.onclick = ()=>{
   state.tab = t.dataset.tab;
   document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active', x===t));
