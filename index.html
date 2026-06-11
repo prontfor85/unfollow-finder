@@ -660,7 +660,9 @@ function compareWith(idx, from){
   const newer = h[newerIdx];
   const back = (from==='list') ? "openCompareList()" : "closeModal()";
   const backLabel = (from==='list') ? '‹ 기록 목록' : '확인';
-  const li = arr => arr.length ? arr.slice(0,50).map(u=>'<a class="row-u" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>instagram.com/'+escapeHtml(u)+'</span></div><span class="chev" style="margin-left:auto;color:var(--sub);font-size:18px;">›</span></a>').join('') : '<div class="empty">없어요</div>';
+  const row = (u, sub) => '<a class="row-u" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>'+sub+'</span></div><span class="chev" style="margin-left:auto;color:var(--sub);font-size:18px;">›</span></a>';
+  const head = (color,text) => '<div style="display:flex;align-items:center;gap:7px;margin:18px 0 8px;"><span style="width:8px;height:8px;border-radius:50%;background:'+color+';"></span><span style="font-size:13px;font-weight:700;color:'+color+';">'+text+'</span></div>';
+  const listOf = (arr,sub) => arr.length ? arr.slice(0,80).map(u=>row(u,sub)).join('') : '<div class="empty">없어요</div>';
   if(newerIdx===idx){
     const st = snapStats(older);
     openModal('<h3>'+fmtDateTime(older.date)+'</h3>'+
@@ -675,10 +677,10 @@ function compareWith(idx, from){
   const lost = (older.listFollowers||[]).filter(u=>!newerF.has(u));   // 그 사이 나를 언팔한 사람
   const gained = (newer.listFollowers||[]).filter(u=>!olderF.has(u)); // 새로 생긴 팔로워
   openModal('<h3>'+fmtDate(older.date)+' 대비 변화</h3>'+
-    '<div class="sd">'+fmtDateTime(older.date)+' → '+fmtDateTime(newer.date)+'</div>'+
+    '<div class="sd">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+fmtDateTime(older.date)+' → '+fmtDateTime(newer.date)+'</div>'+
     '<div class="cmpbox"><div class="c minus"><b>'+lost.length+'</b><span>나를 언팔함</span></div><div class="c plus"><b>'+gained.length+'</b><span>새 팔로워</span></div></div>'+
-    '<div class="sd" style="color:var(--pink);font-weight:700;margin-bottom:6px">나를 언팔한 사람</div>'+li(lost)+
-    '<div class="sd" style="color:var(--green);font-weight:700;margin:14px 0 6px">새로 생긴 팔로워</div>'+li(gained)+
+    head('var(--pink)','나를 언팔한 사람')+ listOf(lost,'이전엔 나를 팔로우했어요')+
+    head('var(--green)','새로 생긴 팔로워')+ listOf(gained,'새로 나를 팔로우했어요')+
     '<button class="close" onclick="'+back+'">'+backLabel+'</button>');
 }
 
