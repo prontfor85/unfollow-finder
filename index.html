@@ -137,6 +137,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .rec2 .ic2{width:48px; height:48px; flex:none; border-radius:13px; background:var(--pink); display:flex; align-items:center; justify-content:center; font-size:22px;}
   .rec2 .m2{flex:1; min-width:0;}
   .rec2 .m2 b{font-size:14.5px;} .rec2 .m2 .s2{display:block; color:var(--sub); font-size:12px; margin-top:3px;} .rec2 .m2 .dt2{display:block; color:var(--sub); opacity:.7; font-size:11px; margin-top:3px;}
+  .acct2{display:inline-block; font-size:11px; font-weight:700; color:var(--pink); background:rgba(255,45,111,.14); padding:2px 8px; border-radius:999px; margin-top:5px;}
   .rec2 .del2{flex:none; font-size:12.5px; font-weight:700; color:var(--pink); background:rgba(255,45,111,.14); border:none; padding:9px 14px; border-radius:9px; cursor:pointer;}
   .rec2 .chev{flex:none; color:var(--sub); font-size:17px;}
   /* analyze choice cards */
@@ -191,6 +192,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <span>instagram-아이디-날짜.zip · 클릭 또는 끌어다 놓기</span>
     </div>
     <div id="zipStatus"></div>
+    <input class="search" id="acctInput" placeholder="분석할 계정 아이디 (여러 계정 구분용)" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin:4px 0 14px;">
     <div class="or">또는 파일 직접 올리기</div>
     <div class="manual" id="mFollower"><div class="l"><b>팔로워</b><span>followers_1.json (여러 개면 다 선택)</span></div><button class="pick">파일 선택</button></div>
     <div class="manual" id="mFollowing"><div class="l"><b>팔로잉</b><span>following.json</span></div><button class="pick">파일 선택</button></div>
@@ -393,7 +395,9 @@ async function handleZip(file){
     }
     setFollowers(followers);
     setFollowing(following);
-    $('#zipStatus').innerHTML = '<div class="note"><span>✅</span><div><b>'+escapeHtml(file.name)+'</b> 인식 완료 — 팔로워 '+state.followers.length+'명 · 팔로잉 '+state.following.length+'명</div></div>';
+    const detected = accountFromZipName(file.name);
+    if(detected && $('#acctInput') && !$('#acctInput').value.trim()){ $('#acctInput').value = detected; }
+    $('#zipStatus').innerHTML = '<div class="note"><span>✅</span><div><b>'+escapeHtml(file.name)+'</b> 인식 완료 — 팔로워 '+state.followers.length+'명 · 팔로잉 '+state.following.length+'명'+(detected?' · 계정 @'+escapeHtml(detected):'')+'</div></div>';
     markManual();
     renderButton('upload');
   }catch(err){
@@ -402,6 +406,12 @@ async function handleZip(file){
 }
 
 function dedupe(a){ return Array.from(new Set(a.filter(Boolean))); }
+
+/* ---------- account identity (2+ accounts support) ---------- */
+function normAcct(s){ return (s||'').trim().toLowerCase().replace(/^@/,'').replace(/\s+/g,''); }
+function accountFromZipName(name){ const m=(name||'').toLowerCase().match(/instagram-([a-z0-9._]+)-\d/); return m?m[1]:''; }
+function currentAccount(){ const el=document.querySelector('#acctInput'); return normAcct(el?el.value:''); }
+function acctLabel(a){ return a ? '@'+a : '계정 미상'; }
 
 // entries: [{u, ts}] -> dedup by username, keep first non-null timestamp
 function buildMap(entries){
@@ -434,9 +444,11 @@ function runAnalyze(){
     showResult();
     if(state.compareMode){
       state.compareMode = false;
-      const h = getHistory(); // h[0] = 방금 분석, h[1] = 직전 기록
-      if(h.length >= 2){ compareWith(1, 'auto'); }
-      else { openModal('<h3>비교할 지난 기록이 없어요</h3><div class="sd">이번 분석 결과를 이 기기에 저장했어요. 다음에 다시 분석하면 그 사이 변화(나를 언팔한 사람·새 팔로워)를 자동으로 비교해 드려요.</div><button class="close" onclick="closeModal()">확인</button>'); }
+      const h = getHistory(); const acct = h[0] ? (h[0].account||null) : null;
+      let prev = -1; // 같은 계정의 직전 기록 찾기
+      for(let i=1;i<h.length;i++){ if((h[i].account||null)===acct){ prev=i; break; } }
+      if(prev>=0){ compareWith(prev, 'auto'); }
+      else { openModal('<h3>비교할 지난 기록이 없어요</h3><div class="sd">'+(acct?'@'+escapeHtml(acct)+' 계정의 ':'')+'이전 기록이 아직 없어요. 이번 결과를 저장해 뒀으니, 다음에 같은 계정으로 다시 분석하면 그 사이 변화를 자동으로 비교해 드려요.</div><button class="close" onclick="closeModal()">확인</button>'); }
     }
   }, 1100);
 }
@@ -446,7 +458,7 @@ let memHistory = [];
 function getHistory(){ try{ const v=localStorage.getItem('iuf_history'); if(v!=null) return JSON.parse(v); }catch(e){} return memHistory; }
 function setHistory(h){ try{ localStorage.setItem('iuf_history', JSON.stringify(h.slice(0,30))); }catch(e){ memHistory = h.slice(0,30); } }
 function saveSnapshot(){
-  const snap = { date: Date.now(),
+  const snap = { date: Date.now(), account: currentAccount() || null,
                  listFollowers: state.followers.slice(), listFollowing: state.following.slice(),
                  tsFollower: Object.fromEntries(state.tsFollower), tsFollowing: Object.fromEntries(state.tsFollowing) };
   const h = getHistory(); h.unshift(snap); setHistory(h);
@@ -501,7 +513,8 @@ function renderHistory(){
       '<div class="ic2">📋</div>'+
       '<div class="m2"><b>팔로잉 '+st.following+'명 · 팔로워 '+st.followers+'명</b>'+
       '<span class="s2">언팔 '+st.unfollow+'명 · 맞팔 '+st.mutual+'명 · 팬 '+st.fans+'명</span>'+
-      '<span class="dt2">'+fmtDateTime(s.date)+'</span></div>'+
+      '<span class="dt2">'+fmtDateTime(s.date)+'</span>'+
+      '<span class="acct2">'+escapeHtml(acctLabel(s.account))+'</span></div>'+
       '<button class="del2" onclick="event.stopPropagation();confirmDelete('+i+')">삭제</button>'+
       '<span class="chev">›</span></div>';
   }).join('');
@@ -594,7 +607,7 @@ function resetAll(){
   state.followers=null; state.following=null; state.result=null;
   state.tsFollower=new Map(); state.tsFollowing=new Map();
   state.editMode=false; state.sort='rec'; state.removed=new Set(); state.compareMode=false;
-  $('#zipStatus').innerHTML=''; $('#search').value='';
+  $('#zipStatus').innerHTML=''; $('#search').value=''; if($('#acctInput')) $('#acctInput').value='';
   $('#mFollower').classList.remove('ok'); $('#mFollowing').classList.remove('ok');
   $('#mFollower').querySelector('.pick').textContent='파일 선택';
   $('#mFollowing').querySelector('.pick').textContent='파일 선택';
@@ -627,27 +640,33 @@ function openContact(){
 
 function openCompareList(){
   const h = getHistory();
-  const past = h.slice(1); // 0 = 방금 분석한 현재 기록
+  const acct = h[0] ? (h[0].account||null) : null;
+  const past = h.map((s,i)=>({s,i})).filter(x => x.i>0 && (x.s.account||null)===acct); // 같은 계정의 이전 기록만
   let body;
   if(!past.length){
-    body = '<div class="sd">아직 비교할 지난 기록이 없어요. 다음에 다시 분석하면 이 기기에 저장된 지난 기록과 변화를 비교해 드려요.</div>';
+    body = '<div class="sd">'+(acct?'@'+escapeHtml(acct)+' 계정의 ':'')+'비교할 지난 기록이 아직 없어요. 다음에 같은 계정으로 다시 분석하면 변화를 비교해 드려요.</div>';
   } else {
-    body = past.map((s,i)=>{ const st=snapStats(s); return '<div class="rec" onclick="compareWith('+(i+1)+",'list')\"><b>"+fmtDate(s.date)+'</b><span>팔로워 '+st.followers+'명 · 언팔 '+st.unfollow+'명</span></div>'; }).join('');
+    body = past.map(x=>{ const st=snapStats(x.s); return '<div class="rec" onclick="compareWith('+x.i+",'list')\"><b>"+fmtDate(x.s.date)+'</b><span>팔로워 '+st.followers+'명 · 언팔 '+st.unfollow+'명</span></div>'; }).join('');
   }
-  openModal('<h3>비교할 지난 기록</h3><div class="sd">이 기록과 이번 분석을 비교해서 변화를 찾아드려요.</div>'+body+'<button class="close" onclick="closeModal()">닫기</button>');
+  openModal('<h3>비교할 지난 기록</h3><div class="sd">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+'이 기록과 이번 분석을 비교해서 변화를 찾아드려요.</div>'+body+'<button class="close" onclick="closeModal()">닫기</button>');
 }
 
-// Compare snapshot h[idx] (older) against h[0] (latest). from='list' (result modal) | 'screen' (history screen)
+// Compare snapshot h[idx] (older) against the most recent record of the SAME account.
 function compareWith(idx, from){
-  const h = getHistory(); const older = h[idx]; const newer = h[0]; if(!older || !newer) return;
+  const h = getHistory(); const older = h[idx]; if(!older) return;
+  const acct = older.account||null;
+  let newerIdx = -1;
+  for(let i=0;i<h.length;i++){ if((h[i].account||null)===acct){ newerIdx=i; break; } }
+  const newer = h[newerIdx];
   const back = (from==='list') ? "openCompareList()" : "closeModal()";
   const backLabel = (from==='list') ? '‹ 기록 목록' : '확인';
   const li = arr => arr.length ? arr.slice(0,50).map(u=>'<a class="row-u" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>instagram.com/'+escapeHtml(u)+'</span></div><span class="chev" style="margin-left:auto;color:var(--sub);font-size:18px;">›</span></a>').join('') : '<div class="empty">없어요</div>';
-  if(idx===0){
+  if(newerIdx===idx){
     const st = snapStats(older);
     openModal('<h3>'+fmtDateTime(older.date)+'</h3>'+
+      (acct?'<div class="sd">'+escapeHtml(acctLabel(acct))+'</div>':'')+
       '<div class="cmpbox"><div class="c"><b>'+st.mutual+'</b><span>맞팔</span></div><div class="c minus"><b>'+st.unfollow+'</b><span>언팔</span></div><div class="c plus"><b>'+st.fans+'</b><span>팬</span></div></div>'+
-      '<div class="sd">가장 최근 기록이에요. 아래에서 더 이전 기록을 고르면 그 사이 변화를 비교해 드려요.</div>'+
+      '<div class="sd">이 계정의 가장 최근 기록이에요. 더 이전 기록을 고르면 그 사이 변화를 비교해 드려요.</div>'+
       '<button class="close" onclick="'+back+'">'+backLabel+'</button>');
     return;
   }
