@@ -1892,7 +1892,7 @@ async function handleZip(file){
     const detected = accountFromZipName(file.name);
     state.account = detected || null;
     state.exportDate = dateFromZipName(file.name);
-    $('#zipStatus').innerHTML = '<div class="note"><span>✅</span><div><b>'+escapeHtml(file.name)+'</b> '+T[window.lang].zip_ok+' — '+T[window.lang].followers+' '+state.followers.length+T[window.lang].count+' · '+T[window.lang].following+' '+state.following.length+T[window.lang].count+(detected?' · '+T[window.lang].account+' @'+escapeHtml(detected):'')+'</div></div>';
+    $('#zipStatus').innerHTML = '<div class="note"><span>✅</span><div><b>'+escapeHtml(file.name)+'</b> '+T[window.lang].zip_ok+(detected?' · '+T[window.lang].account+' @'+escapeHtml(detected):'')+'</div></div>';
     renderButton('upload');
   }catch(err){
     $('#zipStatus').innerHTML = '<div class="note warn"><span>⚠️</span><div>'+err.message+'</div></div>';
@@ -1930,7 +1930,7 @@ function setFollowing(entries){ state.tsFollowing = buildMap(entries); state.fol
 /* ---------- analyze ---------- */
 function runAnalyze(){
   go('analyze');
-  $('#analyzeMeta').textContent = T[window.lang].followers+' '+state.followers.length+T[window.lang].count+' · '+T[window.lang].following+' '+state.following.length+T[window.lang].count;
+  $('#analyzeMeta').textContent = '';
   setTimeout(()=>{
     const F = new Set(state.followers);   // people who follow me
     const G = new Set(state.following);   // people I follow
