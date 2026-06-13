@@ -322,6 +322,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <div>
         <div style="font-size:12px; color:var(--sub); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;" id="settings-section-support"></div>
         <div style="background:var(--card); border-radius:16px; overflow:hidden;">
+          <div onclick="openPrivacy()" style="display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer;border-bottom:1px solid var(--line);">
+            <span id="settings-privacy-label" style="font-size:15px;color:var(--txt);"></span>
+            <span style="color:var(--sub);">›</span>
+          </div>
           <div onclick="openContact()" style="display:flex; align-items:center; justify-content:space-between; padding:16px; cursor:pointer;">
             <span id="settings-contact-label" style="font-size:15px; color:var(--txt);"></span>
             <span style="color:var(--sub);">›</span>
@@ -370,6 +374,25 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
     <div style="font-size:12px;color:var(--sub);line-height:1.6;" id="paywall-note"></div>
     <button onclick="restorePurchase()" style="background:none;border:none;color:var(--sub);font-size:13px;cursor:pointer;margin-top:8px;text-decoration:underline;" id="paywall-restore"></button>
+  </div>
+</section>
+
+  <section class="screen" id="s-privacy">
+  <div class="app-header">
+    <button class="back-btn" onclick="goBack('privacy')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <span class="hdr-title" id="privacy-hdr-title"></span>
+    <span class="hdr-right"></span>
+  </div>
+  <div style="padding:0 20px 40px;">
+    <div style="display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;">
+      <button onclick="setPrivacyLang('ko')" id="ptab-ko" style="flex-shrink:0;padding:6px 14px;border-radius:999px;border:1px solid var(--pink);background:var(--pink);color:#fff;font-size:12px;font-weight:600;cursor:pointer;">한국어</button>
+      <button onclick="setPrivacyLang('en')" id="ptab-en" style="flex-shrink:0;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--sub);font-size:12px;font-weight:600;cursor:pointer;">English</button>
+      <button onclick="setPrivacyLang('ja')" id="ptab-ja" style="flex-shrink:0;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--sub);font-size:12px;font-weight:600;cursor:pointer;">日本語</button>
+      <button onclick="setPrivacyLang('es')" id="ptab-es" style="flex-shrink:0;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--sub);font-size:12px;font-weight:600;cursor:pointer;">Español</button>
+    </div>
+    <div id="privacy-content" style="font-size:13.5px;color:var(--sub);line-height:1.8;"></div>
   </div>
 </section>
 
@@ -563,6 +586,8 @@ const T = {
     settings_lang_section: '언어',
     settings_support_section: '지원',
     settings_contact: '문의하기',
+    privacy_label: '개인정보처리방침',
+    hdr_privacy: '개인정보처리방침',
     // paywall
     paywall_hdr: '프리미엄',
     paywall_title: '전체 기능을 잠금 해제하세요',
@@ -738,6 +763,8 @@ const T = {
     settings_lang_section: 'Language',
     settings_support_section: 'Support',
     settings_contact: 'Contact us',
+    privacy_label: 'Privacy Policy',
+    hdr_privacy: 'Privacy Policy',
     // paywall
     paywall_hdr: 'Premium',
     paywall_title: 'Unlock Full Access',
@@ -913,6 +940,8 @@ const T = {
     settings_lang_section: '言語',
     settings_support_section: 'サポート',
     settings_contact: 'お問い合わせ',
+    privacy_label: 'プライバシーポリシー',
+    hdr_privacy: 'プライバシーポリシー',
     // paywall
     paywall_hdr: 'プレミアム',
     paywall_title: 'フル機能を解除する',
@@ -1088,6 +1117,8 @@ const T = {
     settings_lang_section: 'Idioma',
     settings_support_section: 'Soporte',
     settings_contact: 'Contacto',
+    privacy_label: 'Política de Privacidad',
+    hdr_privacy: 'Política de Privacidad',
     // paywall
     paywall_hdr: 'Premium',
     paywall_title: 'Desbloquea el acceso completo',
@@ -1112,6 +1143,41 @@ const T = {
   }
 
 };
+
+/* =========================================================
+   Privacy Policy content
+   ========================================================= */
+const PRIVACY = {
+  ko: '<h3 style="font-size:16px;font-weight:700;color:var(--txt);margin:0 0 8px;">개인정보처리방침</h3><p style="margin:0 0 6px;font-size:11px;color:var(--sub);">최종 업데이트: 2025년 1월</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">1. 수집하는 정보</h4><p>이 앱은 어떠한 개인정보도 수집하지 않습니다. 인스타그램 계정 정보, 이메일, 이름, 위치 정보 등을 수집하거나 저장하지 않습니다.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">2. 데이터 처리 방식</h4><p>사용자가 업로드한 인스타그램 내보내기 파일은 <strong style="color:var(--txt);">이 기기의 브라우저 안에서만</strong> 처리됩니다. 파일 내용은 어떠한 서버로도 전송되지 않으며, 외부로 공유되지 않습니다.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">3. 로컬 저장소 사용</h4><p>분석 기록(날짜, 언팔 수 등 통계)은 사용자 기기의 로컬 저장소(localStorage)에만 저장됩니다. 이 데이터는 기기 밖으로 전송되지 않으며, 사용자가 직접 삭제할 수 있습니다.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">4. 제3자 공유</h4><p>사용자 데이터를 제3자와 공유하거나 판매하지 않습니다.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">5. 광고 및 추적</h4><p>이 앱은 광고를 표시하지 않으며, 사용자 행동을 추적하지 않습니다.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">6. GDPR (유럽 사용자)</h4><p>이 앱은 개인정보를 수집하거나 처리하지 않으므로 GDPR의 데이터 컨트롤러 의무가 적용되지 않습니다. 모든 데이터는 사용자 기기 내에서만 처리됩니다.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">7. CCPA (캘리포니아 사용자)</h4><p>이 앱은 개인정보를 수집, 판매 또는 공유하지 않습니다. 캘리포니아 소비자 프라이버시법(CCPA)에 따른 추가 권리 행사가 필요하지 않습니다.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">8. 아동 개인정보 보호</h4><p>이 앱은 13세 미만 아동의 개인정보를 의도적으로 수집하지 않습니다.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">9. 문의</h4><p>개인정보처리방침에 관한 문의사항이 있으시면 아래로 연락해 주세요.<br><strong style="color:var(--txt);">prontfor@gmail.com</strong></p>',
+  en: '<h3 style="font-size:16px;font-weight:700;color:var(--txt);margin:0 0 8px;">Privacy Policy</h3><p style="margin:0 0 6px;font-size:11px;color:var(--sub);">Last updated: January 2025</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">1. Information We Collect</h4><p>This app does not collect any personal information. We do not collect or store your Instagram credentials, email address, name, or location.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">2. How Data Is Processed</h4><p>The Instagram export file you upload is processed <strong style="color:var(--txt);">entirely within your browser on your device</strong>. The file contents are never sent to any server or shared externally.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">3. Local Storage</h4><p>Analysis history (date, unfollow counts, etc.) is stored only in your device\'s local storage (localStorage). This data never leaves your device and can be deleted by you at any time.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">4. Third-Party Sharing</h4><p>We do not share or sell your data to third parties.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">5. Advertising &amp; Tracking</h4><p>This app displays no ads and does not track user behavior.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">6. GDPR (EU Users)</h4><p>As this app does not collect or process personal data, GDPR data controller obligations do not apply. All data is processed locally on your device.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">7. CCPA (California Users)</h4><p>This app does not collect, sell, or share personal information. No additional CCPA rights need to be exercised.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">8. Children\'s Privacy</h4><p>This app does not knowingly collect personal information from children under 13.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">9. Contact</h4><p>If you have any questions about this Privacy Policy, please contact us at:<br><strong style="color:var(--txt);">prontfor@gmail.com</strong></p>',
+  ja: '<h3 style="font-size:16px;font-weight:700;color:var(--txt);margin:0 0 8px;">プライバシーポリシー</h3><p style="margin:0 0 6px;font-size:11px;color:var(--sub);">最終更新: 2025年1月</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">1. 収集する情報</h4><p>このアプリは個人情報を一切収集しません。Instagramのアカウント情報、メールアドレス、氏名、位置情報などを収集・保存しません。</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">2. データ処理方法</h4><p>アップロードされたInstagramのエクスポートファイルは、<strong style="color:var(--txt);">お使いのデバイスのブラウザ内のみ</strong>で処理されます。ファイルの内容はいかなるサーバーにも送信されず、外部と共有されることもありません。</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">3. ローカルストレージの使用</h4><p>分析履歴（日付、アンフォロー数などの統計）はデバイスのローカルストレージにのみ保存されます。このデータはデバイス外に送信されず、いつでも削除できます。</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">4. 第三者への提供</h4><p>ユーザーデータを第三者と共有・販売することはありません。</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">5. 広告とトラッキング</h4><p>このアプリは広告を表示せず、ユーザーの行動を追跡しません。</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">6. GDPR（EU在住ユーザー）</h4><p>このアプリは個人データを収集・処理しないため、GDPRのデータ管理者義務は適用されません。すべてのデータはデバイス内でローカルに処理されます。</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">7. CCPA（カリフォルニア在住ユーザー）</h4><p>このアプリは個人情報を収集・販売・共有しません。CCPAに基づく追加の権利行使は不要です。</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">8. 児童のプライバシー</h4><p>このアプリは13歳未満の児童から意図的に個人情報を収集しません。</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">9. お問い合わせ</h4><p>プライバシーポリシーに関するご質問は下記までご連絡ください。<br><strong style="color:var(--txt);">prontfor@gmail.com</strong></p>',
+  es: '<h3 style="font-size:16px;font-weight:700;color:var(--txt);margin:0 0 8px;">Política de Privacidad</h3><p style="margin:0 0 6px;font-size:11px;color:var(--sub);">Última actualización: enero de 2025</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">1. Información que recopilamos</h4><p>Esta aplicación no recopila ninguna información personal. No recopilamos ni almacenamos tus credenciales de Instagram, dirección de correo, nombre ni ubicación.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">2. Cómo se procesan los datos</h4><p>El archivo de exportación de Instagram que subes se procesa <strong style="color:var(--txt);">completamente dentro de tu navegador en tu dispositivo</strong>. El contenido del archivo nunca se envía a ningún servidor ni se comparte externamente.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">3. Almacenamiento local</h4><p>El historial de análisis (fecha, conteos de unfollow, etc.) se almacena solo en el almacenamiento local de tu dispositivo (localStorage). Estos datos nunca salen de tu dispositivo y puedes eliminarlos en cualquier momento.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">4. Compartir con terceros</h4><p>No compartimos ni vendemos tus datos a terceros.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">5. Publicidad y seguimiento</h4><p>Esta aplicación no muestra anuncios ni rastrea el comportamiento del usuario.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">6. GDPR (Usuarios de la UE)</h4><p>Como esta aplicación no recopila ni procesa datos personales, no se aplican las obligaciones del controlador de datos del GDPR. Todos los datos se procesan localmente en tu dispositivo.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">7. CCPA (Usuarios de California)</h4><p>Esta aplicación no recopila, vende ni comparte información personal. No es necesario ejercer derechos adicionales bajo la CCPA.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">8. Privacidad de menores</h4><p>Esta aplicación no recopila intencionalmente información personal de menores de 13 años.</p><h4 style="font-size:14px;font-weight:700;color:var(--txt);margin:20px 0 8px;">9. Contacto</h4><p>Si tienes preguntas sobre esta Política de Privacidad, contáctanos en:<br><strong style="color:var(--txt);">prontfor@gmail.com</strong></p>'
+};
+
+let currentPrivacyLang = 'ko';
+function setPrivacyLang(lang) {
+  currentPrivacyLang = lang;
+  var content = document.getElementById('privacy-content');
+  if(content) content.innerHTML = PRIVACY[lang] || PRIVACY['en'];
+  ['ko','en','ja','es'].forEach(function(l) {
+    var btn = document.getElementById('ptab-'+l);
+    if(!btn) return;
+    if(l === lang) {
+      btn.style.background = 'var(--pink)';
+      btn.style.borderColor = 'var(--pink)';
+      btn.style.color = '#fff';
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.borderColor = 'var(--line)';
+      btn.style.color = 'var(--sub)';
+    }
+  });
+}
+
+function openPrivacy() {
+  setPrivacyLang(window.lang || 'ko');
+  go('privacy');
+}
 
 /* premium helpers */
 function isPremium(){ return localStorage.getItem('iuf_premium') === 'true'; }
@@ -1251,6 +1317,9 @@ function applyLang(){
   const pwBtn = document.getElementById('paywall-btn'); if(pwBtn) pwBtn.textContent = L.paywall_btn;
   const pwNote = document.getElementById('paywall-note'); if(pwNote) pwNote.textContent = L.paywall_note;
   const pwRestore = document.getElementById('paywall-restore'); if(pwRestore) pwRestore.textContent = L.paywall_restore;
+  // privacy screen
+  const privHdr = document.getElementById('privacy-hdr-title'); if(privHdr) privHdr.textContent = L.hdr_privacy;
+  const privLabel = document.getElementById('settings-privacy-label'); if(privLabel) privLabel.textContent = L.privacy_label;
 }
 
 function toggleLang(){
@@ -1276,7 +1345,7 @@ function setLang(l) {
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
                 result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null };
 const $ = s => document.querySelector(s);
-const screens = ['onboard','guide','upload','analyze','result','history','settings','paywall'];
+const screens = ['onboard','guide','upload','analyze','result','history','settings','paywall','privacy'];
 
 // 화면 히스토리 스택 (슬라이드 방향 결정용)
 const screenStack = [];
@@ -1317,6 +1386,7 @@ function goBack(currentScreen){
     'result': 'onboard',
     'history': 'onboard',
     'analyze': 'upload',
+    'privacy': 'settings',
   };
   const prev = backMap[currentScreen] || screenStack[screenStack.length-2] || 'onboard';
   go(prev, true);
