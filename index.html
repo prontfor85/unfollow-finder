@@ -2227,9 +2227,9 @@ function cmpTab(which){
 
 /* ---------- wire up ---------- */
 // homeLogo removed
-$('#goHome').onclick = goHome;
-$('#shareApp').onclick = shareApp;
-$('#contact').onclick = openContact;
+const goHomeEl = $('#goHome'); if(goHomeEl) goHomeEl.onclick = goHome;
+const shareAppEl = $('#shareApp'); if(shareAppEl) shareAppEl.onclick = shareApp;
+const contactEl = $('#contact'); if(contactEl) contactEl.onclick = openContact;
 $('#compareBtn').onclick = ()=>{ if(!isPremium()){ showPaywall(); return; } openCompareList(); };
 const goHome2El = $('#goHome2'); if(goHome2El) goHome2El.onclick = ()=>{ closeModal(); go('onboard'); };
 $('#overlay').onclick = e=>{ if(e.target.id==='overlay') closeModal(); };
