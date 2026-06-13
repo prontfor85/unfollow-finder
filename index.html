@@ -54,6 +54,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .step-img-wrap{margin-top:12px; border-radius:12px; overflow:hidden;}
   .step-img{width:100%; border-radius:12px; display:block;}
   .step-img-ph{background:var(--card2); border:1px dashed var(--line); border-radius:12px; padding:24px; text-align:center; font-size:13px; color:var(--sub);}
+  .guide-slide { min-width:100%; padding:0 20px 20px; box-sizing:border-box; }
+  #guide-slides { width:100%; }
   .step .tag{display:inline-block; background:rgba(3,199,90,.18); color:var(--pink); font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; margin-bottom:8px;}
   .step b{font-size:15px; display:block; margin-bottom:5px;}
   .step span{color:var(--sub); font-size:13px; line-height:1.55;}
@@ -217,15 +219,72 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   <!-- 2. GUIDE -->
   <section class="screen" id="s-guide">
-    <div class="app-header"><button class="back-btn" id="guideBack" onclick="goBack('guide')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="hdr-title" id="guide-hdr-title"></span><span class="hdr-right"></span></div>
-    <h2 class="title" id="guide-title"></h2>
-    <p class="lead" id="guide-lead"></p>
-    <div class="step"><div class="tag">STEP 1</div><b id="step1-title"></b><span id="step1-desc"></span><div class="step-img-wrap"><img id="step1-img" class="step-img hidden" alt="step1"/><div id="step1-ph" class="step-img-ph">📸 이미지 준비 중</div></div></div>
-    <div class="step"><div class="tag">STEP 2</div><b id="step2-title"></b><span id="step2-desc"></span><div class="step-img-wrap"><img id="step2-img" class="step-img hidden" alt="step2"/><div id="step2-ph" class="step-img-ph">📸 이미지 준비 중</div></div></div>
-    <div class="step"><div class="tag">STEP 3</div><b id="step3-title"></b><span id="step3-desc"></span><div class="step-img-wrap"><img id="step3-img" class="step-img hidden" alt="step3"/><div id="step3-ph" class="step-img-ph">📸 이미지 준비 중</div></div></div>
-    <div class="step"><div class="tag">STEP 4</div><b id="step4-title"></b><span id="step4-desc"></span><div class="step-img-wrap"><img id="step4-img" class="step-img hidden" alt="step4"/><div id="step4-ph" class="step-img-ph">📸 이미지 준비 중</div></div></div>
-    <div class="step"><div class="tag">STEP 5</div><b id="step5-title"></b><span id="step5-desc"></span><div class="step-img-wrap"><img id="step5-img" class="step-img hidden" alt="step5"/><div id="step5-ph" class="step-img-ph">📸 이미지 준비 중</div></div></div>
-    <div class="note warn"><span>⚠️</span><div id="guide-warn"></div></div>
+    <div class="app-header">
+      <button class="back-btn" id="guideBack" onclick="goBack('guide')">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="hdr-title" id="guide-hdr-title"></span>
+      <span class="hdr-right"></span>
+    </div>
+
+    <!-- 도트 인디케이터 -->
+    <div style="display:flex;justify-content:center;gap:6px;margin-bottom:20px;" id="guide-dots">
+      <div style="width:20px;height:4px;background:var(--pink);border-radius:2px;transition:.2s;" id="gdot-0"></div>
+      <div style="width:6px;height:4px;background:var(--line);border-radius:2px;transition:.2s;" id="gdot-1"></div>
+      <div style="width:6px;height:4px;background:var(--line);border-radius:2px;transition:.2s;" id="gdot-2"></div>
+      <div style="width:6px;height:4px;background:var(--line);border-radius:2px;transition:.2s;" id="gdot-3"></div>
+      <div style="width:6px;height:4px;background:var(--line);border-radius:2px;transition:.2s;" id="gdot-4"></div>
+    </div>
+
+    <!-- 슬라이드 컨테이너 -->
+    <div style="flex:1;overflow:hidden;position:relative;" id="guide-slide-wrap">
+      <div style="display:flex;transition:transform .3s ease;" id="guide-slides">
+        <!-- STEP 1 -->
+        <div class="guide-slide">
+          <div class="tag" id="gtag-1"></div>
+          <b id="step1-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
+          <span id="step1-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
+          <div class="step-img-wrap"><img id="step1-img" class="step-img hidden" alt="step1"/><div id="step1-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
+        </div>
+        <!-- STEP 2 -->
+        <div class="guide-slide">
+          <div class="tag" id="gtag-2"></div>
+          <b id="step2-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
+          <span id="step2-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
+          <div class="step-img-wrap"><img id="step2-img" class="step-img hidden" alt="step2"/><div id="step2-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
+        </div>
+        <!-- STEP 3 -->
+        <div class="guide-slide">
+          <div class="tag" id="gtag-3"></div>
+          <b id="step3-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
+          <span id="step3-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
+          <div class="step-img-wrap"><img id="step3-img" class="step-img hidden" alt="step3"/><div id="step3-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
+        </div>
+        <!-- STEP 4 -->
+        <div class="guide-slide">
+          <div class="tag" id="gtag-4"></div>
+          <b id="step4-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
+          <span id="step4-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
+          <div class="step-img-wrap"><img id="step4-img" class="step-img hidden" alt="step4"/><div id="step4-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
+        </div>
+        <!-- STEP 5 -->
+        <div class="guide-slide">
+          <div class="tag" id="gtag-5"></div>
+          <b id="step5-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
+          <span id="step5-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
+          <div class="step-img-wrap"><img id="step5-img" class="step-img hidden" alt="step5"/><div id="step5-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
+          <div class="note warn" style="margin-top:16px;"><span>⚠️</span><div id="guide-warn"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 하단 버튼 -->
+    <div class="btn">
+      <div style="display:flex;gap:10px;">
+        <button id="guide-prev-btn" onclick="guidePrev()" class="ghost" style="display:none;"></button>
+        <button id="guide-next-btn" onclick="guideNext()"></button>
+      </div>
+    </div>
   </section>
 
   <!-- 3. UPLOAD -->
@@ -564,6 +623,8 @@ const T = {
     btn_analyze: '분석하기',
     btn_back: '이전',
     btn_go_upload: '파일 올리러 가기',
+    btn_prev: '이전',
+    btn_next_step: '다음',
     btn_need_file: '파일이 필요해요',
     btn_reanalyze: '다시 분석하기',
     btn_edit: '편집',
@@ -756,6 +817,8 @@ const T = {
     btn_analyze: 'Analyze',
     btn_back: 'Back',
     btn_go_upload: 'Upload file',
+    btn_prev: 'Back',
+    btn_next_step: 'Next',
     btn_need_file: 'File needed',
     btn_reanalyze: 'Analyze again',
     btn_edit: 'Edit',
@@ -948,6 +1011,8 @@ const T = {
     btn_analyze: '分析する',
     btn_back: '戻る',
     btn_go_upload: '次へ',
+    btn_prev: '戻る',
+    btn_next_step: '次へ',
     btn_need_file: 'ファイルが必要です',
     btn_reanalyze: '再分析する',
     btn_edit: '編集',
@@ -1140,6 +1205,8 @@ const T = {
     btn_analyze: 'Analizar',
     btn_back: 'Volver',
     btn_go_upload: 'Siguiente',
+    btn_prev: 'Anterior',
+    btn_next_step: 'Siguiente',
     btn_need_file: 'Archivo requerido',
     btn_reanalyze: 'Analizar de nuevo',
     btn_edit: 'Editar',
@@ -1547,8 +1614,55 @@ function go(name, isBack){
   const tabHist = document.getElementById('tab-history');
   if(tabHome){ tabHome.classList.toggle('active', isHomeTab); }
   if(tabHist){ tabHist.classList.toggle('active', name==='history'); }
+  if(name==='guide'){ guideStep=0; setTimeout(guideUpdateView, 50); }
   renderButton(name);
   window.scrollTo(0,0);
+}
+
+let guideStep = 0;
+
+function guideUpdateView() {
+  const slides = document.getElementById('guide-slides');
+  const wrap = document.getElementById('guide-slide-wrap');
+  if(slides && wrap) slides.style.transform = 'translateX(-' + (guideStep * 100) + '%)';
+
+  // 도트 업데이트
+  for(let i=0;i<5;i++){
+    const dot = document.getElementById('gdot-'+i);
+    if(!dot) continue;
+    dot.style.width = i===guideStep ? '20px' : '6px';
+    dot.style.background = i===guideStep ? 'var(--pink)' : 'var(--line)';
+  }
+
+  // STEP 태그 업데이트
+  for(let i=1;i<=5;i++){
+    const tag = document.getElementById('gtag-'+i);
+    if(tag) tag.textContent = 'STEP ' + i;
+  }
+
+  // 버튼 업데이트
+  const L = T[window.lang];
+  const prevBtn = document.getElementById('guide-prev-btn');
+  const nextBtn = document.getElementById('guide-next-btn');
+  if(prevBtn) prevBtn.style.display = guideStep > 0 ? '' : 'none';
+  if(prevBtn) prevBtn.textContent = L.btn_prev || '이전';
+  if(nextBtn) nextBtn.textContent = guideStep < 4 ? (L.btn_next_step || '다음') : (L.btn_go_upload || '파일 올리러 가기');
+}
+
+function guideNext() {
+  if(guideStep < 4) {
+    guideStep++;
+    guideUpdateView();
+  } else {
+    go('upload');
+  }
+}
+
+function guidePrev() {
+  if(guideStep > 0) {
+    guideStep--;
+    guideUpdateView();
+  }
 }
 
 function goBack(currentScreen){
@@ -1592,7 +1706,7 @@ function renderButton(name){
   if(name==='onboard'){
     row.appendChild(mk(T[window.lang].btn_analyze, ()=> go(getHistory().length>0?'upload':'guide')));
   }
-  else if(name==='guide'){ row.appendChild(mk(T[window.lang].btn_go_upload, ()=>go('upload'))); }
+  else if(name==='guide'){ $('#bottom').classList.add('hidden'); return; }
   else if(name==='upload'){
     const ready = !!(state.followers && state.followers.length && state.following && state.following.length);
     const b = mk(ready?T[window.lang].btn_analyze:T[window.lang].btn_need_file, runAnalyze); b.disabled=!ready; row.appendChild(b);
