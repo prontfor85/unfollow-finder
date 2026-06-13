@@ -191,7 +191,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   /* s-onboard: 헤더 없으므로 safe-area 패딩만 */
   #s-onboard{padding-top:max(22px, env(safe-area-inset-top));}
   /* 헤더 있는 화면은 헤더 높이만큼 상단 패딩 줄임 */
-  #s-guide, #s-upload, #s-analyze, #s-result, #s-history, #s-settings, #s-paywall, #s-privacy{padding-top:0;}
+  #s-guide, #s-upload, #s-analyze, #s-result, #s-history, #s-settings, #s-privacy{padding-top:0;}
   /* tab bar */
   .tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:calc(56px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);display:flex;z-index:150;-webkit-user-select:none;user-select:none;}
   .tab-bar .tb-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:env(safe-area-inset-bottom);cursor:pointer;gap:3px;color:var(--sub);transition:color .15s;}
@@ -338,48 +338,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     </div>
   </section>
 
-  <section class="screen" id="s-paywall">
-  <div class="app-header">
-    <button class="back-btn" onclick="goBack('paywall')">←</button>
-    <span class="hdr-title" id="paywall-hdr-title"></span>
-    <span class="hdr-right"></span>
-  </div>
-  <div style="padding: 0 20px; text-align: center;">
-    <div style="margin: 24px 0 8px;">
-      <div style="width:64px;height:64px;background:var(--pink);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      </div>
-      <h2 style="font-size:22px;font-weight:800;color:var(--txt);margin:0 0 8px;" id="paywall-title"></h2>
-      <p style="font-size:14px;color:var(--sub);line-height:1.6;margin:0 0 24px;" id="paywall-desc"></p>
-    </div>
-
-    <div style="background:var(--card);border-radius:16px;overflow:hidden;margin-bottom:20px;text-align:left;">
-      <div style="padding:14px 16px;border-bottom:1px solid var(--line);">
-        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;" id="paywall-free-label"></div>
-        <div class="pw-row"><span class="pw-check">✓</span><span id="pw-f1"></span></div>
-        <div class="pw-row"><span class="pw-check">✓</span><span id="pw-f2"></span></div>
-      </div>
-      <div style="padding:14px 16px;background:rgba(3,199,90,0.06);">
-        <div style="font-size:11px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;" id="paywall-premium-label"></div>
-        <div class="pw-row"><span class="pw-star">★</span><span id="pw-p1"></span></div>
-        <div class="pw-row"><span class="pw-star">★</span><span id="pw-p2"></span></div>
-        <div class="pw-row"><span class="pw-star">★</span><span id="pw-p3"></span></div>
-        <div class="pw-row"><span class="pw-star">★</span><span id="pw-p4"></span></div>
-      </div>
-    </div>
-
-    <div style="margin-bottom:16px;">
-      <div style="font-size:32px;font-weight:800;color:var(--txt);" id="paywall-price"></div>
-      <div style="font-size:13px;color:var(--sub);margin-top:4px;" id="paywall-price-desc"></div>
-    </div>
-
-    <button onclick="purchasePremium()" style="width:100%;border:none;border-radius:15px;padding:17px;font-size:16px;font-weight:700;color:#fff;background:var(--pink);cursor:pointer;margin-bottom:12px;" id="paywall-btn"></button>
-
-    <div style="font-size:12px;color:var(--sub);line-height:1.6;" id="paywall-note"></div>
-    <button onclick="restorePurchase()" style="background:none;border:none;color:var(--sub);font-size:13px;cursor:pointer;margin-top:8px;text-decoration:underline;" id="paywall-restore"></button>
-  </div>
-</section>
-
   <section class="screen" id="s-privacy">
   <div class="app-header">
     <button class="back-btn" onclick="goBack('privacy')">
@@ -398,6 +356,46 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     <div id="privacy-content" style="font-size:13.5px;color:var(--sub);line-height:1.8;"></div>
   </div>
 </section>
+
+<!-- PAYWALL MODAL -->
+<div id="paywall-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(14,14,18,0.75);align-items:flex-end;justify-content:center;" onclick="hidePaywall(event)">
+  <div style="background:var(--card);border-radius:24px 24px 0 0;padding:20px 20px calc(40px + env(safe-area-inset-bottom));width:100%;max-width:430px;animation:up .3s ease;">
+    <!-- 핸들 -->
+    <div style="width:36px;height:4px;background:var(--line);border-radius:2px;margin:0 auto 20px;"></div>
+    <!-- 타이틀 -->
+    <div style="font-size:19px;font-weight:800;color:var(--txt);text-align:center;margin-bottom:4px;" id="paywall-title"></div>
+    <div style="font-size:12px;color:var(--sub);text-align:center;margin-bottom:20px;" id="paywall-desc"></div>
+    <!-- 무료 vs 프리미엄 비교 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+      <!-- 무료 -->
+      <div style="background:var(--bg);border-radius:14px;padding:14px 12px;">
+        <div style="font-size:10px;font-weight:700;color:var(--sub);background:var(--line);border-radius:6px;padding:3px 0;text-align:center;margin-bottom:10px;" id="paywall-free-label"></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-f1"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-f2"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--sub);font-size:12px;flex-shrink:0;margin-top:1px;">✕</span><span id="pw-f3"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--sub);font-size:12px;flex-shrink:0;margin-top:1px;">✕</span><span id="pw-f4"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;"><span style="color:var(--sub);font-size:12px;flex-shrink:0;margin-top:1px;">✕</span><span id="pw-f5"></span></div>
+      </div>
+      <!-- 프리미엄 -->
+      <div style="background:var(--bg);border-radius:14px;padding:14px 12px;border:1.5px solid var(--pink);">
+        <div style="font-size:10px;font-weight:700;color:var(--pink);background:rgba(3,199,90,0.15);border-radius:6px;padding:3px 0;text-align:center;margin-bottom:10px;" id="paywall-premium-label"></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p1"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p2"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p3"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p4"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p5"></span></div>
+      </div>
+    </div>
+    <!-- 가격 -->
+    <div style="background:var(--bg);border-radius:13px;padding:13px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:24px;font-weight:800;color:var(--txt);" id="paywall-price"></div>
+      <div style="font-size:11px;color:var(--sub);text-align:right;line-height:1.6;" id="paywall-price-desc"></div>
+    </div>
+    <!-- 버튼 -->
+    <button onclick="purchasePremium()" style="width:100%;background:var(--pink);border:none;border-radius:13px;padding:15px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;margin-bottom:10px;" id="paywall-btn"></button>
+    <button onclick="restorePurchase()" style="display:block;width:100%;background:none;border:none;color:var(--sub);font-size:12px;cursor:pointer;text-decoration:underline;" id="paywall-restore"></button>
+  </div>
+</div>
 
   <!-- TAB BAR -->
   <nav class="tab-bar" id="tabBar">
@@ -594,20 +592,25 @@ const T = {
     // paywall
     paywall_hdr: '프리미엄',
     paywall_title: '전체 기능을 잠금 해제하세요',
-    paywall_desc: '한 번 결제로 평생 사용. 언제든 전체 목록과 비교 분석을 이용하세요.',
+    paywall_desc: '일회성 결제로 모든 기능을 영구적으로 이용하세요',
     paywall_free_label: '무료',
     pw_f1: '언팔 분석',
-    pw_f2: '결과 상위 10명',
+    pw_f2: '상위 10명 무료 공개',
+    pw_f3: '전체 목록 보기',
+    pw_f4: '언팔 비교 분석',
+    pw_f5: '히스토리 무제한',
     paywall_premium_label: '프리미엄',
-    pw_p1: '전체 목록 무제한',
-    pw_p2: '지난 기록 비교 분석',
-    pw_p3: '결과 내보내기 (CSV)',
-    pw_p4: '광고 없음',
+    pw_p1: '언팔 분석',
+    pw_p2: '상위 10명 공개',
+    pw_p3: '전체 목록 무제한',
+    pw_p4: '언팔 비교 분석',
+    pw_p5: '히스토리 무제한',
     paywall_price: '$2.99',
-    paywall_price_desc: '일회성 결제 · 평생 이용',
+    paywall_price_desc: '일회성 결제 · 영구 이용',
     paywall_btn: '프리미엄 잠금 해제',
     paywall_note: '결제는 App Store를 통해 안전하게 처리됩니다. 구독이 아닌 일회성 결제예요.',
     paywall_restore: '구매 복원',
+    paywall_price_note: '일회성 결제 · 영구 이용',
     toast_premium: '프리미엄이 활성화됐어요! 🎉',
     toast_already_premium: '이미 프리미엄이에요!',
     toast_no_purchase: '복원할 구매 내역이 없어요.',
@@ -771,20 +774,25 @@ const T = {
     // paywall
     paywall_hdr: 'Premium',
     paywall_title: 'Unlock Full Access',
-    paywall_desc: 'One-time purchase. Enjoy unlimited results and history comparison forever.',
+    paywall_desc: 'One-time purchase. Unlock all features forever.',
     paywall_free_label: 'Free',
     pw_f1: 'Unfollow analysis',
-    pw_f2: 'Top 10 results',
+    pw_f2: 'Top 10 free',
+    pw_f3: 'Full list',
+    pw_f4: 'Unfollow comparison',
+    pw_f5: 'Unlimited history',
     paywall_premium_label: 'Premium',
-    pw_p1: 'Unlimited full list',
-    pw_p2: 'History comparison',
-    pw_p3: 'Export results (CSV)',
-    pw_p4: 'No ads',
+    pw_p1: 'Unfollow analysis',
+    pw_p2: 'Top 10 results',
+    pw_p3: 'Unlimited full list',
+    pw_p4: 'Unfollow comparison',
+    pw_p5: 'Unlimited history',
     paywall_price: '$2.99',
     paywall_price_desc: 'One-time · Lifetime access',
     paywall_btn: 'Unlock Premium',
     paywall_note: 'Payment processed securely via App Store. This is a one-time purchase, not a subscription.',
     paywall_restore: 'Restore Purchase',
+    paywall_price_note: 'One-time · Lifetime',
     toast_premium: 'Premium unlocked! 🎉',
     toast_already_premium: 'Already premium!',
     toast_no_purchase: 'No purchases to restore.',
@@ -948,20 +956,25 @@ const T = {
     // paywall
     paywall_hdr: 'プレミアム',
     paywall_title: 'フル機能を解除する',
-    paywall_desc: '一回払いで永久利用。無制限の結果と履歴比較をいつでも。',
+    paywall_desc: '一回払いで全機能を永久利用できます。',
     paywall_free_label: '無料',
-    pw_f1: 'フォロー解除分析',
-    pw_f2: '上位10件の結果',
+    pw_f1: 'アンフォロー分析',
+    pw_f2: '上位10件無料',
+    pw_f3: '全リスト表示',
+    pw_f4: 'アンフォロー比較',
+    pw_f5: '履歴無制限',
     paywall_premium_label: 'プレミアム',
-    pw_p1: '無制限フルリスト',
-    pw_p2: '履歴比較分析',
-    pw_p3: '結果エクスポート (CSV)',
-    pw_p4: '広告なし',
+    pw_p1: 'アンフォロー分析',
+    pw_p2: '上位10件表示',
+    pw_p3: '全リスト無制限',
+    pw_p4: 'アンフォロー比較分析',
+    pw_p5: '履歴無制限',
     paywall_price: '$2.99',
     paywall_price_desc: '一回払い・永久利用',
     paywall_btn: 'プレミアムを解除',
     paywall_note: '支払いはApp Storeで安全に処理されます。\nサブスクリプションではなく一回払いです。',
     paywall_restore: '購入を復元',
+    paywall_price_note: '一回払い · 永久利用',
     toast_premium: 'プレミアムが有効になりました！ 🎉',
     toast_already_premium: 'すでにプレミアムです！',
     toast_no_purchase: '復元できる購入履歴がありません。',
@@ -1125,20 +1138,25 @@ const T = {
     // paywall
     paywall_hdr: 'Premium',
     paywall_title: 'Desbloquea el acceso completo',
-    paywall_desc: 'Pago único. Disfruta de resultados ilimitados y comparación de historial para siempre.',
+    paywall_desc: 'Pago único. Desbloquea todo para siempre.',
     paywall_free_label: 'Gratis',
     pw_f1: 'Análisis de unfollow',
-    pw_f2: 'Top 10 resultados',
+    pw_f2: 'Top 10 gratis',
+    pw_f3: 'Lista completa',
+    pw_f4: 'Comparación de unfollow',
+    pw_f5: 'Historial ilimitado',
     paywall_premium_label: 'Premium',
-    pw_p1: 'Lista completa ilimitada',
-    pw_p2: 'Comparación de historial',
-    pw_p3: 'Exportar resultados (CSV)',
-    pw_p4: 'Sin anuncios',
+    pw_p1: 'Análisis de unfollow',
+    pw_p2: 'Top 10 resultados',
+    pw_p3: 'Lista completa ilimitada',
+    pw_p4: 'Comparación de unfollow',
+    pw_p5: 'Historial ilimitado',
     paywall_price: '$2.99',
     paywall_price_desc: 'Pago único · Acceso de por vida',
     paywall_btn: 'Desbloquear Premium',
     paywall_note: 'Pago procesado de forma segura a través de App Store.\nEsto es un pago único, no una suscripción.',
     paywall_restore: 'Restaurar compra',
+    paywall_price_note: 'Pago único · De por vida',
     toast_premium: '¡Premium activado! 🎉',
     toast_already_premium: '¡Ya tienes Premium!',
     toast_no_purchase: 'No hay compras para restaurar.',
@@ -1177,6 +1195,32 @@ function setPrivacyLang(lang) {
   });
 }
 
+function showPaywall() {
+  const overlay = document.getElementById('paywall-modal');
+  if(overlay) { overlay.style.display = 'flex'; applyPaywallLang(); }
+}
+function hidePaywall(e) {
+  if(e && e.target.id !== 'paywall-modal') return;
+  const overlay = document.getElementById('paywall-modal');
+  if(overlay) overlay.style.display = 'none';
+}
+function applyPaywallLang() {
+  const L = T[window.lang];
+  const set = (id, key) => { const el=document.getElementById(id); if(el && L[key]) el.textContent=L[key]; };
+  set('paywall-title','paywall_title');
+  set('paywall-desc','paywall_desc');
+  set('paywall-free-label','paywall_free_label');
+  set('paywall-premium-label','paywall_premium_label');
+  set('pw-f1','pw_f1'); set('pw-f2','pw_f2');
+  set('pw-f3','pw_f3'); set('pw-f4','pw_f4'); set('pw-f5','pw_f5');
+  set('pw-p1','pw_p1'); set('pw-p2','pw_p2'); set('pw-p3','pw_p3');
+  set('pw-p4','pw_p4'); set('pw-p5','pw_p5');
+  set('paywall-price','paywall_price');
+  set('paywall-price-desc','paywall_price_desc');
+  set('paywall-btn','paywall_btn');
+  set('paywall-restore','paywall_restore');
+}
+
 function openPrivacy() {
   setPrivacyLang(window.lang || 'ko');
   go('privacy');
@@ -1189,8 +1233,9 @@ function setPremium(){ localStorage.setItem('iuf_premium', 'true'); }
 function purchasePremium(){
   setPremium();
   applyLang();
-  goBack('paywall');
-  toast(T[window.lang].toast_premium);
+  hidePaywall();
+  if(state.result) renderList();
+  toast(T[window.lang].toast_premium || '프리미엄이 활성화됐어요! 🎉');
 }
 
 function restorePurchase(){
@@ -1303,23 +1348,6 @@ function applyLang(){
     const el = document.getElementById('lang-'+code+'-check');
     if(el) el.style.display = window.lang===code ? '' : 'none';
   });
-  // paywall screen
-  const pwHdr = document.getElementById('paywall-hdr-title'); if(pwHdr) pwHdr.textContent = L.paywall_hdr;
-  const pwTitle = document.getElementById('paywall-title'); if(pwTitle) pwTitle.textContent = L.paywall_title;
-  const pwDesc = document.getElementById('paywall-desc'); if(pwDesc) pwDesc.textContent = L.paywall_desc;
-  const pwFreeLabel = document.getElementById('paywall-free-label'); if(pwFreeLabel) pwFreeLabel.textContent = L.paywall_free_label;
-  const pwF1 = document.getElementById('pw-f1'); if(pwF1) pwF1.textContent = L.pw_f1;
-  const pwF2 = document.getElementById('pw-f2'); if(pwF2) pwF2.textContent = L.pw_f2;
-  const pwPremLabel = document.getElementById('paywall-premium-label'); if(pwPremLabel) pwPremLabel.textContent = L.paywall_premium_label;
-  const pwP1 = document.getElementById('pw-p1'); if(pwP1) pwP1.textContent = L.pw_p1;
-  const pwP2 = document.getElementById('pw-p2'); if(pwP2) pwP2.textContent = L.pw_p2;
-  const pwP3 = document.getElementById('pw-p3'); if(pwP3) pwP3.textContent = L.pw_p3;
-  const pwP4 = document.getElementById('pw-p4'); if(pwP4) pwP4.textContent = L.pw_p4;
-  const pwPrice = document.getElementById('paywall-price'); if(pwPrice) pwPrice.textContent = L.paywall_price;
-  const pwPriceDesc = document.getElementById('paywall-price-desc'); if(pwPriceDesc) pwPriceDesc.textContent = L.paywall_price_desc;
-  const pwBtn = document.getElementById('paywall-btn'); if(pwBtn) pwBtn.textContent = L.paywall_btn;
-  const pwNote = document.getElementById('paywall-note'); if(pwNote) pwNote.textContent = L.paywall_note;
-  const pwRestore = document.getElementById('paywall-restore'); if(pwRestore) pwRestore.textContent = L.paywall_restore;
   // privacy screen
   const privHdr = document.getElementById('privacy-hdr-title'); if(privHdr) privHdr.textContent = L.hdr_privacy;
   const privLabel = document.getElementById('settings-privacy-label'); if(privLabel) privLabel.textContent = L.privacy_label;
@@ -1348,7 +1376,7 @@ function setLang(l) {
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
                 result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null };
 const $ = s => document.querySelector(s);
-const screens = ['onboard','guide','upload','analyze','result','history','settings','paywall','privacy'];
+const screens = ['onboard','guide','upload','analyze','result','history','settings','privacy'];
 
 // 화면 히스토리 스택 (슬라이드 방향 결정용)
 const screenStack = [];
@@ -1766,7 +1794,7 @@ function renderList(){
     });
     html += '</div>';
     const unlockLabel = (T[window.lang].btn_unlock_full) || 'Unlock Full List';
-    html += `<div style="text-align:center;margin-top:-60px;position:relative;z-index:2;padding-bottom:20px;"><button onclick="go('paywall')" style="background:var(--pink);color:#fff;border:none;border-radius:13px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;" id="unlock-btn">${unlockLabel}</button></div>`;
+    html += `<div style="text-align:center;margin-top:-60px;position:relative;z-index:2;padding-bottom:20px;"><button onclick="showPaywall()" style="background:var(--pink);color:#fff;border:none;border-radius:13px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;" id="unlock-btn">${unlockLabel}</button></div>`;
   }
   box.innerHTML = html;
   if(state.editMode){
@@ -1898,7 +1926,7 @@ function cmpTab(which){
 $('#goHome').onclick = goHome;
 $('#shareApp').onclick = shareApp;
 $('#contact').onclick = openContact;
-$('#compareBtn').onclick = ()=>{ if(!isPremium()){ go('paywall'); return; } openCompareList(); };
+$('#compareBtn').onclick = ()=>{ if(!isPremium()){ showPaywall(); return; } openCompareList(); };
 const goHome2El = $('#goHome2'); if(goHome2El) goHome2El.onclick = ()=>{ closeModal(); go('onboard'); };
 $('#overlay').onclick = e=>{ if(e.target.id==='overlay') closeModal(); };
 
