@@ -1750,9 +1750,12 @@ function goBack(currentScreen){
 }
 
 function switchTab(tab){
+  // 이미 활성 탭이면 아무것도 하지 않음 (현재 화면 유지)
+  const activeEl = document.getElementById('tab-'+tab);
+  if(activeEl && activeEl.classList.contains('active')) return;
+
   if(tab==='home'){
     go('onboard');
-    // 스택 초기화
     screenStack.length = 0;
     screenStack.push('onboard');
   } else if(tab==='history'){
@@ -1782,7 +1785,7 @@ function renderButton(name){
     const b = mk(ready?T[window.lang].btn_analyze:T[window.lang].btn_need_file, runAnalyze); b.disabled=!ready; row.appendChild(b);
     note.textContent = ready ? T[window.lang].upload_secline : '';
   }
-  else if(name==='result'){ row.appendChild(mk(T[window.lang].btn_reanalyze, resetAll, true)); }
+  // result 화면 하단 버튼 없음 (홈탭으로 돌아가기는 탭바 이용)
   $('#bottom').classList.remove('hidden');
 }
 
