@@ -403,6 +403,18 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     </div>
   </section>
 
+  <!-- COMPARE RESULT SCREEN -->
+  <section class="screen" id="s-compare">
+    <div class="app-header">
+      <button class="back-btn" onclick="goBack('compare')">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="hdr-title" id="compare-hdr-title"></span>
+      <span class="hdr-right"></span>
+    </div>
+    <div id="compare-content" style="padding:0 20px 120px;overflow-y:auto;flex:1;"></div>
+  </section>
+
   <section class="screen" id="s-privacy">
   <div class="app-header">
     <button class="back-btn" onclick="goBack('privacy')">
@@ -1590,7 +1602,7 @@ function setLang(l) {
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
                 result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null };
 const $ = s => document.querySelector(s);
-const screens = ['onboard','guide','upload','analyze','result','history','settings','privacy'];
+const screens = ['onboard','guide','upload','analyze','result','history','settings','privacy','compare'];
 
 // 화면 히스토리 스택 (슬라이드 방향 결정용)
 const screenStack = [];
@@ -2103,61 +2115,74 @@ function openContact(){
 function openCompareList(){
   const h = getHistory();
   const acct = h[0] ? (h[0].account||null) : null;
-  const past = h.map((s,i)=>({s,i})).filter(x => x.i>0 && (x.s.account||null)===acct); // 같은 계정의 이전 기록만
+  const past = h.map((s,i)=>({s,i})).filter(x => x.i>0 && (x.s.account||null)===acct);
   let body;
   if(!past.length){
-    body = '<div class="sd">'+(acct?'@'+escapeHtml(acct)+' ':'')+(T[window.lang].compare_no_past)+'</div>';
+    body = '<div class="sd" style="margin-top:12px;">'+(acct?'@'+escapeHtml(acct)+' ':'')+(T[window.lang].compare_no_past)+'</div>';
   } else {
     body = past.map(x=>{ const st=snapStats(x.s); return '<div class="rec" onclick="compareWith('+x.i+",'list')\"><b>"+fmtDate(x.s.date)+'</b><span>팔로워 '+st.followers+'명 · 언팔 '+st.unfollow+'명</span></div>'; }).join('');
   }
-  openModal('<h3>'+T[window.lang].compare_title+'</h3><div class="sd">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+T[window.lang].compare_desc+'</div>'+body+'<button class="close" onclick="closeModal()">'+T[window.lang].btn_close+'</button>');
+  const hdr = document.getElementById('compare-hdr-title');
+  if(hdr) hdr.textContent = T[window.lang].compare_title||'비교할 기록 선택';
+  const content = document.getElementById('compare-content');
+  if(content) content.innerHTML = '<div class="sd" style="margin-bottom:16px;">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+T[window.lang].compare_desc+'</div>'+body;
+  go('compare');
 }
 
 // 같은 계정 기록끼리, 내보내기 날짜(없으면 분석 시각) 기준으로 older→newer를 자동 정렬해 비교.
 function compareWith(idx, from){
   const h = getHistory(); const picked = h[idx]; if(!picked) return;
   const acct = picked.account||null;
-  const back = (from==='list') ? "openCompareList()" : "closeModal()";
-  const backLabel = (from==='list') ? T[window.lang].back_list : T[window.lang].btn_confirm;
   const visited = getVisited(); const recent = mostRecentVisited();
   const vbadge = (u)=> (u===recent) ? '<span class="visit recent">최근 방문</span>' : (visited[u] ? '<span class="visit">방문함</span>' : '');
   const row = (u, sub) => '<a class="row-u" data-u="'+escapeHtml(u)+'" href="https://instagram.com/'+encodeURIComponent(u)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@'+escapeHtml(u)+'</b><span>'+sub+'</span></div>'+vbadge(u)+'<span class="chev" style="color:var(--sub);font-size:18px;margin-left:8px;">›</span></a>';
   const head = (color,text) => '<div style="display:flex;align-items:center;gap:7px;margin:18px 0 8px;"><span style="width:8px;height:8px;border-radius:50%;background:'+color+';"></span><span style="font-size:13px;font-weight:700;color:'+color+';">'+text+'</span></div>';
   const listOf = (arr,sub) => arr.length ? arr.slice(0,80).map(u=>row(u,sub)).join('') : '<div class="empty">없어요</div>';
 
+  const showComparePage = (html, title) => {
+    const hdr = document.getElementById('compare-hdr-title');
+    if(hdr) hdr.textContent = title;
+    const content = document.getElementById('compare-content');
+    if(content) content.innerHTML = html;
+    go('compare');
+    document.querySelectorAll('#cmpLost a.row-u, #cmpNew a.row-u').forEach(a=> a.addEventListener('click', ()=>{ markVisited(a.getAttribute('data-u')); setTimeout(refreshCmpVisited, 60); }));
+  };
+
   // 같은 계정 기록을 날짜 내림차순 정렬해 older/newer 결정
   const same = h.map((s,i)=>({s,i})).filter(x=>(x.s.account||null)===acct).sort((a,b)=>effDate(b.s)-effDate(a.s));
   let older=null, newer=null;
   if(same.length>=2){
-    if(same[0].i===idx){ older=same[1].s; newer=picked; } // 고른 게 최신 → 직전 기록과 비교
-    else { older=picked; newer=same[0].s; }               // 고른 게 과거 → 최신과 비교
+    if(same[0].i===idx){ older=same[1].s; newer=picked; }
+    else { older=picked; newer=same[0].s; }
   }
 
   if(!older || !newer){
     const st = snapStats(picked);
-    openModal('<h3>'+fmtDate(effDate(picked))+'</h3>'+
-      (acct?'<div class="sd">'+escapeHtml(acctLabel(acct))+'</div>':'')+
+    showComparePage(
+      (acct?'<div class="sd" style="margin-bottom:16px;">'+escapeHtml(acctLabel(acct))+'</div>':'')+
       '<div class="cmpbox"><div class="c"><b>'+st.mutual+'</b><span>'+T[window.lang].tab_mutual_full+'</span></div><div class="c minus"><b>'+st.unfollow+'</b><span>'+T[window.lang].unfollow+'</span></div><div class="c plus"><b>'+st.fans+'</b><span>'+T[window.lang].fans+'</span></div></div>'+
-      '<div class="sd">'+T[window.lang].compare_no_other+'</div>'+
-      '<button class="close" onclick="'+back+'">'+backLabel+'</button>');
+      '<div class="sd" style="margin-top:16px;">'+T[window.lang].compare_no_other+'</div>',
+      fmtDate(effDate(picked))
+    );
     return;
   }
 
   const newerF = new Set(newer.listFollowers||[]);
   const olderF = new Set(older.listFollowers||[]);
-  const lost = (older.listFollowers||[]).filter(u=>!newerF.has(u));   // 그 사이 나를 언팔한 사람
-  const gained = (newer.listFollowers||[]).filter(u=>!olderF.has(u)); // 새로 생긴 팔로워
-  const dft = lost.length>0 ? 'lost' : 'new'; // 기본 탭
-  openModal('<h3>'+fmtDate(effDate(older))+' 대비 변화</h3>'+
-    '<div class="sd">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+fmtDate(effDate(older))+' → '+fmtDate(effDate(newer))+'</div>'+
+  const lost = (older.listFollowers||[]).filter(u=>!newerF.has(u));
+  const gained = (newer.listFollowers||[]).filter(u=>!olderF.has(u));
+  const dft = lost.length>0 ? 'lost' : 'new';
+  const title = fmtDate(effDate(older))+' '+(T[window.lang].compare_vs||'대비 변화');
+  showComparePage(
+    '<div class="sd" style="margin-bottom:16px;">'+(acct?escapeHtml(acctLabel(acct))+' · ':'')+fmtDate(effDate(older))+' → '+fmtDate(effDate(newer))+'</div>'+
     '<div class="cmpbox">'+
       '<div class="c minus'+(dft==='lost'?' on':'')+'" id="cmpTabLost" onclick="cmpTab(\'lost\')"><b>'+lost.length+'</b><span>나를 언팔함</span></div>'+
       '<div class="c plus'+(dft==='new'?' on':'')+'" id="cmpTabNew" onclick="cmpTab(\'new\')"><b>'+gained.length+'</b><span>새 팔로워</span></div>'+
     '</div>'+
-    '<div id="cmpLost" style="display:'+(dft==='lost'?'block':'none')+'">'+head('#FF5C5C','나를 언팔한 사람')+ listOf(lost,'이전엔 나를 팔로우했어요')+'</div>'+
-    '<div id="cmpNew" style="display:'+(dft==='new'?'block':'none')+'">'+head('var(--green)','새로 생긴 팔로워')+ listOf(gained,'새로 나를 팔로우했어요')+'</div>'+
-    '<button class="close" onclick="'+back+'">'+backLabel+'</button>');
-  document.querySelectorAll('#cmpLost a.row-u, #cmpNew a.row-u').forEach(a=> a.addEventListener('click', ()=>{ markVisited(a.getAttribute('data-u')); setTimeout(refreshCmpVisited, 60); }));
+    '<div id="cmpLost" style="display:'+(dft==='lost'?'block':'none')+'">'+head('#FF5C5C','나를 언팔한 사람')+listOf(lost,'이전엔 나를 팔로우했어요')+'</div>'+
+    '<div id="cmpNew" style="display:'+(dft==='new'?'block':'none')+'">'+head('var(--green)','새로 생긴 팔로워')+listOf(gained,'새로 나를 팔로우했어요')+'</div>',
+    title
+  );
 }
 // 비교 목록의 방문함/최근 방문 뱃지를 즉석 갱신 (탭/스크롤 유지)
 function refreshCmpVisited(){
