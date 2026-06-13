@@ -234,6 +234,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <div style="width:6px;height:4px;background:var(--line);border-radius:2px;transition:.2s;" id="gdot-2"></div>
       <div style="width:6px;height:4px;background:var(--line);border-radius:2px;transition:.2s;" id="gdot-3"></div>
       <div style="width:6px;height:4px;background:var(--line);border-radius:2px;transition:.2s;" id="gdot-4"></div>
+      <div style="width:6px;height:4px;background:var(--line);border-radius:2px;transition:.2s;" id="gdot-5"></div>
+      <div style="width:6px;height:4px;background:var(--line);border-radius:2px;transition:.2s;" id="gdot-6"></div>
     </div>
 
     <!-- 슬라이드 컨테이너 -->
@@ -253,7 +255,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <b id="step2-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step2-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
           <div class="step-img-wrap"><img id="step2-img" class="step-img hidden" alt="step2"/><div id="step2-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
-          <a id="step2-link" href="https://accountscenter.instagram.com/" target="_blank" rel="noopener" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
+          <a id="step2-link" href="https://accountscenter.instagram.com/info_and_permissions/" target="_blank" rel="noopener" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
         </div>
         <!-- STEP 3 -->
         <div class="guide-slide">
@@ -261,7 +263,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <b id="step3-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step3-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
           <div class="step-img-wrap"><img id="step3-img" class="step-img hidden" alt="step3"/><div id="step3-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
-          <a id="step3-link" href="https://accountscenter.instagram.com/info_and_permissions/" target="_blank" rel="noopener" style="display:none;"></a>
         </div>
         <!-- STEP 4 -->
         <div class="guide-slide">
@@ -276,6 +277,20 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <b id="step5-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step5-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
           <div class="step-img-wrap"><img id="step5-img" class="step-img hidden" alt="step5"/><div id="step5-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
+        </div>
+        <!-- STEP 6 -->
+        <div class="guide-slide">
+          <div class="tag" id="gtag-6"></div>
+          <b id="step6-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
+          <span id="step6-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
+          <div class="step-img-wrap"><img id="step6-img" class="step-img hidden" alt="step6"/><div id="step6-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
+        </div>
+        <!-- STEP 7 -->
+        <div class="guide-slide">
+          <div class="tag" id="gtag-7"></div>
+          <b id="step7-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
+          <span id="step7-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
+          <div class="step-img-wrap"><img id="step7-img" class="step-img hidden" alt="step7"/><div id="step7-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
           <div class="note warn" style="margin-top:16px;"><span>⚠️</span><div id="guide-warn"></div></div>
         </div>
       </div>
@@ -574,15 +589,19 @@ const T = {
     guide_title: '공식 데이터<br><span class="hl">내보내기</span> 방법',
     guide_lead: '인스타그램(Meta)의 공식 기능으로 내 팔로워·팔로잉 파일을 받는 단계예요.',
     step1_title: '계정 센터 열기',
-    step1_desc: '<code>설정 및 활동</code> → <code>계정 센터</code> 탭',
-    step2_title: '내 정보 내보내기',
-    step2_desc: '<code>내 정보 및 권한</code> → <code>내 정보 내보내기</code> → <code>내보내기 만들기</code>',
-    step3_title: '계정 선택',
-    step3_desc: '인스타그램 프로필을 선택하고 <code>기기로 내보내기</code>를 탭하세요.',
-    step4_title: '옵션 설정 후 시작',
-    step4_desc: '정보 맞춤 설정 → <code>팔로워 및 팔로잉</code>만 선택 · 기간 <code>전체 기간</code> · 형식 <code>JSON</code> 확인 후 <code>내보내기 시작</code>',
-    step5_title: '파일 받고 업로드',
-    step5_desc: '알림이 오면 ZIP 파일을 다운로드하고, 언팔 찾기 앱에 올려주세요.',
+    step1_desc: '<code>설정 및 활동</code>에서 <code>계정 센터</code>를 탭하세요.',
+    step2_title: '내 정보 및 권한',
+    step2_desc: '계정 센터에서 <code>내 정보 및 권한</code>을 탭하세요.',
+    step3_title: '내 정보 내보내기',
+    step3_desc: '<code>내 정보 내보내기</code> → <code>내보내기 만들기</code>를 탭하세요.',
+    step4_title: '계정 선택',
+    step4_desc: '인스타그램 프로필을 선택하세요.',
+    step5_title: '기기로 내보내기',
+    step5_desc: '<code>기기로 내보내기</code>를 선택하세요.',
+    step6_title: '옵션 설정 후 시작',
+    step6_desc: '정보 맞춤 설정 → <code>팔로워 및 팔로잉</code>만 선택 · 기간 <code>전체 기간</code> · 형식 <code>JSON</code> 확인 후 <code>내보내기 시작</code>',
+    step7_title: '파일 받고 업로드',
+    step7_desc: '알림이 오면 ZIP 파일을 다운로드하고, 언팔 찾기 앱에 올려주세요.',
     guide_warn: '형식을 <b>HTML</b>로 받으면 분석이 어려울 수 있어요. 반드시 <b>JSON</b>으로 선택해주세요. 기간이 <b>전체</b>가 아니면 결과가 부정확할 수 있어요.',
     // upload
     upload_title: '파일을 <span class="hl">올려주세요</span>',
@@ -772,15 +791,19 @@ const T = {
     guide_title: 'How to export<br>your <span class="hl">official data</span>',
     guide_lead: 'These steps let you download your followers/following file using Instagram\'s official export feature.',
     step1_title: 'Open Accounts Center',
-    step1_desc: '<code>Settings & Activity</code> → tap <code>Accounts Center</code>',
-    step2_title: 'Download your information',
-    step2_desc: '<code>Your information & permissions</code> → <code>Download your information</code> → <code>Create a download</code>',
-    step3_title: 'Select account',
-    step3_desc: 'Choose your Instagram profile and tap <code>Download to device</code>.',
-    step4_title: 'Set options & start',
-    step4_desc: 'Select info → check <code>Followers and following</code> only · Date range: <code>All time</code> · Format: <code>JSON</code> → tap <code>Create download</code>',
-    step5_title: 'Download & upload',
-    step5_desc: 'When notified, download the ZIP file and upload it to the app.',
+    step1_desc: 'In <code>Settings & Activity</code>, tap <code>Accounts Center</code>.',
+    step2_title: 'Your information & permissions',
+    step2_desc: 'In Accounts Center, tap <code>Your information & permissions</code>.',
+    step3_title: 'Download your information',
+    step3_desc: 'Tap <code>Download your information</code> → <code>Create a download</code>.',
+    step4_title: 'Select account',
+    step4_desc: 'Choose your Instagram profile.',
+    step5_title: 'Download to device',
+    step5_desc: 'Select <code>Download to device</code>.',
+    step6_title: 'Set options & start',
+    step6_desc: 'Select info → check <code>Followers and following</code> only · Date range: <code>All time</code> · Format: <code>JSON</code> → tap <code>Create download</code>',
+    step7_title: 'Download & upload',
+    step7_desc: 'When notified, download the ZIP file and upload it to the app.',
     guide_warn: 'If you receive the file in <b>HTML</b> format, analysis may be incomplete. Be sure to select <b>JSON</b>. Results may be inaccurate if the date range is not set to <b>All time</b>.',
     // upload
     upload_title: 'Upload your <span class="hl">file</span>',
@@ -970,15 +993,19 @@ const T = {
     guide_title: '公式データの<span class="hl">エクスポート方法</span>',
     guide_lead: 'Instagramの公式機能でフォロワー・フォロー中のファイルを取得する手順です。',
     step1_title: 'アカウントセンターを開く',
-    step1_desc: '<code>設定とアクティビティ</code> → <code>アカウントセンター</code>をタップ',
-    step2_title: '情報をダウンロード',
-    step2_desc: '<code>情報とアクセス許可</code> → <code>情報のダウンロード</code> → <code>ダウンロードを作成</code>',
-    step3_title: 'アカウントを選択',
-    step3_desc: 'Instagramプロフィールを選択し、<code>デバイスにエクスポート</code>をタップ。',
-    step4_title: 'オプション設定して開始',
-    step4_desc: '情報をカスタマイズ → <code>フォロワーとフォロー中</code>のみ選択 · 期間: <code>すべての期間</code> · 形式: <code>JSON</code> → <code>ダウンロードを作成</code>',
-    step5_title: 'ファイルを受け取りアップロード',
-    step5_desc: '通知が来たらZIPファイルをダウンロードし、アプリにアップロードしてください。',
+    step1_desc: '<code>設定とアクティビティ</code>で<code>アカウントセンター</code>をタップ。',
+    step2_title: '情報とアクセス許可',
+    step2_desc: 'アカウントセンターで<code>情報とアクセス許可</code>をタップ。',
+    step3_title: '情報のダウンロード',
+    step3_desc: '<code>情報のダウンロード</code> → <code>ダウンロードを作成</code>をタップ。',
+    step4_title: 'アカウントを選択',
+    step4_desc: 'Instagramプロフィールを選択してください。',
+    step5_title: 'デバイスにエクスポート',
+    step5_desc: '<code>デバイスにエクスポート</code>を選択してください。',
+    step6_title: 'オプション設定して開始',
+    step6_desc: '情報をカスタマイズ → <code>フォロワーとフォロー中</code>のみ選択 · 期間: <code>すべての期間</code> · 形式: <code>JSON</code> → <code>ダウンロードを作成</code>',
+    step7_title: 'ファイルを受け取りアップロード',
+    step7_desc: '通知が来たらZIPファイルをダウンロードし、アプリにアップロードしてください。',
     guide_warn: 'ファイル形式を<b>HTML</b>にすると分析が不完全になる場合があります。必ず<b>JSON</b>を選択してください。期間が<b>すべての期間</b>でない場合、結果が不正確になることがあります。',
     // upload
     upload_title: 'ファイルを<span class="hl">アップロード</span>',
@@ -1168,15 +1195,19 @@ const T = {
     guide_title: 'Cómo <span class="hl">exportar tus datos</span>',
     guide_lead: 'Pasos para obtener tu archivo ZIP de Instagram usando la función oficial de exportación.',
     step1_title: 'Abrir el Centro de cuentas',
-    step1_desc: '<code>Configuración y actividad</code> → toca <code>Centro de cuentas</code>',
-    step2_title: 'Descargar tu información',
-    step2_desc: '<code>Tu información y permisos</code> → <code>Descargar tu información</code> → <code>Crear descarga</code>',
-    step3_title: 'Seleccionar cuenta',
-    step3_desc: 'Elige tu perfil de Instagram y toca <code>Exportar al dispositivo</code>.',
-    step4_title: 'Configurar opciones e iniciar',
-    step4_desc: 'Personalizar info → marcar solo <code>Seguidores y seguidos</code> · Período: <code>Todo el tiempo</code> · Formato: <code>JSON</code> → toca <code>Crear descarga</code>',
-    step5_title: 'Descargar y subir',
-    step5_desc: 'Cuando recibas la notificación, descarga el ZIP y súbelo a la app.',
+    step1_desc: 'En <code>Configuración y actividad</code>, toca <code>Centro de cuentas</code>.',
+    step2_title: 'Tu información y permisos',
+    step2_desc: 'En Centro de cuentas, toca <code>Tu información y permisos</code>.',
+    step3_title: 'Descargar tu información',
+    step3_desc: 'Toca <code>Descargar tu información</code> → <code>Crear descarga</code>.',
+    step4_title: 'Seleccionar cuenta',
+    step4_desc: 'Elige tu perfil de Instagram.',
+    step5_title: 'Exportar al dispositivo',
+    step5_desc: 'Selecciona <code>Exportar al dispositivo</code>.',
+    step6_title: 'Configurar opciones e iniciar',
+    step6_desc: 'Personalizar info → marcar solo <code>Seguidores y seguidos</code> · Período: <code>Todo el tiempo</code> · Formato: <code>JSON</code> → toca <code>Crear descarga</code>',
+    step7_title: 'Descargar y subir',
+    step7_desc: 'Cuando recibas la notificación, descarga el ZIP y súbelo a la app.',
     guide_warn: 'Si recibes el archivo en formato <b>HTML</b>, el análisis puede ser incompleto. Asegúrate de seleccionar <b>JSON</b>. Los resultados pueden ser inexactos si el período no es <b>Todo el tiempo</b>.',
     // upload
     upload_title: '<span class="hl">Sube</span> tu archivo',
@@ -1529,7 +1560,11 @@ function applyLang(){
   const s4t = document.getElementById('step4-title'); if(s4t) s4t.textContent = L.step4_title;
   const s4d = document.getElementById('step4-desc'); if(s4d) s4d.innerHTML = L.step4_desc;
   const s5t = document.getElementById('step5-title'); if(s5t) s5t.textContent = L.step5_title;
-  const s5d = document.getElementById('step5-desc'); if(s5d) s5d.textContent = L.step5_desc;
+  const s5d = document.getElementById('step5-desc'); if(s5d) s5d.innerHTML = L.step5_desc;
+  const s6t = document.getElementById('step6-title'); if(s6t) s6t.textContent = L.step6_title;
+  const s6d = document.getElementById('step6-desc'); if(s6d) s6d.innerHTML = L.step6_desc;
+  const s7t = document.getElementById('step7-title'); if(s7t) s7t.textContent = L.step7_title;
+  const s7d = document.getElementById('step7-desc'); if(s7d) s7d.textContent = L.step7_desc;
   const gw = document.getElementById('guide-warn'); if(gw) gw.innerHTML = L.guide_warn;
   // upload
   const ut = document.getElementById('upload-title'); if(ut) ut.innerHTML = L.upload_title;
@@ -1662,7 +1697,7 @@ function guideUpdateView() {
   if(slides && wrap) slides.style.transform = 'translateX(-' + (guideStep * 100) + '%)';
 
   // 도트 업데이트
-  for(let i=0;i<5;i++){
+  for(let i=0;i<7;i++){
     const dot = document.getElementById('gdot-'+i);
     if(!dot) continue;
     dot.style.width = i===guideStep ? '20px' : '6px';
@@ -1670,7 +1705,7 @@ function guideUpdateView() {
   }
 
   // STEP 태그 업데이트
-  for(let i=1;i<=5;i++){
+  for(let i=1;i<=7;i++){
     const tag = document.getElementById('gtag-'+i);
     if(tag) tag.textContent = 'STEP ' + i;
   }
@@ -1681,11 +1716,11 @@ function guideUpdateView() {
   const nextBtn = document.getElementById('guide-next-btn');
   if(prevBtn) prevBtn.style.display = guideStep > 0 ? '' : 'none';
   if(prevBtn) prevBtn.textContent = L.btn_prev || '이전';
-  if(nextBtn) nextBtn.textContent = guideStep < 4 ? (L.btn_next_step || '다음') : (L.btn_go_upload || '파일 올리러 가기');
+  if(nextBtn) nextBtn.textContent = guideStep < 6 ? (L.btn_next_step || '다음') : (L.btn_go_upload || '파일 올리러 가기');
 }
 
 function guideNext() {
-  if(guideStep < 4) {
+  if(guideStep < 6) {
     guideStep++;
     guideUpdateView();
   } else {
