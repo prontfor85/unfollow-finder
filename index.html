@@ -335,6 +335,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
             <span id="settings-contact-label" style="font-size:15px; color:var(--txt);"></span>
             <span style="color:var(--sub);">›</span>
           </div>
+          <div onclick="replayOnboarding()" style="display:flex; align-items:center; justify-content:space-between; padding:16px; cursor:pointer; border-top:1px solid var(--line);">
+            <span id="settings-onboarding-label" style="font-size:15px; color:var(--txt);"></span>
+            <span style="color:var(--sub);">›</span>
+          </div>
         </div>
       </div>
     </div>
@@ -631,6 +635,7 @@ const T = {
     settings_lang_section: '언어',
     settings_support_section: '지원',
     settings_contact: '문의하기',
+    settings_onboarding: '온보딩 다시 보기',
     privacy_label: '개인정보처리방침',
     hdr_privacy: '개인정보처리방침',
     // paywall
@@ -822,6 +827,7 @@ const T = {
     settings_lang_section: 'Language',
     settings_support_section: 'Support',
     settings_contact: 'Contact us',
+    settings_onboarding: 'Replay Onboarding',
     privacy_label: 'Privacy Policy',
     hdr_privacy: 'Privacy Policy',
     // paywall
@@ -1013,6 +1019,7 @@ const T = {
     settings_lang_section: '言語',
     settings_support_section: 'サポート',
     settings_contact: 'お問い合わせ',
+    settings_onboarding: 'オンボーディングを再表示',
     privacy_label: 'プライバシーポリシー',
     hdr_privacy: 'プライバシーポリシー',
     // paywall
@@ -1204,6 +1211,7 @@ const T = {
     settings_lang_section: 'Idioma',
     settings_support_section: 'Soporte',
     settings_contact: 'Contacto',
+    settings_onboarding: 'Ver introducción de nuevo',
     privacy_label: 'Política de Privacidad',
     hdr_privacy: 'Política de Privacidad',
     // paywall
@@ -1352,6 +1360,11 @@ function finishOnboarding() {
   const overlay = document.getElementById('onboarding-overlay');
   if(overlay) overlay.style.display = 'none';
 }
+function replayOnboarding() {
+  localStorage.removeItem('iuf_onboarded');
+  obStep = 0;
+  showOnboarding();
+}
 
 function obNext() {
   if(obStep < 2) {
@@ -1471,6 +1484,7 @@ function applyLang(){
   const sLang = document.getElementById('settings-section-lang'); if(sLang) sLang.textContent = L.settings_lang_section;
   const sSupp = document.getElementById('settings-section-support'); if(sSupp) sSupp.textContent = L.settings_support_section;
   const sCont = document.getElementById('settings-contact-label'); if(sCont) sCont.textContent = L.settings_contact;
+  const sOb = document.getElementById('settings-onboarding-label'); if(sOb) sOb.textContent = L.settings_onboarding;
   // sync lang checkmarks
   ['ko','en','ja','es'].forEach(code => {
     const el = document.getElementById('lang-'+code+'-check');
