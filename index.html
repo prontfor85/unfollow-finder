@@ -224,7 +224,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <span class="hdr-title" id="guide-hdr-title"></span>
-      <span class="hdr-right"></span>
+      <span class="hdr-right"><button onclick="go('upload')" id="guide-skip-btn" style="background:none;border:none;color:var(--sub);font-size:14px;cursor:pointer;padding:4px 8px;"></button></span>
     </div>
 
     <!-- 도트 인디케이터 -->
@@ -622,6 +622,7 @@ const T = {
     btn_history: '지난 내역',
     btn_analyze: '분석하기',
     btn_back: '이전',
+    btn_skip: '건너뛰기',
     btn_go_upload: '파일 올리러 가기',
     btn_prev: '이전',
     btn_next_step: '다음',
@@ -816,6 +817,7 @@ const T = {
     btn_history: 'History',
     btn_analyze: 'Analyze',
     btn_back: 'Back',
+    btn_skip: 'Skip',
     btn_go_upload: 'Upload file',
     btn_prev: 'Back',
     btn_next_step: 'Next',
@@ -1010,6 +1012,7 @@ const T = {
     btn_history: '過去の記録',
     btn_analyze: '分析する',
     btn_back: '戻る',
+    btn_skip: 'スキップ',
     btn_go_upload: '次へ',
     btn_prev: '戻る',
     btn_next_step: '次へ',
@@ -1204,6 +1207,7 @@ const T = {
     btn_history: 'Historial',
     btn_analyze: 'Analizar',
     btn_back: 'Volver',
+    btn_skip: 'Omitir',
     btn_go_upload: 'Siguiente',
     btn_prev: 'Anterior',
     btn_next_step: 'Siguiente',
@@ -1542,6 +1546,7 @@ function applyLang(){
   const tHistL = document.getElementById('tab-history-label'); if(tHistL) tHistL.textContent = L.tab_history_tab;
   // app header titles
   const ghdr = document.getElementById('guide-hdr-title'); if(ghdr) ghdr.textContent = L.hdr_guide;
+  const gskip = document.getElementById('guide-skip-btn'); if(gskip) gskip.textContent = L.btn_skip||'건너뛰기';
   const uhdr = document.getElementById('upload-hdr-title'); if(uhdr) uhdr.textContent = L.hdr_upload;
   const rhdr = document.getElementById('result-hdr-title'); if(rhdr) rhdr.textContent = L.hdr_result;
   const histHdr = document.getElementById('history-hdr-title'); if(histHdr) histHdr.textContent = L.hdr_history;
@@ -1704,7 +1709,7 @@ function renderButton(name){
   const mk = (label, fn, ghost) => { const b=document.createElement('button'); b.textContent=label; if(ghost)b.className='ghost'; b.onclick=fn; return b; };
   if(name==='analyze' || name==='history'){ $('#bottom').classList.add('hidden'); return; }
   if(name==='onboard'){
-    row.appendChild(mk(T[window.lang].btn_analyze, ()=> go(getHistory().length>0?'upload':'guide')));
+    row.appendChild(mk(T[window.lang].btn_analyze, ()=> go('guide')));
   }
   else if(name==='guide'){ $('#bottom').classList.add('hidden'); return; }
   else if(name==='upload'){
