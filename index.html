@@ -118,6 +118,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .rlinks span{cursor:pointer;} .rlinks span:hover{color:var(--txt);}
   .compareBtn{display:flex; align-items:center; justify-content:space-between; border:1px solid var(--pink); border-radius:14px; padding:15px 18px; margin-bottom:16px; cursor:pointer; transition:.15s;}
   .compareBtn:hover{background:rgba(3,199,90,.08);} .compareBtn b{color:var(--pink); font-size:15px;} .compareBtn span{color:var(--pink); font-size:18px;}
+  .pw-row { display:flex; align-items:center; gap:10px; padding:6px 0; font-size:14px; color:var(--txt); }
+  .pw-check { color:var(--pink); font-weight:700; font-size:15px; width:16px; flex-shrink:0; }
+  .pw-star { color:#FFD700; font-size:14px; width:16px; flex-shrink:0; }
   /* overlay + sheet */
   .overlay{position:fixed; inset:0; width:100vw; height:100vh; background:rgba(0,0,0,.6); z-index:50; display:flex; align-items:center; justify-content:center; padding:20px; animation:fade .2s;}
   .sheet{width:100%; max-width:380px; background:var(--card); border-radius:22px; padding:24px 20px; max-height:82vh; overflow:auto; animation:up .25s ease;}
@@ -297,13 +300,21 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <div style="margin-bottom: 12px; margin-top: 8px;">
         <div style="font-size:12px; color:var(--sub); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;" id="settings-section-lang"></div>
         <div style="background:var(--card); border-radius:16px; overflow:hidden;">
-          <div onclick="setLang('ko')" id="lang-ko-row" style="display:flex; align-items:center; justify-content:space-between; padding:16px; cursor:pointer; border-bottom:1px solid var(--line);">
-            <span style="font-size:15px; color:var(--txt);">한국어</span>
-            <span id="lang-ko-check" style="color:var(--pink); font-size:18px;">✓</span>
+          <div onclick="setLang('ko')" id="lang-ko-row" style="display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer;border-bottom:1px solid var(--line);">
+            <span style="font-size:15px;color:var(--txt);">한국어</span>
+            <span id="lang-ko-check" style="color:var(--pink);font-size:18px;">✓</span>
           </div>
-          <div onclick="setLang('en')" id="lang-en-row" style="display:flex; align-items:center; justify-content:space-between; padding:16px; cursor:pointer;">
-            <span style="font-size:15px; color:var(--txt);">English</span>
-            <span id="lang-en-check" style="color:var(--pink); font-size:18px; display:none;">✓</span>
+          <div onclick="setLang('en')" id="lang-en-row" style="display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer;border-bottom:1px solid var(--line);">
+            <span style="font-size:15px;color:var(--txt);">English</span>
+            <span id="lang-en-check" style="color:var(--pink);font-size:18px;display:none;">✓</span>
+          </div>
+          <div onclick="setLang('ja')" id="lang-ja-row" style="display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer;border-bottom:1px solid var(--line);">
+            <span style="font-size:15px;color:var(--txt);">日本語</span>
+            <span id="lang-ja-check" style="color:var(--pink);font-size:18px;display:none;">✓</span>
+          </div>
+          <div onclick="setLang('es')" id="lang-es-row" style="display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer;">
+            <span style="font-size:15px;color:var(--txt);">Español</span>
+            <span id="lang-es-check" style="color:var(--pink);font-size:18px;display:none;">✓</span>
           </div>
         </div>
       </div>
@@ -319,6 +330,48 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       </div>
     </div>
   </section>
+
+  <section class="screen" id="s-paywall">
+  <div class="app-header">
+    <button class="back-btn" onclick="goBack('paywall')">←</button>
+    <span class="hdr-title" id="paywall-hdr-title"></span>
+    <span class="hdr-right"></span>
+  </div>
+  <div style="padding: 0 20px; text-align: center;">
+    <div style="margin: 24px 0 8px;">
+      <div style="width:64px;height:64px;background:var(--pink);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <h2 style="font-size:22px;font-weight:800;color:var(--txt);margin:0 0 8px;" id="paywall-title"></h2>
+      <p style="font-size:14px;color:var(--sub);line-height:1.6;margin:0 0 24px;" id="paywall-desc"></p>
+    </div>
+
+    <div style="background:var(--card);border-radius:16px;overflow:hidden;margin-bottom:20px;text-align:left;">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--line);">
+        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;" id="paywall-free-label"></div>
+        <div class="pw-row"><span class="pw-check">✓</span><span id="pw-f1"></span></div>
+        <div class="pw-row"><span class="pw-check">✓</span><span id="pw-f2"></span></div>
+      </div>
+      <div style="padding:14px 16px;background:rgba(3,199,90,0.06);">
+        <div style="font-size:11px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;" id="paywall-premium-label"></div>
+        <div class="pw-row"><span class="pw-star">★</span><span id="pw-p1"></span></div>
+        <div class="pw-row"><span class="pw-star">★</span><span id="pw-p2"></span></div>
+        <div class="pw-row"><span class="pw-star">★</span><span id="pw-p3"></span></div>
+        <div class="pw-row"><span class="pw-star">★</span><span id="pw-p4"></span></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:32px;font-weight:800;color:var(--txt);" id="paywall-price"></div>
+      <div style="font-size:13px;color:var(--sub);margin-top:4px;" id="paywall-price-desc"></div>
+    </div>
+
+    <button onclick="purchasePremium()" style="width:100%;border:none;border-radius:15px;padding:17px;font-size:16px;font-weight:700;color:#fff;background:var(--pink);cursor:pointer;margin-bottom:12px;" id="paywall-btn"></button>
+
+    <div style="font-size:12px;color:var(--sub);line-height:1.6;" id="paywall-note"></div>
+    <button onclick="restorePurchase()" style="background:none;border:none;color:var(--sub);font-size:13px;cursor:pointer;margin-top:8px;text-decoration:underline;" id="paywall-restore"></button>
+  </div>
+</section>
 
   <!-- TAB BAR -->
   <nav class="tab-bar" id="tabBar">
@@ -510,6 +563,28 @@ const T = {
     settings_lang_section: '언어',
     settings_support_section: '지원',
     settings_contact: '문의하기',
+    // paywall
+    paywall_hdr: '프리미엄',
+    paywall_title: '전체 기능을 잠금 해제하세요',
+    paywall_desc: '한 번 결제로 평생 사용. 언제든 전체 목록과 비교 분석을 이용하세요.',
+    paywall_free_label: '무료',
+    pw_f1: '언팔 분석',
+    pw_f2: '결과 상위 10명',
+    paywall_premium_label: '프리미엄',
+    pw_p1: '전체 목록 무제한',
+    pw_p2: '지난 기록 비교 분석',
+    pw_p3: '결과 내보내기 (CSV)',
+    pw_p4: '광고 없음',
+    paywall_price: '$2.99',
+    paywall_price_desc: '일회성 결제 · 평생 이용',
+    paywall_btn: '프리미엄 잠금 해제',
+    paywall_note: '결제는 App Store를 통해 안전하게 처리됩니다.
+구독이 아닌 일회성 결제예요.',
+    paywall_restore: '구매 복원',
+    toast_premium: '프리미엄이 활성화됐어요! 🎉',
+    toast_already_premium: '이미 프리미엄이에요!',
+    toast_no_purchase: '복원할 구매 내역이 없어요.',
+    btn_unlock_full: '전체 보기',
   },
   en: {
     page_title: 'Instagram Unfollow Finder · Safe Analysis',
@@ -664,14 +739,413 @@ const T = {
     settings_lang_section: 'Language',
     settings_support_section: 'Support',
     settings_contact: 'Contact us',
+    // paywall
+    paywall_hdr: 'Premium',
+    paywall_title: 'Unlock Full Access',
+    paywall_desc: 'One-time purchase. Enjoy unlimited results and history comparison forever.',
+    paywall_free_label: 'Free',
+    pw_f1: 'Unfollow analysis',
+    pw_f2: 'Top 10 results',
+    paywall_premium_label: 'Premium',
+    pw_p1: 'Unlimited full list',
+    pw_p2: 'History comparison',
+    pw_p3: 'Export results (CSV)',
+    pw_p4: 'No ads',
+    paywall_price: '$2.99',
+    paywall_price_desc: 'One-time · Lifetime access',
+    paywall_btn: 'Unlock Premium',
+    paywall_note: 'Payment processed securely via App Store.
+This is a one-time purchase, not a subscription.',
+    paywall_restore: 'Restore Purchase',
+    toast_premium: 'Premium unlocked! 🎉',
+    toast_already_premium: 'Already premium!',
+    toast_no_purchase: 'No purchases to restore.',
+    btn_unlock_full: 'Unlock Full List',
+  },
+  ja: {
+    page_title: 'インスタ フォロー解除 チェッカー',
+    topbar_title: 'インスタ フォロー解除 チェッカー',
+    // onboarding
+    onboard_title: 'フォロワーを<span class="hl">安全に</span><br>分析します',
+    onboard_lead: 'アンフォローした人や、自分がフォローしていない人を見つけます。すべての分析は<b>このブラウザ内のみ</b>で処理されます。',
+    feat1_title: 'ログイン不要',
+    feat1_desc: 'Instagramのアカウント情報は一切入力しません。',
+    feat2_title: '公式データで正確に',
+    feat2_desc: 'Instagramが直接送った公式エクスポートファイルを分析します。',
+    feat3_title: 'サーバーに送信しない',
+    feat3_desc: 'ファイルはデバイスの外に出ません。オフラインでも分析できます。',
+    feat4_title: '全結果無料',
+    feat4_desc: 'ぼかしなしで完全な結果を表示します。',
+    // guide
+    guide_title: '公式データの<span class="hl">エクスポート方法</span>',
+    guide_lead: 'Instagramの公式機能でフォロワー・フォロー中のファイルを取得する手順です。',
+    step1_title: 'アカウントセンターを開く',
+    step1_desc: 'Instagram <code>設定とアクティビティ</code> → <code>アカウントセンター</code>',
+    step2_title: '情報とアクセス許可',
+    step2_desc: '<code>情報とアクセス許可</code> → <code>情報のダウンロード</code>',
+    step3_title: 'デバイスにエクスポート',
+    step3_desc: '<code>デバイスにエクスポート</code>を選択 — サーバーには送信されません。',
+    step4_title: '項目と期間を選択',
+    step4_desc: '<code>フォロワーとフォロー中</code>のみ選択、期間は<code>すべての期間</code>、形式は<code>JSON</code>推奨',
+    step5_title: '通知→ファイルを受け取る',
+    step5_desc: '約10分以内にメール/通知が届きます。ZIPファイルをダウンロードして次の画面でアップロードしてください。',
+    guide_warn: 'ファイル形式を<b>HTML</b>にすると分析が不完全になる場合があります。できれば<b>JSON</b>を選択してください。期間が<b>すべての期間</b>でない場合、結果が不正確になることがあります。',
+    // upload
+    upload_title: 'ファイルを<span class="hl">アップロード</span>',
+    upload_lead: 'Instagramから受け取ったZIPファイルをアップロードしてください。分析はこのデバイス内のみで行われます。',
+    drop_title: 'Instagramエクスポート ZIPをアップロード',
+    drop_desc: 'instagram-ユーザー名-日付.zip · クリックまたはドラッグ&ドロップ',
+    upload_note: 'アップロードされたファイルは<b>このブラウザ内のみ</b>で読み取り・分析されます。サーバーへの送信や外部保存は一切行いません。',
+    upload_secline: '🔒 分析はこのブラウザ内のみで実行されます。',
+    // analyze
+    analyze_title: '分析中...',
+    analyze_note: 'データはこのデバイスの外に出ません。ネットワーク接続なしで処理されます。',
+    // result
+    result_title: '分析結果',
+    compare_btn: '過去の記録と比較 ›',
+    free_label: '✓ 全結果無料',
+    tab_notme_label: 'フォローされていない<br><b id="cnt-notme">0</b>人',
+    tab_mutual_label: '相互フォロー<br><b id="cnt-mutual">0</b>人',
+    tab_notthem_label: 'フォローしていない<br><b id="cnt-notthem">0</b>人',
+    tab_notme_full: 'フォローされていない人',
+    tab_mutual_full: '相互フォロー',
+    tab_notthem_full: 'フォローしていない人',
+    result_disc: 'アカウントが無効化・削除・ブロックされている場合、実際と異なる場合があります。エクスポート期間が<b>すべての期間</b>でない場合、結果が不正確になることがあります。',
+    search_placeholder: '検索...',
+    of_total_followers: 'フォロワー総数 {n}人の {p}%',
+    of_total_following: 'フォロー中総数 {n}人の {p}%',
+    following_label: 'フォロー中',
+    days_label: '日目 ',
+    visited: '訪問済み',
+    visited_recent: '最近訪問',
+    empty_list: '該当する人はいません。',
+    load_more: 'もっと見る ({n}人残り)',
+    // history
+    history_title: '過去の記録',
+    history_note: '過去の記録はこのデバイスにのみ保存されます。サーバーには送信されません。',
+    history_empty: 'まだ保存された分析履歴はありません。<br>一度分析するとここに記録されます。',
+    // zip handling
+    zip_extracting: '解凍中…',
+    zip_analyzing: 'フォロワー・フォロー中を分析中…',
+    zip_empty: '(ファイルが空です)',
+    zip_not_found: 'フォロワー/フォロー中のデータが見つかりませんでした。ZIP内のファイル一覧をスクリーンショットして送っていただければ、すぐに対応します。',
+    zip_ok: '認識完了',
+    json_error: 'JSONを読み込めませんでした',
+    // labels
+    followers: 'フォロワー',
+    following: 'フォロー中',
+    count: '人',
+    account: 'アカウント',
+    unfollow: 'アンフォロー',
+    fans: 'ファン',
+    unknown_account: '不明なアカウント',
+    // buttons
+    btn_history: '過去の記録',
+    btn_analyze: '分析する',
+    btn_back: '戻る',
+    btn_go_upload: '次へ',
+    btn_need_file: 'ファイルが必要です',
+    btn_reanalyze: '再分析する',
+    btn_edit: '編集',
+    btn_done: '完了',
+    btn_delete: '削除',
+    btn_cancel: 'キャンセル',
+    btn_close: '閉じる',
+    btn_confirm: 'OK',
+    btn_copy: 'コピー',
+    // sort
+    sort_rec: 'おすすめ順',
+    sort_new: '新しい順',
+    sort_old: '古い順',
+    // modals
+    del_title: 'この記録を削除しますか？',
+    del_desc: 'アプリに保存されているこの分析記録が削除されます。',
+    clear_title: '過去の記録をすべて削除しますか？',
+    clear_desc: 'このデバイスに保存されているすべての分析履歴が削除されます。元に戻せません。',
+    choice_title: '分析方法を選択してください',
+    choice_new: '新規分析',
+    choice_new_desc: 'このファイルのみで相互フォロー・ファン・アンフォローを分析します。',
+    choice_compare: '過去の記録と比較分析',
+    choice_compare_desc: '前回からアンフォローした人を見つけます。',
+    compare_title: '比較する過去の記録を選択',
+    compare_desc: 'この記録と今回の分析を比較して変化を見つけます。',
+    compare_no_past: 'まだ比較できる過去の記録がありません。同じアカウントで再度分析すると変化を比較できます。',
+    compare_no_other: 'このアカウントの他の記録がありません。別の時点のファイルを分析すると変化を比較できます。',
+    compare_vs: 'との変化',
+    cmp_lost: 'アンフォローされた',
+    cmp_gained: '新しいフォロワー',
+    cmp_lost_head: 'アンフォローした人',
+    cmp_lost_sub: '以前はフォローしていました',
+    cmp_gained_head: '新しいフォロワー',
+    cmp_gained_sub: '新しくフォローしてくれました',
+    back_list: '‹ 記録一覧',
+    // share / contact
+    share_title: 'インスタ フォロー解除 チェッカー',
+    share_text: 'フォロワーを安全に分析しましょう。ログイン不要、ブラウザ内のみで分析！',
+    share_modal_title: 'アプリリンクをシェア',
+    share_modal_desc: '下のリンクをコピーしてシェアしてください。',
+    contact_title: 'お問い合わせ',
+    contact_desc: '問題がある場合は下記アドレスまでお問い合わせください。',
+    contact_note: '※ 上記アドレスはサンプルです。実際のお問い合わせ先に変更してください。',
+    // links
+    link_home: 'ホーム',
+    link_share: 'シェア',
+    link_contact: 'お問い合わせ',
+    link_export: '記録をエクスポート',
+    link_import: '記録をインポート',
+    link_clear: '全削除',
+    // toast
+    toast_exported: '記録をファイルにエクスポートしました',
+    toast_export_fail: 'エクスポートに失敗しました。',
+    toast_imported: '記録をインポートしました',
+    toast_import_fail: '記録ファイルを読み込めませんでした。',
+    toast_link_copied: 'アプリリンクをコピーしました',
+    toast_copied: 'コピーしました',
+    // tab bar
+    tab_home: 'ホーム',
+    tab_history_tab: '記録',
+    // app headers
+    hdr_guide: 'エクスポートガイド',
+    hdr_upload: 'ファイルアップロード',
+    hdr_result: '分析結果',
+    hdr_history: '過去の記録',
+    // settings
+    tab_settings: '設定',
+    hdr_settings: '設定',
+    settings_lang_section: '言語',
+    settings_support_section: 'サポート',
+    settings_contact: 'お問い合わせ',
+    // paywall
+    paywall_hdr: 'プレミアム',
+    paywall_title: 'フル機能を解除する',
+    paywall_desc: '一回払いで永久利用。無制限の結果と履歴比較をいつでも。',
+    paywall_free_label: '無料',
+    pw_f1: 'フォロー解除分析',
+    pw_f2: '上位10件の結果',
+    paywall_premium_label: 'プレミアム',
+    pw_p1: '無制限フルリスト',
+    pw_p2: '履歴比較分析',
+    pw_p3: '結果エクスポート (CSV)',
+    pw_p4: '広告なし',
+    paywall_price: '$2.99',
+    paywall_price_desc: '一回払い・永久利用',
+    paywall_btn: 'プレミアムを解除',
+    paywall_note: '支払いはApp Storeで安全に処理されます。\nサブスクリプションではなく一回払いです。',
+    paywall_restore: '購入を復元',
+    toast_premium: 'プレミアムが有効になりました！ 🎉',
+    toast_already_premium: 'すでにプレミアムです！',
+    toast_no_purchase: '復元できる購入履歴がありません。',
+    btn_unlock_full: '全件表示',
+  },
+  es: {
+    page_title: 'Buscador de Unfollow de Instagram',
+    topbar_title: 'Buscador de Unfollow',
+    // onboarding
+    onboard_title: 'Analiza tus seguidores<br><span class="hl">de forma segura</span>',
+    onboard_lead: 'Encuentra quién dejó de seguirte o a quién no sigues de vuelta. Todo el análisis ocurre <b>solo en este navegador</b>.',
+    feat1_title: 'Sin inicio de sesión',
+    feat1_desc: 'Nunca pedimos tus credenciales de Instagram.',
+    feat2_title: 'Datos oficiales, resultados precisos',
+    feat2_desc: 'Analizamos el archivo de exportación oficial de Instagram.',
+    feat3_title: 'Sin envío al servidor',
+    feat3_desc: 'El archivo no sale de tu dispositivo. Funciona sin conexión.',
+    feat4_title: 'Resultados 100% gratis',
+    feat4_desc: 'Sin límites ni desenfoque. Todo visible.',
+    // guide
+    guide_title: 'Cómo <span class="hl">exportar tus datos</span>',
+    guide_lead: 'Pasos para obtener tu archivo ZIP de Instagram usando la función oficial de exportación.',
+    step1_title: 'Abrir el Centro de cuentas',
+    step1_desc: 'Instagram <code>Configuración</code> → <code>Centro de cuentas</code>',
+    step2_title: 'Tu información y permisos',
+    step2_desc: '<code>Tu información y permisos</code> → <code>Descargar tu información</code>',
+    step3_title: 'Exportar al dispositivo',
+    step3_desc: 'Selecciona <code>Exportar al dispositivo</code> — nada se envía a servidores.',
+    step4_title: 'Seleccionar elementos y período',
+    step4_desc: 'Elige solo <code>Seguidores y seguidos</code>, período <code>Todo el tiempo</code>, formato <code>JSON</code> recomendado',
+    step5_title: 'Notificación → Recibir archivo',
+    step5_desc: 'Recibirás un email/notificación en ~10 min. Descarga el ZIP y súbelo en la siguiente pantalla.',
+    guide_warn: 'Si recibes el archivo en formato <b>HTML</b>, el análisis puede ser incompleto. Usa <b>JSON</b> si es posible. Los resultados pueden ser inexactos si el período no es <b>Todo el tiempo</b>.',
+    // upload
+    upload_title: '<span class="hl">Sube</span> tu archivo',
+    upload_lead: 'Sube el archivo ZIP que recibiste de Instagram. El análisis se ejecuta solo en este dispositivo.',
+    drop_title: 'Subir ZIP de exportación de Instagram',
+    drop_desc: 'instagram-usuario-fecha.zip · Clic o arrastra aquí',
+    upload_note: 'El archivo subido se <b>lee y analiza solo en este navegador</b>. Nunca se envía a servidores ni se almacena externamente.',
+    upload_secline: '🔒 El análisis se ejecuta completamente en este navegador.',
+    // analyze
+    analyze_title: 'Analizando...',
+    analyze_note: 'Los datos nunca salen de este dispositivo. Se procesan sin conexión de red.',
+    // result
+    result_title: 'Resultados',
+    compare_btn: 'Comparar con historial ›',
+    free_label: '✓ Todos los resultados gratis',
+    tab_notme_label: 'No te siguen<br><b id="cnt-notme">0</b>',
+    tab_mutual_label: 'Mutuos<br><b id="cnt-mutual">0</b>',
+    tab_notthem_label: 'No los sigues<br><b id="cnt-notthem">0</b>',
+    tab_notme_full: 'No te siguen de vuelta',
+    tab_mutual_full: 'Mutuos',
+    tab_notthem_full: 'No los sigues de vuelta',
+    result_disc: 'Los resultados pueden diferir si la cuenta está desactivada, eliminada o te ha bloqueado. La precisión depende de exportar datos de <b>Todo el tiempo</b>.',
+    search_placeholder: 'Buscar...',
+    of_total_followers: '{p}% de {n} seguidores totales',
+    of_total_following: '{p}% de {n} seguidos totales',
+    following_label: 'siguiendo',
+    days_label: 'd ',
+    visited: 'Visitado',
+    visited_recent: 'Reciente',
+    empty_list: 'Nadie aquí.',
+    load_more: 'Cargar más ({n} restantes)',
+    // history
+    history_title: 'Historial',
+    history_note: 'El historial se guarda solo en este dispositivo. Nunca se envía a servidores.',
+    history_empty: 'Aún no hay historial guardado.<br>Realiza un análisis y aparecerá aquí.',
+    // zip handling
+    zip_extracting: 'Extrayendo ZIP…',
+    zip_analyzing: 'Analizando seguidores/seguidos…',
+    zip_empty: '(el archivo está vacío)',
+    zip_not_found: 'No se encontraron datos de seguidores/seguidos. La lista de archivos dentro del ZIP se muestra abajo — captúrala y envíanosla para corregirlo.',
+    zip_ok: 'reconocido',
+    json_error: 'No se pudo leer el JSON',
+    // labels
+    followers: 'Seguidores',
+    following: 'Siguiendo',
+    count: '',
+    account: 'Cuenta',
+    unfollow: 'Dejó de seguir',
+    fans: 'Fans',
+    unknown_account: 'Cuenta desconocida',
+    // buttons
+    btn_history: 'Historial',
+    btn_analyze: 'Analizar',
+    btn_back: 'Volver',
+    btn_go_upload: 'Siguiente',
+    btn_need_file: 'Archivo requerido',
+    btn_reanalyze: 'Analizar de nuevo',
+    btn_edit: 'Editar',
+    btn_done: 'Listo',
+    btn_delete: 'Eliminar',
+    btn_cancel: 'Cancelar',
+    btn_close: 'Cerrar',
+    btn_confirm: 'OK',
+    btn_copy: 'Copiar',
+    // sort
+    sort_rec: 'Recomendado',
+    sort_new: 'Más reciente',
+    sort_old: 'Más antiguo',
+    // modals
+    del_title: '¿Eliminar este registro?',
+    del_desc: 'Este registro de análisis guardado en la app será eliminado.',
+    clear_title: '¿Borrar todo el historial?',
+    clear_desc: 'Todo el historial de análisis guardado en este dispositivo será eliminado. No se puede deshacer.',
+    choice_title: '¿Cómo deseas analizar?',
+    choice_new: 'Nuevo análisis',
+    choice_new_desc: 'Analiza mutuos, fans y unfollowers solo con este archivo.',
+    choice_compare: 'Comparar con historial',
+    choice_compare_desc: 'Encuentra quién dejó de seguirte desde la última vez.',
+    compare_title: 'Elige un registro pasado para comparar',
+    compare_desc: 'Compara este registro con el análisis actual para encontrar cambios.',
+    compare_no_past: 'Aún no hay registros para comparar. Analiza de nuevo con la misma cuenta más tarde para ver cambios.',
+    compare_no_other: 'No hay otros registros para esta cuenta. Analiza un archivo de otro momento para comparar cambios.',
+    compare_vs: 'vs. cambio',
+    cmp_lost: 'Dejó de seguirte',
+    cmp_gained: 'Nuevos seguidores',
+    cmp_lost_head: 'Personas que dejaron de seguirte',
+    cmp_lost_sub: 'Antes te seguían',
+    cmp_gained_head: 'Nuevos seguidores',
+    cmp_gained_sub: 'Empezaron a seguirte',
+    back_list: '‹ Lista de registros',
+    // share / contact
+    share_title: 'Buscador de Unfollow de Instagram',
+    share_text: 'Analiza tus seguidores de forma segura. ¡Sin inicio de sesión, todo en tu navegador!',
+    share_modal_title: 'Compartir enlace de la app',
+    share_modal_desc: 'Copia y comparte el enlace de abajo.',
+    contact_title: 'Contacto',
+    contact_desc: 'Si tienes algún problema, escríbenos a la dirección de abajo.',
+    contact_note: '※ Esta dirección es un ejemplo. Reemplázala con tu correo real.',
+    // links
+    link_home: 'Inicio',
+    link_share: 'Compartir',
+    link_contact: 'Contacto',
+    link_export: 'Exportar historial',
+    link_import: 'Importar historial',
+    link_clear: 'Borrar todo',
+    // toast
+    toast_exported: 'Historial exportado al archivo',
+    toast_export_fail: 'Error al exportar.',
+    toast_imported: 'Historial importado',
+    toast_import_fail: 'No se pudo leer el archivo de historial.',
+    toast_link_copied: 'Enlace de la app copiado',
+    toast_copied: 'Copiado',
+    // tab bar
+    tab_home: 'Inicio',
+    tab_history_tab: 'Historial',
+    // app headers
+    hdr_guide: 'Guía de exportación',
+    hdr_upload: 'Subir archivo',
+    hdr_result: 'Resultados',
+    hdr_history: 'Historial',
+    // settings
+    tab_settings: 'Ajustes',
+    hdr_settings: 'Ajustes',
+    settings_lang_section: 'Idioma',
+    settings_support_section: 'Soporte',
+    settings_contact: 'Contacto',
+    // paywall
+    paywall_hdr: 'Premium',
+    paywall_title: 'Desbloquea el acceso completo',
+    paywall_desc: 'Pago único. Disfruta de resultados ilimitados y comparación de historial para siempre.',
+    paywall_free_label: 'Gratis',
+    pw_f1: 'Análisis de unfollow',
+    pw_f2: 'Top 10 resultados',
+    paywall_premium_label: 'Premium',
+    pw_p1: 'Lista completa ilimitada',
+    pw_p2: 'Comparación de historial',
+    pw_p3: 'Exportar resultados (CSV)',
+    pw_p4: 'Sin anuncios',
+    paywall_price: '$2.99',
+    paywall_price_desc: 'Pago único · Acceso de por vida',
+    paywall_btn: 'Desbloquear Premium',
+    paywall_note: 'Pago procesado de forma segura a través de App Store.\nEsto es un pago único, no una suscripción.',
+    paywall_restore: 'Restaurar compra',
+    toast_premium: '¡Premium activado! 🎉',
+    toast_already_premium: '¡Ya tienes Premium!',
+    toast_no_purchase: 'No hay compras para restaurar.',
+    btn_unlock_full: 'Ver todo',
   }
+
 };
+
+/* premium helpers */
+function isPremium(){ return localStorage.getItem('iuf_premium') === 'true'; }
+function setPremium(){ localStorage.setItem('iuf_premium', 'true'); }
+
+function purchasePremium(){
+  setPremium();
+  applyLang();
+  goBack('paywall');
+  toast(T[window.lang].toast_premium);
+}
+
+function restorePurchase(){
+  const L = T[window.lang];
+  if(isPremium()){
+    toast(L.toast_already_premium || 'Already premium!');
+  } else {
+    toast(L.toast_no_purchase || 'No purchases to restore.');
+  }
+}
 
 /* ---- language init ---- */
 (function(){
   const saved = localStorage.getItem('iuf_lang');
-  if(saved === 'ko' || saved === 'en'){ window.lang = saved; }
-  else { window.lang = navigator.language.startsWith('ko') ? 'ko' : 'en'; }
+  if(['ko','en','ja','es'].includes(saved)){ window.lang = saved; }
+  else {
+    const nav = navigator.language.toLowerCase();
+    if(nav.startsWith('ko')) window.lang = 'ko';
+    else if(nav.startsWith('ja')) window.lang = 'ja';
+    else if(nav.startsWith('es')) window.lang = 'es';
+    else window.lang = 'en';
+  }
 })();
 
 function applyLang(){
@@ -758,10 +1232,27 @@ function applyLang(){
   const sSupp = document.getElementById('settings-section-support'); if(sSupp) sSupp.textContent = L.settings_support_section;
   const sCont = document.getElementById('settings-contact-label'); if(sCont) sCont.textContent = L.settings_contact;
   // sync lang checkmarks
-  const koCheck = document.getElementById('lang-ko-check');
-  const enCheck = document.getElementById('lang-en-check');
-  if(koCheck) koCheck.style.display = window.lang==='ko' ? '' : 'none';
-  if(enCheck) enCheck.style.display = window.lang==='en' ? '' : 'none';
+  ['ko','en','ja','es'].forEach(code => {
+    const el = document.getElementById('lang-'+code+'-check');
+    if(el) el.style.display = window.lang===code ? '' : 'none';
+  });
+  // paywall screen
+  const pwHdr = document.getElementById('paywall-hdr-title'); if(pwHdr) pwHdr.textContent = L.paywall_hdr;
+  const pwTitle = document.getElementById('paywall-title'); if(pwTitle) pwTitle.textContent = L.paywall_title;
+  const pwDesc = document.getElementById('paywall-desc'); if(pwDesc) pwDesc.textContent = L.paywall_desc;
+  const pwFreeLabel = document.getElementById('paywall-free-label'); if(pwFreeLabel) pwFreeLabel.textContent = L.paywall_free_label;
+  const pwF1 = document.getElementById('pw-f1'); if(pwF1) pwF1.textContent = L.pw_f1;
+  const pwF2 = document.getElementById('pw-f2'); if(pwF2) pwF2.textContent = L.pw_f2;
+  const pwPremLabel = document.getElementById('paywall-premium-label'); if(pwPremLabel) pwPremLabel.textContent = L.paywall_premium_label;
+  const pwP1 = document.getElementById('pw-p1'); if(pwP1) pwP1.textContent = L.pw_p1;
+  const pwP2 = document.getElementById('pw-p2'); if(pwP2) pwP2.textContent = L.pw_p2;
+  const pwP3 = document.getElementById('pw-p3'); if(pwP3) pwP3.textContent = L.pw_p3;
+  const pwP4 = document.getElementById('pw-p4'); if(pwP4) pwP4.textContent = L.pw_p4;
+  const pwPrice = document.getElementById('paywall-price'); if(pwPrice) pwPrice.textContent = L.paywall_price;
+  const pwPriceDesc = document.getElementById('paywall-price-desc'); if(pwPriceDesc) pwPriceDesc.textContent = L.paywall_price_desc;
+  const pwBtn = document.getElementById('paywall-btn'); if(pwBtn) pwBtn.textContent = L.paywall_btn;
+  const pwNote = document.getElementById('paywall-note'); if(pwNote) pwNote.textContent = L.paywall_note;
+  const pwRestore = document.getElementById('paywall-restore'); if(pwRestore) pwRestore.textContent = L.paywall_restore;
 }
 
 function toggleLang(){
@@ -778,17 +1269,16 @@ function setLang(l) {
   window.lang = l;
   localStorage.setItem('iuf_lang', l);
   applyLang();
-  // 체크마크 업데이트
-  const koCheck = document.getElementById('lang-ko-check');
-  const enCheck = document.getElementById('lang-en-check');
-  if(koCheck) koCheck.style.display = l==='ko' ? '' : 'none';
-  if(enCheck) enCheck.style.display = l==='en' ? '' : 'none';
+  ['ko','en','ja','es'].forEach(code => {
+    const el = document.getElementById('lang-'+code+'-check');
+    if(el) el.style.display = l===code ? '' : 'none';
+  });
 }
 
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
                 result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null };
 const $ = s => document.querySelector(s);
-const screens = ['onboard','guide','upload','analyze','result','history','settings'];
+const screens = ['onboard','guide','upload','analyze','result','history','settings','paywall'];
 
 // 화면 히스토리 스택 (슬라이드 방향 결정용)
 const screenStack = [];
@@ -1180,7 +1670,9 @@ function renderList(){
   const box = $('#list');
   const lab = state.tab==='mutual' ? T[window.lang].tab_mutual_full : T[window.lang].following_label;
   if(!all.length){ box.innerHTML = '<div class="empty">'+T[window.lang].empty_list+'</div>'; return; }
-  const shown = Math.min(state.shown, all.length);
+  const premium = isPremium();
+  const freeLimit = 10;
+  const shown = Math.min(state.shown, premium ? all.length : Math.min(all.length, freeLimit));
   const arr = all.slice(0, shown);
   const visited = getVisited();
   const recent = mostRecentVisited();
@@ -1194,7 +1686,17 @@ function renderList(){
                 : (visited[u]) ? '<span class="visit">'+T[window.lang].visited+'</span>' : '';
     return `<a class="row-u" data-u="${escapeHtml(u)}" href="https://instagram.com/${encodeURIComponent(u)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@${escapeHtml(u)}</b><span>${sub}</span></div>${badge}<span class="chev" style="color:var(--sub);font-size:18px;margin-left:8px;">›</span></a>`;
   }).join('');
-  if(all.length > shown){ html += '<button class="moreBtn" id="moreBtn">'+T[window.lang].load_more.replace('{n}',all.length-shown)+'</button>'; }
+  if(premium && all.length > shown){ html += '<button class="moreBtn" id="moreBtn">'+T[window.lang].load_more.replace('{n}',all.length-shown)+'</button>'; }
+  if(!premium && all.length > freeLimit){
+    html += '<div style="filter:blur(4px);pointer-events:none;opacity:0.6;">';
+    const blurItems = all.slice(freeLimit, freeLimit+3);
+    blurItems.forEach(u=>{
+      html += `<div class="row-u"><div class="av"></div><div class="nm"><b>@${escapeHtml(u)}</b><span>instagram.com/${escapeHtml(u)}</span></div></div>`;
+    });
+    html += '</div>';
+    const unlockLabel = (T[window.lang].btn_unlock_full) || 'Unlock Full List';
+    html += `<div style="text-align:center;margin-top:-60px;position:relative;z-index:2;padding-bottom:20px;"><button onclick="go('paywall')" style="background:var(--pink);color:#fff;border:none;border-radius:13px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;" id="unlock-btn">${unlockLabel}</button></div>`;
+  }
   box.innerHTML = html;
   if(state.editMode){
     box.querySelectorAll('.del').forEach(btn=> btn.onclick=()=>{ state.removed.add(btn.dataset.u); renderList(); });
@@ -1325,7 +1827,7 @@ function cmpTab(which){
 $('#goHome').onclick = goHome;
 $('#shareApp').onclick = shareApp;
 $('#contact').onclick = openContact;
-$('#compareBtn').onclick = openCompareList;
+$('#compareBtn').onclick = ()=>{ if(!isPremium()){ go('paywall'); return; } openCompareList(); };
 const goHome2El = $('#goHome2'); if(goHome2El) goHome2El.onclick = ()=>{ closeModal(); go('onboard'); };
 $('#overlay').onclick = e=>{ if(e.target.id==='overlay') closeModal(); };
 
