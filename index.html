@@ -245,7 +245,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <b id="step1-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step1-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
           <div class="step-img-wrap"><img id="step1-img" class="step-img hidden" alt="step1"/><div id="step1-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
-          <a id="step1-link" href="https://accountscenter.instagram.com/" target="_blank" rel="noopener" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
+          <a id="step1-link" href="https://www.instagram.com/" target="_blank" rel="noopener" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
         </div>
         <!-- STEP 2 -->
         <div class="guide-slide">
@@ -253,6 +253,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <b id="step2-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step2-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
           <div class="step-img-wrap"><img id="step2-img" class="step-img hidden" alt="step2"/><div id="step2-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
+          <a id="step2-link" href="https://accountscenter.instagram.com/" target="_blank" rel="noopener" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
         </div>
         <!-- STEP 3 -->
         <div class="guide-slide">
@@ -260,6 +261,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <b id="step3-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step3-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
           <div class="step-img-wrap"><img id="step3-img" class="step-img hidden" alt="step3"/><div id="step3-ph" class="step-img-ph">📸 이미지 준비 중</div></div>
+          <a id="step3-link" href="https://accountscenter.instagram.com/info_and_permissions/" target="_blank" rel="noopener" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
         </div>
         <!-- STEP 4 -->
         <div class="guide-slide">
@@ -636,7 +638,9 @@ const T = {
     btn_analyze: '분석하기',
     btn_back: '이전',
     btn_skip: '건너뛰기',
+    btn_settings: '설정 및 활동 바로가기 →',
     btn_acct_center: '계정센터 바로가기 →',
+    btn_info_perms: '내 정보 및 권한 바로가기 →',
     btn_go_upload: '파일 올리러 가기',
     btn_prev: '이전',
     btn_next_step: '다음',
@@ -832,7 +836,9 @@ const T = {
     btn_analyze: 'Analyze',
     btn_back: 'Back',
     btn_skip: 'Skip',
+    btn_settings: 'Open Settings & Activity →',
     btn_acct_center: 'Open Account Center →',
+    btn_info_perms: 'Your information & permissions →',
     btn_go_upload: 'Upload file',
     btn_prev: 'Back',
     btn_next_step: 'Next',
@@ -1028,7 +1034,9 @@ const T = {
     btn_analyze: '分析する',
     btn_back: '戻る',
     btn_skip: 'スキップ',
+    btn_settings: '設定とアクティビティを開く →',
     btn_acct_center: 'アカウントセンターを開く →',
+    btn_info_perms: '情報とアクセス許可 →',
     btn_go_upload: '次へ',
     btn_prev: '戻る',
     btn_next_step: '次へ',
@@ -1224,7 +1232,9 @@ const T = {
     btn_analyze: 'Analizar',
     btn_back: 'Volver',
     btn_skip: 'Omitir',
+    btn_settings: 'Abrir Configuración y actividad →',
     btn_acct_center: 'Abrir centro de cuentas →',
+    btn_info_perms: 'Tu información y permisos →',
     btn_go_upload: 'Siguiente',
     btn_prev: 'Anterior',
     btn_next_step: 'Siguiente',
@@ -1564,7 +1574,9 @@ function applyLang(){
   // app header titles
   const ghdr = document.getElementById('guide-hdr-title'); if(ghdr) ghdr.textContent = L.hdr_guide;
   const gskip = document.getElementById('guide-skip-btn'); if(gskip) gskip.textContent = L.btn_skip||'건너뛰기';
-  const glink = document.getElementById('step1-link'); if(glink) glink.textContent = L.btn_acct_center||'계정센터 바로가기 →';
+  const glink1 = document.getElementById('step1-link'); if(glink1) glink1.textContent = L.btn_settings||'설정 및 활동 바로가기 →';
+  const glink2 = document.getElementById('step2-link'); if(glink2) glink2.textContent = L.btn_acct_center||'계정센터 바로가기 →';
+  const glink3 = document.getElementById('step3-link'); if(glink3) glink3.textContent = L.btn_info_perms||'내 정보 및 권한 바로가기 →';
   const uhdr = document.getElementById('upload-hdr-title'); if(uhdr) uhdr.textContent = L.hdr_upload;
   const rhdr = document.getElementById('result-hdr-title'); if(rhdr) rhdr.textContent = L.hdr_result;
   const histHdr = document.getElementById('history-hdr-title'); if(histHdr) histHdr.textContent = L.hdr_history;
