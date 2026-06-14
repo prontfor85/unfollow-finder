@@ -247,7 +247,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <b id="step1-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step1-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
           <div class="step-img-wrap"><img id="step1-img" class="step-img" src="guide/kr/step1.png" alt="step1"/><div id="step1-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
-          <a id="step1-link" href="https://accountscenter.instagram.com/" target="_blank" rel="noopener" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
+          <a id="step1-link" href="#" onclick="openExternal('https://accountscenter.instagram.com/');return false;" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
         </div>
         <!-- STEP 2 -->
         <div class="guide-slide">
@@ -255,7 +255,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <b id="step2-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step2-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:16px;"></span>
           <div class="step-img-wrap"><img id="step2-img" class="step-img" src="guide/kr/step2.png" alt="step2"/><div id="step2-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
-          <a id="step2-link" href="https://accountscenter.instagram.com/info_and_permissions/" target="_blank" rel="noopener" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
+          <a id="step2-link" href="#" onclick="openExternal('https://accountscenter.instagram.com/info_and_permissions/');return false;" style="display:block;margin-top:16px;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
         </div>
         <!-- STEP 3 -->
         <div class="guide-slide">
@@ -566,6 +566,20 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 <input type="file" id="histFile" accept=".json,application/json" class="hidden">
 
 <script>
+
+/* 외부 링크 열기 — Capacitor 환경에서는 SFSafariViewController 사용 */
+async function openExternal(url) {
+  try {
+    const Browser = window.Capacitor?.Plugins?.Browser;
+    if (Browser) {
+      await Browser.open({ url });
+    } else {
+      window.open(url, '_blank');
+    }
+  } catch(e) {
+    window.open(url, '_blank');
+  }
+}
 
 /* =========================================================
    i18n — KO / EN
