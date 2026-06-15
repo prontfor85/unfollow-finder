@@ -419,6 +419,20 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           </div>
         </div>
       </div>
+      <!-- 테스트: 프리미엄 토글 -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--sub);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">DEV</div>
+        <div style="background:var(--card);border-radius:16px;overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;">
+            <span style="font-size:15px;color:var(--txt);">프리미엄 모드</span>
+            <label style="position:relative;display:inline-block;width:44px;height:26px;">
+              <input type="checkbox" id="dev-premium-toggle" onchange="toggleDevPremium(this.checked)" style="opacity:0;width:0;height:0;">
+              <span id="dev-premium-track" style="position:absolute;cursor:pointer;inset:0;border-radius:13px;background:var(--line);transition:.3s;"></span>
+              <span id="dev-premium-thumb" style="position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.3s;"></span>
+            </label>
+          </div>
+        </div>
+      </div>
       <!-- 문의하기 카드 -->
       <div>
         <div style="font-size:12px; color:var(--sub); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;" id="settings-section-support"></div>
@@ -1480,6 +1494,24 @@ function openPrivacy() {
 function isPremium(){ return localStorage.getItem('iuf_premium') === 'true'; }
 function setPremium(){ localStorage.setItem('iuf_premium', 'true'); }
 
+function toggleDevPremium(on){
+  localStorage.setItem('iuf_premium', on ? 'true' : 'false');
+  const track = document.getElementById('dev-premium-track');
+  const thumb = document.getElementById('dev-premium-thumb');
+  if(track) track.style.background = on ? 'var(--pink)' : 'var(--line)';
+  if(thumb) thumb.style.left = on ? '21px' : '3px';
+  toast(on ? '프리미엄 ON' : '프리미엄 OFF');
+}
+function syncDevPremiumToggle(){
+  const on = isPremium();
+  const el = document.getElementById('dev-premium-toggle');
+  const track = document.getElementById('dev-premium-track');
+  const thumb = document.getElementById('dev-premium-thumb');
+  if(el) el.checked = on;
+  if(track) track.style.background = on ? 'var(--pink)' : 'var(--line)';
+  if(thumb) thumb.style.left = on ? '21px' : '3px';
+}
+
 function purchasePremium(){
   setPremium();
   applyLang();
@@ -1796,6 +1828,7 @@ function switchTab(tab){
     go('history');
   } else if(tab==='settings'){
     go('settings');
+    syncDevPremiumToggle();
   }
   // 탭 활성화 상태 업데이트
   ['home','history','settings'].forEach(t => {
