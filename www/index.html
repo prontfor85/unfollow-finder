@@ -266,7 +266,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <div class="tag" style="margin-top:16px;" id="gtag-1"></div>
           <b id="step1-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step1-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:12px;"></span>
-          <div class="note" style="margin-bottom:12px;"><span>ℹ️</span><div id="step1-note"></div></div>
           <a id="step1-link" href="#" onclick="openExternal('instagram://settings');return false;" style="display:block;padding:14px;background:var(--card2);border:1px solid var(--line);border-radius:14px;text-align:center;color:var(--txt);font-size:14px;font-weight:600;text-decoration:none;"></a>
         </div>
         <!-- STEP 2 -->
@@ -637,7 +636,6 @@ const T = {
     guide_lead: '인스타그램(Meta)의 공식 기능으로 내 팔로워·팔로잉 파일을 받는 단계예요.',
     step1_title: '계정 센터 열기',
     step1_desc: '인스타그램에서 내 프로필 → ≡ 설정 및 활동 → 계정 센터를 눌러요.',
-    step1_note: '처음이라면 인스타그램 로그인 화면이 뜰 수 있어요.',
     step2_title: '내 정보 및 권한',
     step2_desc: '계정 센터에서 내 정보 및 권한 → 내 정보 내보내기를 선택해요.',
     step3_title: '기기로 내보내기',
@@ -841,7 +839,6 @@ const T = {
     guide_lead: 'These steps let you download your followers/following file using Instagram\'s official export feature.',
     step1_title: 'Open Accounts Center',
     step1_desc: 'On Instagram, go to your profile → ≡ Settings & Activity → Accounts Center.',
-    step1_note: 'You may see an Instagram login screen if it\'s your first time.',
     step2_title: 'Your information & permissions',
     step2_desc: 'In Accounts Center, tap Your information & permissions → Download your information.',
     step3_title: 'Download to device',
@@ -1045,7 +1042,6 @@ const T = {
     guide_lead: 'Instagramの公式機能でフォロワー・フォロー中のファイルを取得する手順です。',
     step1_title: 'アカウントセンターを開く',
     step1_desc: 'Instagramでプロフィール → ≡ 設定とアクティビティ → アカウントセンターをタップ。',
-    step1_note: '初回はInstagramのログイン画面が表示される場合があります。',
     step2_title: '情報とアクセス許可',
     step2_desc: 'アカウントセンターで情報とアクセス許可 → 情報のダウンロードを選択。',
     step3_title: 'デバイスにエクスポート',
@@ -1249,7 +1245,6 @@ const T = {
     guide_lead: 'Pasos para obtener tu archivo ZIP de Instagram usando la función oficial de exportación.',
     step1_title: 'Abrir el Centro de cuentas',
     step1_desc: 'En Instagram, ve a tu perfil → ≡ Configuración y actividad → Centro de cuentas.',
-    step1_note: 'Si es tu primera vez, puede aparecer la pantalla de inicio de sesión de Instagram.',
     step2_title: 'Tu información y permisos',
     step2_desc: 'En Centro de cuentas, toca Tu información y permisos → Descargar tu información.',
     step3_title: 'Exportar al dispositivo',
@@ -1626,7 +1621,6 @@ function applyLang(){
   const gl = document.getElementById('guide-lead'); if(gl) gl.textContent = L.guide_lead;
   const s1t = document.getElementById('step1-title'); if(s1t) s1t.textContent = L.step1_title;
   const s1d = document.getElementById('step1-desc'); if(s1d) s1d.textContent = L.step1_desc;
-  const s1n = document.getElementById('step1-note'); if(s1n) s1n.textContent = L.step1_note||'';
   const s2t = document.getElementById('step2-title'); if(s2t) s2t.textContent = L.step2_title;
   const s2d = document.getElementById('step2-desc'); if(s2d) s2d.textContent = L.step2_desc;
   const s3t = document.getElementById('step3-title'); if(s3t) s3t.textContent = L.step3_title;
