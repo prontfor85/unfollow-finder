@@ -29,7 +29,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 </script>
 <style>
   :root{
-    --pink:#03C75A; --pink-dk:#02A24A; --bg:#0E0E12; --card:#17171C;
+    --pink:#FF337E; --pink-dk:#D4206A; --bg:#0E0E12; --card:#17171C;
+    --grad:linear-gradient(90deg,#5052D9 0%,#FF337E 100%);
     --card2:#1F1F26; --line:#2A2A33; --txt:#F3F3F5; --sub:#9A9AA6; --green:#33D17A;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
@@ -92,7 +93,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .manual .pick{background:var(--card2); border:1px solid var(--line); color:var(--txt); font-size:12.5px; font-weight:600; padding:9px 14px; border-radius:9px; cursor:pointer;}
   .manual.ok{border:1px solid rgba(51,209,122,.4);} .manual.ok .pick{color:var(--green);}
   .btn{position:fixed; bottom:calc(56px + env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%); width:100%; max-width:430px; padding:16px 20px 16px; background:linear-gradient(180deg,transparent,var(--bg) 30%);}
-  .btn button{width:100%; border:none; border-radius:15px; padding:17px; font-size:16px; font-weight:700; color:#fff; background:var(--pink); cursor:pointer; transition:.15s;}
+  .btn button{width:100%; border:none; border-radius:15px; padding:17px; font-size:16px; font-weight:700; color:#fff; background:var(--grad); cursor:pointer; transition:.15s;}
   .btn button:disabled{background:var(--card2); color:var(--sub); cursor:not-allowed;}
   .btn button.ghost{background:var(--card2);}
   .btn .row{display:flex; gap:10px;}
@@ -101,7 +102,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .spin{width:88px; height:88px; border-radius:50%; border:5px solid var(--card2); border-top-color:var(--pink); margin:60px auto 26px; animation:rot 1s linear infinite;}
   @keyframes rot{to{transform:rotate(360deg);}}
   /* result */
-  .hero{background:linear-gradient(135deg,var(--pink),var(--pink-dk)); border-radius:20px; padding:22px; margin-bottom:14px;}
+  .hero{background:var(--grad); border-radius:20px; padding:22px; margin-bottom:14px;}
   .hero .lbl{font-size:13px; opacity:.92; font-weight:600;}
   .hero .num{font-size:52px; font-weight:800; line-height:1.1; margin:2px 0;}
   .hero .num small{font-size:22px; font-weight:700;}
