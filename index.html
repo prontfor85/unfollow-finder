@@ -2080,7 +2080,8 @@ function openHistory(){ renderHistory(); go('history'); }
 function renderHistory(){
   const h = getHistory();
   const box = $('#historyList');
-  if(!h.length){ box.innerHTML='<div class="empty">'+T[window.lang].history_empty+'</div>'; return; }
+  if(!h.length){ box.style.cssText='display:flex;align-items:center;justify-content:center;min-height:50vh;'; box.innerHTML='<div class="empty">'+T[window.lang].history_empty+'</div>'; return; }
+  box.style.cssText='';
   box.innerHTML = h.map((s,i)=>{
     const st = snapStats(s);
     return '<div class="rec2" onclick="viewSnapshot('+i+')">'+
