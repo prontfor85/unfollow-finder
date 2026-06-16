@@ -53,11 +53,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .feat span{color:var(--sub); font-size:12.5px; line-height:1.45;}
   .step{background:var(--card); border-radius:16px; padding:16px; margin-bottom:11px;}
   .step-img-wrap{margin-top:12px; border-radius:12px; overflow:visible; width:100%; aspect-ratio:1/1; position:relative; background:var(--card2);}
-  .hl-overlay{position:absolute; border-radius:15px; pointer-events:none; animation:hl-glow 1.6s ease-in-out infinite;}
-  .hl-underline{position:absolute; pointer-events:none; border-bottom:2px solid #FF2424;}
+  .hl-overlay{position:absolute; border-radius:10px; pointer-events:none; animation:hl-glow 1.6s ease-in-out infinite;}
+  .hl-underline{position:absolute; pointer-events:none; border-bottom:2px solid #FF187C;}
   @keyframes hl-glow{
-    0%,100%{box-shadow:inset 0 0 0 2px #FF2424, 0 0 0 0 rgba(255,36,36,0);}
-    50%{box-shadow:inset 0 0 0 2px #FF2424, 0 0 10px 4px rgba(255,36,36,0.4);}
+    0%,100%{box-shadow:inset 0 0 0 2px #FF187C, 0 0 0 0 rgba(255,24,124,0);}
+    50%{box-shadow:inset 0 0 0 2px #FF187C, 0 0 10px 4px rgba(255,24,124,0.4);}
   }
   .step-img{width:100%; height:100%; object-fit:cover; border-radius:12px; display:block; position:absolute; inset:0;}
   .step-img-ph{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; border-radius:12px; font-size:13px; color:var(--sub);
@@ -262,7 +262,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <div style="display:flex;transition:transform .3s ease;" id="guide-slides">
         <!-- STEP 1 -->
         <div class="guide-slide">
-          <div class="step-img-wrap"><img id="step1-img" class="step-img" src="guide/kr/1.jpg" alt="step1"/><div id="step1-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
+          <div class="step-img-wrap"><img id="step1-img" class="step-img" src="guide/kr/1.jpg" alt="step1"/><div class="hl-overlay" style="left:2.29%;top:37.71%;width:95.43%;height:14%;"></div><div id="step1-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
           <div class="tag" style="margin-top:16px;" id="gtag-1"></div>
           <b id="step1-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step1-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:12px;"></span>
@@ -271,14 +271,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         </div>
         <!-- STEP 2 -->
         <div class="guide-slide">
-          <div class="step-img-wrap"><img id="step2-img" class="step-img" src="guide/kr/2.jpg" alt="step2"/><div id="step2-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
+          <div class="step-img-wrap"><img id="step2-img" class="step-img" src="guide/kr/2.jpg" alt="step2"/><div class="hl-overlay" style="left:4%;top:76.29%;width:92%;height:12.86%;"></div><div id="step2-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
           <div class="tag" style="margin-top:16px;" id="gtag-2"></div>
           <b id="step2-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step2-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;"></span>
         </div>
         <!-- STEP 3 -->
         <div class="guide-slide">
-          <div class="step-img-wrap"><img id="step3-img" class="step-img" src="guide/kr/3.jpg" alt="step3"/><div id="step3-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
+          <div class="step-img-wrap"><img id="step3-img" class="step-img" src="guide/kr/3.jpg" alt="step3"/><div class="hl-overlay" style="left:4.57%;top:31.14%;width:90.86%;height:14%;"></div><div id="step3-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
           <div class="tag" style="margin-top:16px;" id="gtag-3"></div>
           <b id="step3-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step3-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:12px;"></span>
@@ -286,7 +286,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         </div>
         <!-- STEP 4 -->
         <div class="guide-slide">
-          <div class="step-img-wrap"><img id="step4-img" class="step-img" src="guide/kr/4.jpg" alt="step4"/><div id="step4-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
+          <div class="step-img-wrap"><img id="step4-img" class="step-img" src="guide/kr/4.jpg" alt="step4"/><div class="hl-overlay" style="left:3.43%;top:82%;width:93.14%;height:15.14%;"></div><div class="hl-underline" style="left:22.29%;top:12.57%;width:24%;"></div><div class="hl-underline" style="left:22.29%;top:28.57%;width:13.71%;"></div><div id="step4-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
           <div class="tag" style="margin-top:16px;" id="gtag-4"></div>
           <b id="step4-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step4-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:12px;"></span>
