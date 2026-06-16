@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0E0E12; font-family: -apple-system, sans-serif; padding: 32px 20px; }
+  h1 { color: #9A9AA6; font-size: 13px; margin-bottom: 24px; letter-spacing: .05em; text-transform: uppercase; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 700px; margin: 0 auto; }
+  .card { background: #17171C; border-radius: 16px; padding: 20px; }
+  .label { color: #F3F3F5; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .desc { color: #9A9AA6; font-size: 12px; margin-bottom: 16px; line-height: 1.5; }
+  .img-wrap {
+    width: 100%; aspect-ratio: 16/9; background: #1F1F26;
+    border-radius: 10px; position: relative; overflow: hidden;
+  }
+  /* 가짜 인스타 UI */
+  .fake-ui { position: absolute; inset: 0; padding: 12px 14px; }
+  .fake-row { height: 10px; background: #2A2A33; border-radius: 4px; margin-bottom: 8px; }
+  .fake-row.short { width: 40%; }
+  .fake-item {
+    display: flex; align-items: center; gap: 10px;
+    background: #252529; border-radius: 8px; padding: 10px 12px;
+    margin-bottom: 6px;
+  }
+  .fake-icon { width: 28px; height: 28px; background: #3A3A44; border-radius: 50%; flex-shrink: 0; }
+  .fake-text { flex: 1; }
+  .fake-t1 { height: 9px; background: #3A3A44; border-radius: 3px; margin-bottom: 5px; width: 60%; }
+  .fake-t2 { height: 7px; background: #2A2A33; border-radius: 3px; width: 85%; }
+
+  /* ── 하이라이트 공통 ── */
+  .hl {
+    position: absolute;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  /* 1. Marching ants */
+  .hl-march {
+    border: none;
+    background-image:
+      repeating-linear-gradient(90deg,#FF3B30 0,#FF3B30 6px,transparent 6px,transparent 12px),
+      repeating-linear-gradient(90deg,#FF3B30 0,#FF3B30 6px,transparent 6px,transparent 12px),
+      repeating-linear-gradient(0deg, #FF3B30 0,#FF3B30 6px,transparent 6px,transparent 12px),
+      repeating-linear-gradient(0deg, #FF3B30 0,#FF3B30 6px,transparent 6px,transparent 12px);
+    background-size: 12px 2px, 12px 2px, 2px 12px, 2px 12px;
+    background-position: 0 0, 0 100%, 0 0, 100% 0;
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    animation: march 1.2s linear infinite;
+  }
+  @keyframes march {
+    to { background-position: 12px 0, -12px 100%, 0 -12px, 100% 12px; }
+  }
+
+  /* 2. Pulse */
+  .hl-pulse {
+    border: 2px solid #FF3B30;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.04); opacity: 0.5; }
+  }
+
+  /* 3. Glow */
+  .hl-glow {
+    border: 2px solid #FF3B30;
+    animation: glow 1.6s ease-in-out infinite;
+  }
+  @keyframes glow {
+    0%,100% { box-shadow: 0 0 0 0 rgba(255,59,48,0); }
+    50% { box-shadow: 0 0 0 6px rgba(255,59,48,0.35), 0 0 14px 2px rgba(255,59,48,0.2); }
+  }
+
+  /* 4. Dash draw */
+  .hl-draw {
+    border: 2px dashed transparent;
+    outline: none;
+  }
+  .hl-draw::before {
+    content: '';
+    position: absolute; inset: -2px;
+    border-radius: 9px;
+    background:
+      repeating-linear-gradient(90deg,#FF3B30 0,#FF3B30 6px,transparent 6px,transparent 12px) 0 0 / 12px 2px repeat-x,
+      repeating-linear-gradient(90deg,#FF3B30 0,#FF3B30 6px,transparent 6px,transparent 12px) 0 100% / 12px 2px repeat-x,
+      repeating-linear-gradient(0deg,#FF3B30 0,#FF3B30 6px,transparent 6px,transparent 12px) 0 0 / 2px 12px repeat-y,
+      repeating-linear-gradient(0deg,#FF3B30 0,#FF3B30 6px,transparent 6px,transparent 12px) 100% 0 / 2px 12px repeat-y;
+    clip-path: inset(0 100% 0 0);
+    animation: draw 1.2s cubic-bezier(.4,0,.2,1) infinite;
+  }
+  @keyframes draw {
+    0%   { clip-path: inset(0 100% 0 0); }
+    50%  { clip-path: inset(0 0% 0 0); }
+    100% { clip-path: inset(0 0 0 0); opacity: 0; }
+  }
+
+  /* 5. Shimmer */
+  .hl-shimmer {
+    border: 2px solid rgba(255,59,48,0.4);
+    overflow: hidden;
+  }
+  .hl-shimmer::after {
+    content: '';
+    position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,59,48,0.5), transparent);
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    to { left: 160%; }
+  }
+</style>
+</head>
+<body>
+<h1 style="text-align:center; margin-bottom:32px;">Highlight Animation Preview</h1>
+<div class="grid">
+
+  <!-- 1. Marching ants -->
+  <div class="card">
+    <div class="label">1. Marching Ants</div>
+    <div class="desc">점선이 시계방향으로 흘러요. "여기 탭하세요" 가장 직관적.</div>
+    <div class="img-wrap">
+      <div class="fake-ui">
+        <div class="fake-row short"></div>
+        <div class="fake-item">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+        <div class="fake-item" style="opacity:.5">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+      </div>
+      <div class="hl hl-march" style="top:34px;left:14px;right:14px;height:46px;"></div>
+    </div>
+  </div>
+
+  <!-- 2. Pulse -->
+  <div class="card">
+    <div class="label">2. Pulse</div>
+    <div class="desc">테두리가 커졌다 작아지며 깜빡여요. 주목도 높음.</div>
+    <div class="img-wrap">
+      <div class="fake-ui">
+        <div class="fake-row short"></div>
+        <div class="fake-item">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+        <div class="fake-item" style="opacity:.5">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+      </div>
+      <div class="hl hl-pulse" style="top:34px;left:14px;right:14px;height:46px;"></div>
+    </div>
+  </div>
+
+  <!-- 3. Glow -->
+  <div class="card">
+    <div class="label">3. Glow</div>
+    <div class="desc">빛이 번졌다 사라져요. 세련되고 부드러운 느낌.</div>
+    <div class="img-wrap">
+      <div class="fake-ui">
+        <div class="fake-row short"></div>
+        <div class="fake-item">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+        <div class="fake-item" style="opacity:.5">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+      </div>
+      <div class="hl hl-glow" style="top:34px;left:14px;right:14px;height:46px;"></div>
+    </div>
+  </div>
+
+  <!-- 4. Dash draw -->
+  <div class="card">
+    <div class="label">4. Dash Draw</div>
+    <div class="desc">점선이 테두리를 따라 그려져요. 드라마틱한 느낌.</div>
+    <div class="img-wrap">
+      <div class="fake-ui">
+        <div class="fake-row short"></div>
+        <div class="fake-item">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+        <div class="fake-item" style="opacity:.5">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+      </div>
+      <div class="hl hl-draw" style="top:34px;left:14px;right:14px;height:46px;"></div>
+    </div>
+  </div>
+
+  <!-- 5. Shimmer -->
+  <div class="card" style="grid-column:1/-1; max-width:340px; margin:0 auto; width:100%;">
+    <div class="label">5. Shimmer</div>
+    <div class="desc">빛이 왼쪽에서 오른쪽으로 스윽 지나가요. 로딩/하이라이트 혼합 느낌.</div>
+    <div class="img-wrap">
+      <div class="fake-ui">
+        <div class="fake-row short"></div>
+        <div class="fake-item">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+        <div class="fake-item" style="opacity:.5">
+          <div class="fake-icon"></div>
+          <div class="fake-text"><div class="fake-t1"></div><div class="fake-t2"></div></div>
+        </div>
+      </div>
+      <div class="hl hl-shimmer" style="top:34px;left:14px;right:14px;height:46px;"></div>
+    </div>
+  </div>
+
+</div>
+</body></html>
