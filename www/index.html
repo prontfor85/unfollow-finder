@@ -2178,7 +2178,10 @@ function renderList(){
     }
     const badge = (u===recent) ? '<span class="visit recent">'+T[window.lang].visited_recent+'</span>'
                 : (visited[u]) ? '<span class="visit">'+T[window.lang].visited+'</span>' : '';
-    return `<a class="row-u" data-u="${escapeHtml(u)}" href="https://instagram.com/${encodeURIComponent(u)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@${escapeHtml(u)}</b><span>${sub}</span></div>${badge}<span class="chev" style="color:var(--sub);font-size:18px;margin-left:8px;">›</span></a>`;
+    const profileUrl = (window.Capacitor?.getPlatform?.() === 'android')
+      ? `instagram://user?username=${encodeURIComponent(u)}`
+      : `https://instagram.com/${encodeURIComponent(u)}`;
+    return `<a class="row-u" data-u="${escapeHtml(u)}" href="${profileUrl}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><div class="av"></div><div class="nm"><b>@${escapeHtml(u)}</b><span>${sub}</span></div>${badge}<span class="chev" style="color:var(--sub);font-size:18px;margin-left:8px;">›</span></a>`;
   }).join('');
   if(premium && all.length > shown){ html += '<button class="moreBtn" id="moreBtn">'+T[window.lang].load_more.replace('{n}',all.length-shown)+'</button>'; }
   if(!premium && all.length > freeLimit){
