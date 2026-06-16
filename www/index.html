@@ -1745,11 +1745,13 @@ function go(name, isBack){
   });
   // 탭바 활성 탭 업데이트
   const homeScreens = ['onboard','guide','upload','analyze','result'];
-  const isHomeTab = homeScreens.includes(name);
+  const fromHistory = name === 'result' && screenStack[screenStack.length-2] === 'history';
+  const isHomeTab = homeScreens.includes(name) && !fromHistory;
+  const isHistTab = name === 'history' || fromHistory;
   const tabHome = document.getElementById('tab-home');
   const tabHist = document.getElementById('tab-history');
   if(tabHome){ tabHome.classList.toggle('active', isHomeTab); }
-  if(tabHist){ tabHist.classList.toggle('active', name==='history'); }
+  if(tabHist){ tabHist.classList.toggle('active', isHistTab); }
   if(name==='guide'){ guideStep=0; setTimeout(guideUpdateView, 50); }
   renderButton(name);
   window.scrollTo(0,0);
