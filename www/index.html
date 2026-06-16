@@ -1719,7 +1719,7 @@ function setLang(l) {
 }
 
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
-                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null };
+                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null, viewingHistoryIdx:null };
 const $ = s => document.querySelector(s);
 const screens = ['onboard','guide','upload','analyze','result','history','settings','privacy','compare'];
 
@@ -2024,6 +2024,7 @@ function runAnalyze(){
     const notFollowMe = state.following.filter(u=>!F.has(u));   // I follow, they don't follow back
     state.result = { mutual:dedupe(mutual), iDontFollow:dedupe(iDontFollow), notFollowMe:dedupe(notFollowMe) };
     saveSnapshot();
+    state.viewingHistoryIdx = null;
     showResult();
     // 자동 비교 안 함 — 결과 화면의 "지난 기록과 비교하기" 버튼으로만 비교
   }, 1100);
@@ -2042,6 +2043,7 @@ function saveSnapshot(){
 // 저장된 스냅샷을 분석 결과(풀페이지)로 다시 보여주기
 function viewSnapshot(i){
   const h = getHistory(); const s = h[i]; if(!s) return;
+  state.viewingHistoryIdx = i;
   state.followers = (s.listFollowers||[]).slice();
   state.following = (s.listFollowing||[]).slice();
   state.tsFollower = new Map(Object.entries(s.tsFollower||{}));
@@ -2259,13 +2261,15 @@ function openContact(){
 
 function openCompareList(){
   const h = getHistory();
-  const acct = h[0] ? (h[0].account||null) : null;
-  const past = h.map((s,i)=>({s,i})).filter(x => x.i>0 && (x.s.account||null)===acct);
+  const curIdx = (state.viewingHistoryIdx != null) ? state.viewingHistoryIdx : 0;
+  const cur = h[curIdx];
+  const acct = cur ? (cur.account||null) : null;
+  const past = h.map((s,i)=>({s,i})).filter(x => x.i !== curIdx && (x.s.account||null)===acct);
   let body;
   if(!past.length){
     body = '<div class="sd" style="margin-top:12px;">'+(acct?'@'+escapeHtml(acct)+' ':'')+(T[window.lang].compare_no_past)+'</div>';
   } else {
-    body = past.map(x=>{ const st=snapStats(x.s); return '<div class="rec" onclick="compareWith('+x.i+",'list')\"><b>"+fmtDate(x.s.date)+'</b><span>팔로워 '+st.followers+'명 · 언팔 '+st.unfollow+'명</span></div>'; }).join('');
+    body = past.map(x=>{ const st=snapStats(x.s); return '<div class="rec" onclick="compareWith('+x.i+",'list')\"><b>"+fmtDate(effDate(x.s))+'</b><span>팔로워 '+st.followers+'명 · 언팔 '+st.unfollow+'명</span></div>'; }).join('');
   }
   const hdr = document.getElementById('compare-hdr-title');
   if(hdr) hdr.textContent = T[window.lang].compare_title||'비교할 기록 선택';
