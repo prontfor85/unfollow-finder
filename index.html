@@ -172,7 +172,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .hnote{display:flex; gap:8px; color:var(--sub); font-size:11.5px; line-height:1.5; margin-bottom:14px; padding:11px 13px; background:var(--card); border-radius:11px;}
   .rec2{display:flex; align-items:center; gap:13px; background:var(--card); border-radius:16px; padding:15px 14px; margin-bottom:11px; cursor:pointer; transition:.15s; border:1px solid transparent;}
   .rec2:hover{border-color:var(--pink);}
-  .rec2 .ic2{width:48px; height:48px; flex:none; border-radius:13px; background:var(--pink); display:flex; align-items:center; justify-content:center; font-size:22px;}
+  .rec2 .ic2{width:40px; height:40px; flex:none; display:block;}
   .rec2 .m2{flex:1; min-width:0;}
   .rec2 .m2 b{font-size:14.5px;} .rec2 .m2 .s2{display:block; color:var(--sub); font-size:12px; margin-top:3px;} .rec2 .m2 .dt2{display:block; color:var(--sub); opacity:.7; font-size:11px; margin-top:3px;}
   .acct2{display:inline-block; font-size:11px; font-weight:700; color:var(--green); background:rgba(51,209,122,.14); padding:2px 8px; border-radius:999px; margin-top:5px;}
@@ -2092,7 +2092,7 @@ function renderHistory(){
   box.innerHTML = h.map((s,i)=>{
     const st = snapStats(s);
     return '<div class="rec2" onclick="viewSnapshot('+i+')">'+
-      '<div class="ic2"><svg class="ico" viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="16" rx="2"></rect><path d="M9 4h6v3H9z"></path><path d="M9 11h6M9 15h4"></path></svg></div>'+
+      '<div class="ic2"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="12" fill="url(#zip-grad)"/><path d="M10.1152 24V22.4414L13.8301 17.6309V17.5137H10.1445V15.5449H16.7773V17.0977L13.0625 21.9141V22.0312H16.9121V24H10.1152ZM18.623 24V15.5449H21.1074V24H18.623ZM24.2949 21.6914V19.8574H26.2402C26.6504 19.8574 26.9707 19.7559 27.2012 19.5527C27.4355 19.3457 27.5527 19.041 27.5527 18.6387V18.627C27.5527 18.2207 27.4355 17.918 27.2012 17.7188C26.9707 17.5156 26.6504 17.4141 26.2402 17.4141H24.2949V15.5449H26.832C27.4922 15.5449 28.0625 15.6719 28.543 15.9258C29.0273 16.1797 29.4004 16.5371 29.6621 16.998C29.9277 17.459 30.0605 18.002 30.0605 18.627V18.6387C30.0605 19.2637 29.9277 19.8047 29.6621 20.2617C29.4004 20.7188 29.0273 21.0723 28.543 21.3223C28.0625 21.5684 27.4922 21.6914 26.832 21.6914H24.2949ZM23.0527 24V15.5449H25.5371V24H23.0527Z" fill="white"/><defs><linearGradient id="zip-grad" x1="0" y1="20" x2="40" y2="20" gradientUnits="userSpaceOnUse"><stop stop-color="#5052D9"/><stop offset="1" stop-color="#FF337E"/></linearGradient></defs></svg></div>'+
       '<div class="m2"><b>'+T[window.lang].following+' '+st.following+T[window.lang].count+' · '+T[window.lang].followers+' '+st.followers+T[window.lang].count+'</b>'+
       '<span class="s2">'+T[window.lang].unfollow+' '+st.unfollow+T[window.lang].count+' · '+T[window.lang].tab_mutual_full+' '+st.mutual+T[window.lang].count+' · '+T[window.lang].fans+' '+st.fans+T[window.lang].count+'</span>'+
       '<span class="dt2">'+fmtDateTime(s.date)+'</span>'+
