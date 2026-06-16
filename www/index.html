@@ -2279,7 +2279,7 @@ function renderList(){
     });
     html += '</div>';
     const unlockLabel = (T[window.lang].btn_unlock_full) || 'Unlock Full List';
-    html += `<div style="text-align:center;margin-top:-60px;position:relative;z-index:2;padding-bottom:20px;"><button onclick="showPaywall()" style="background:var(--pink);color:#fff;border:none;border-radius:13px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;" id="unlock-btn">${unlockLabel}</button></div>`;
+    html += `<div style="text-align:center;margin-top:-60px;position:relative;z-index:2;padding-bottom:20px;"><button onclick="showPaywall()" style="background:var(--grad);color:#fff;border:none;border-radius:13px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;" id="unlock-btn">${unlockLabel}</button></div>`;
   }
   box.innerHTML = html;
   if(state.editMode){
