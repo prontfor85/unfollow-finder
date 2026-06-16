@@ -1855,8 +1855,8 @@ function switchTab(tab){
 }
 
 function renderButton(name){
-  const row = $('#btnRow'); const note = $('#bottomNote'); const tip = $('#btnTip');
-  row.innerHTML=''; note.textContent=''; tip.classList.add('hidden');
+  const row = $('#btnRow'); const tip = $('#btnTip');
+  row.innerHTML=''; tip.classList.add('hidden');
   const mk = (label, fn, ghost) => { const b=document.createElement('button'); b.textContent=label; if(ghost)b.className='ghost'; b.onclick=fn; return b; };
   if(name==='analyze' || name==='history'){ $('#bottom').classList.add('hidden'); return; }
   if(name==='onboard'){
