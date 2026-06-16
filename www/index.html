@@ -335,31 +335,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     </div>
     <div id="zipStatus"></div>
 
-    <!-- JSON 개별 업로드 -->
-    <div style="margin-top:20px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <div style="flex:1;height:1px;background:var(--line);"></div>
-        <span id="upload-or-label" style="font-size:12px;color:var(--sub);">또는 JSON 파일로 개별 업로드</span>
-        <div style="flex:1;height:1px;background:var(--line);"></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <label for="jsonFollowerInput" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;background:var(--card);border:1px solid var(--line);border-radius:14px;cursor:pointer;text-align:center;">
-          <svg style="width:22px;height:22px;color:var(--sub);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span style="font-size:12px;font-weight:600;color:var(--txt);" id="json-follower-label">팔로워</span>
-          <span style="font-size:10px;color:var(--sub);">followers_1.json</span>
-          <span id="follower-json-status" style="font-size:12px;color:var(--sub);"></span>
-        </label>
-        <input type="file" id="jsonFollowerInput" accept=".json" style="display:none;" onchange="handleFollowerJson(this)">
-
-        <label for="jsonFollowingInput" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;background:var(--card);border:1px solid var(--line);border-radius:14px;cursor:pointer;text-align:center;">
-          <svg style="width:22px;height:22px;color:var(--sub);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span style="font-size:12px;font-weight:600;color:var(--txt);" id="json-following-label">팔로잉</span>
-          <span style="font-size:10px;color:var(--sub);">following.json</span>
-          <span id="following-json-status" style="font-size:12px;color:var(--sub);"></span>
-        </label>
-        <input type="file" id="jsonFollowingInput" accept=".json" style="display:none;" onchange="handleFollowingJson(this)">
-      </div>
-    </div>
 
     <div class="note" style="margin-top:16px;"><span><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg></span><div id="upload-note"></div></div>
   </section>
@@ -680,7 +655,7 @@ const T = {
     // upload
     upload_title: '파일을 <span class="hl">올려주세요</span>',
     upload_lead: '인스타그램에서 받은 ZIP 파일을 올려주세요. 분석은 이 기기 안에서만 이뤄져요.',
-    drop_title: '인스타에서 받은 ZIP 올리기',
+    drop_title: '인스타그램에서 받은 ZIP 올리기',
     drop_desc: '',
     upload_note: '업로드한 파일은 <b>이 브라우저 안에서만</b> 읽고 분석합니다. 서버로 전송하거나 저장하지 않아요. 분석 결과 화면은 새로고침하면 사라져요(지난 내역만 따로 기기에 저장돼요).',
     upload_secline: '🔒 분석은 이 브라우저 안에서만 실행됩니다.',
@@ -2014,41 +1989,6 @@ async function handleZip(file){
   }
 }
 
-async function handleFollowerJson(input) {
-  const file = input.files[0]; if(!file) return;
-  const statusEl = document.getElementById('follower-json-status');
-  try {
-    const txt = await file.text();
-    const parsed = extractUsernames(JSON.parse(txt));
-    if(!parsed.length) throw new Error('empty');
-    setFollowers(parsed);
-    if(statusEl) statusEl.style.color = 'var(--pink)';
-    if(statusEl) statusEl.textContent = '✓ ' + parsed.length + '명';
-    renderButton('upload');
-  } catch(e) {
-    if(statusEl) statusEl.style.color = '#ff5555';
-    if(statusEl) statusEl.textContent = '❌ 오류';
-  }
-  input.value = '';
-}
-
-async function handleFollowingJson(input) {
-  const file = input.files[0]; if(!file) return;
-  const statusEl = document.getElementById('following-json-status');
-  try {
-    const txt = await file.text();
-    const parsed = extractUsernames(JSON.parse(txt));
-    if(!parsed.length) throw new Error('empty');
-    setFollowing(parsed);
-    if(statusEl) statusEl.style.color = 'var(--pink)';
-    if(statusEl) statusEl.textContent = '✓ ' + parsed.length + '명';
-    renderButton('upload');
-  } catch(e) {
-    if(statusEl) statusEl.style.color = '#ff5555';
-    if(statusEl) statusEl.textContent = '❌ 오류';
-  }
-  input.value = '';
-}
 
 function dedupe(a){ return Array.from(new Set(a.filter(Boolean))); }
 
