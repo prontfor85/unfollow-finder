@@ -586,7 +586,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   <div class="btn" id="bottom">
     <div class="tip hidden" id="btnTip"></div>
     <div class="row" id="btnRow"></div>
-    <div class="secline" id="bottomNote"></div>
   </div>
 
   <!-- MODAL OVERLAY -->
@@ -1867,7 +1866,6 @@ function renderButton(name){
   else if(name==='upload'){
     const ready = !!(state.followers && state.followers.length && state.following && state.following.length);
     const b = mk(ready?T[window.lang].btn_analyze:T[window.lang].btn_need_file, runAnalyze); b.disabled=!ready; row.appendChild(b);
-    note.textContent = ready ? T[window.lang].upload_secline : '';
   }
   // result 화면 하단 버튼 없음 (홈탭으로 돌아가기는 탭바 이용)
   $('#bottom').classList.remove('hidden');
