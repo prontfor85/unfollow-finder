@@ -1878,10 +1878,10 @@ function goBack(currentScreen){
     'upload': 'guide',
     'history': 'onboard',
     'analyze': 'upload',
+    'result': state.viewingHistoryIdx !== null ? 'history' : 'onboard',
     'privacy': 'settings',
     'compare': state.compareMode ? 'onboard' : null,
   };
-  // result는 스택 기반으로 이전 화면 결정 (history에서 왔으면 history로)
   const prev = backMap[currentScreen] || screenStack[screenStack.length-2] || 'onboard';
   if(prev === 'history') renderHistory();
   go(prev, true);
