@@ -263,7 +263,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <div style="display:flex;transition:transform .3s ease;" id="guide-slides">
         <!-- STEP 1 -->
         <div class="guide-slide">
-          <div class="step-img-wrap"><img id="step1-img" class="step-img" src="guide/kr/1.jpg" alt="step1"/><div class="hl-overlay" style="left:2.29%;top:37.71%;width:95.43%;height:14%;"></div><div id="step1-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
+          <div class="step-img-wrap"><img id="step1-img" class="step-img" src="guide/kr/1.jpg" alt="step1"/><div id="step1-hl" class="hl-overlay" style="left:2.29%;top:37.71%;width:95.43%;height:14%;"></div><div id="step1-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
           <div class="tag" style="margin-top:16px;" id="gtag-1"></div>
           <b id="step1-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step1-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:12px;"></span>
@@ -286,7 +286,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         </div>
         <!-- STEP 4 -->
         <div class="guide-slide">
-          <div class="step-img-wrap"><img id="step4-img" class="step-img" src="guide/kr/4.jpg" alt="step4"/><div class="hl-overlay" style="left:3.43%;top:82%;width:93.14%;height:15.14%;"></div><div class="hl-underline" style="left:22.29%;top:12.57%;width:24%;"></div><div class="hl-underline" style="left:22.29%;top:28.57%;width:13.71%;"></div><div id="step4-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
+          <div class="step-img-wrap"><img id="step4-img" class="step-img" src="guide/kr/4.jpg" alt="step4"/><div class="hl-overlay" style="left:3.43%;top:82%;width:93.14%;height:15.14%;"></div><div id="step4-ul1" class="hl-underline" style="left:22.29%;top:12.57%;width:24%;"></div><div class="hl-underline" style="left:22.29%;top:28.57%;width:13.71%;"></div><div id="step4-ph" class="step-img-ph hidden">📸 이미지 준비 중</div></div>
           <div class="tag" style="margin-top:16px;" id="gtag-4"></div>
           <b id="step4-title" style="display:block;font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;"></b>
           <span id="step4-desc" style="display:block;color:var(--sub);font-size:14px;line-height:1.6;margin-bottom:12px;"></span>
@@ -1697,6 +1697,18 @@ function applyLang(){
   // privacy screen
   const privHdr = document.getElementById('privacy-hdr-title'); if(privHdr) privHdr.textContent = L.hdr_privacy;
   const privLabel = document.getElementById('settings-privacy-label'); if(privLabel) privLabel.textContent = L.privacy_label;
+  // guide images: ko → guide/kr/, others → guide/en/
+  const imgDir = window.lang === 'ko' ? 'guide/kr' : 'guide/en';
+  [1,2,3,4,5].forEach(n => {
+    const el = document.getElementById('step'+n+'-img');
+    if(el) el.src = imgDir + '/' + n + '.jpg';
+  });
+  // overlay adjustments per language
+  const isKo = window.lang === 'ko';
+  const hl1 = document.getElementById('step1-hl');
+  if(hl1) hl1.style.height = isKo ? '14%' : '18.86%';
+  const ul1 = document.getElementById('step4-ul1');
+  if(ul1){ ul1.style.left = isKo ? '22.29%' : '22.14%'; ul1.style.width = isKo ? '24%' : '41.71%'; }
 }
 
 function toggleLang(){
