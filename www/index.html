@@ -555,9 +555,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         <div style="font-size:10px;font-weight:700;color:var(--sub);background:var(--line);border-radius:6px;padding:3px 0;text-align:center;margin-bottom:10px;" id="paywall-free-label"></div>
         <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-f1"></span></div>
         <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-f2"></span></div>
-        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--sub);font-size:12px;flex-shrink:0;margin-top:1px;">✕</span><span id="pw-f3"></span></div>
-        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--sub);font-size:12px;flex-shrink:0;margin-top:1px;">✕</span><span id="pw-f4"></span></div>
-        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;"><span style="color:var(--sub);font-size:12px;flex-shrink:0;margin-top:1px;">✕</span><span id="pw-f5"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-f3"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--sub);font-size:12px;flex-shrink:0;margin-top:1px;">△</span><span id="pw-f4"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;margin-bottom:8px;"><span style="color:var(--sub);font-size:12px;flex-shrink:0;margin-top:1px;">✕</span><span id="pw-f5"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--sub);line-height:1.4;"><span style="color:var(--sub);font-size:12px;flex-shrink:0;margin-top:1px;">✕</span><span id="pw-f6"></span></div>
       </div>
       <!-- 프리미엄 -->
       <div style="background:var(--bg);border-radius:14px;padding:14px 12px;border:1.5px solid var(--pink);">
@@ -566,7 +567,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p2"></span></div>
         <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p3"></span></div>
         <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p4"></span></div>
-        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p5"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;margin-bottom:8px;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p5"></span></div>
+        <div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--txt);line-height:1.4;"><span style="color:var(--pink);font-size:12px;flex-shrink:0;margin-top:1px;">✓</span><span id="pw-p6"></span></div>
       </div>
     </div>
     <!-- 가격 -->
@@ -806,17 +808,19 @@ const T = {
     paywall_title: '전체 기능을 잠금 해제하세요',
     paywall_desc: '일회성 결제로 모든 기능을 영구적으로 이용하세요',
     paywall_free_label: '무료',
-    pw_f1: '언팔 분석',
-    pw_f2: '상위 10명 무료 공개',
-    pw_f3: '전체 목록 보기',
-    pw_f4: '언팔 비교 분석',
-    pw_f5: '히스토리 무제한',
+    pw_f1: '팔로우 안 한 사람 분석',
+    pw_f2: '맞팔 확인',
+    pw_f3: '나만 팔로우하는 사람 확인',
+    pw_f4: '결과 목록 (상위 10명)',
+    pw_f5: '언팔한 사람 추적 (비교 분석)',
+    pw_f6: '분석 기록 저장 (최대 3개)',
     paywall_premium_label: '프리미엄',
-    pw_p1: '언팔 분석',
-    pw_p2: '상위 10명 공개',
-    pw_p3: '전체 목록 무제한',
-    pw_p4: '언팔 비교 분석',
-    pw_p5: '히스토리 무제한',
+    pw_p1: '팔로우 안 한 사람 분석',
+    pw_p2: '맞팔 확인',
+    pw_p3: '나만 팔로우하는 사람 확인',
+    pw_p4: '결과 목록 전체 공개',
+    pw_p5: '언팔한 사람 추적 (비교 분석)',
+    pw_p6: '분석 기록 무제한 저장',
     paywall_price: '$2.99',
     paywall_price_desc: '일회성 결제 · 영구 이용',
     paywall_btn: '프리미엄 잠금 해제',
@@ -1013,17 +1017,19 @@ const T = {
     paywall_title: 'Unlock Full Access',
     paywall_desc: 'One-time purchase. Unlock all features forever.',
     paywall_free_label: 'Free',
-    pw_f1: 'Unfollow analysis',
-    pw_f2: 'Top 10 free',
-    pw_f3: 'Full list',
-    pw_f4: 'Unfollow comparison',
-    pw_f5: 'Unlimited history',
+    pw_f1: 'Non-followers analysis',
+    pw_f2: 'Mutual follow check',
+    pw_f3: 'One-sided followers check',
+    pw_f4: 'Results (top 10 only)',
+    pw_f5: 'Unfollow tracking (compare)',
+    pw_f6: 'History (up to 3)',
     paywall_premium_label: 'Premium',
-    pw_p1: 'Unfollow analysis',
-    pw_p2: 'Top 10 results',
-    pw_p3: 'Unlimited full list',
-    pw_p4: 'Unfollow comparison',
-    pw_p5: 'Unlimited history',
+    pw_p1: 'Non-followers analysis',
+    pw_p2: 'Mutual follow check',
+    pw_p3: 'One-sided followers check',
+    pw_p4: 'Full results (unlimited)',
+    pw_p5: 'Unfollow tracking (compare)',
+    pw_p6: 'Unlimited history',
     paywall_price: '$2.99',
     paywall_price_desc: 'One-time · Lifetime access',
     paywall_btn: 'Unlock Premium',
@@ -1220,17 +1226,19 @@ const T = {
     paywall_title: 'フル機能を解除する',
     paywall_desc: '一回払いで全機能を永久利用できます。',
     paywall_free_label: '無料',
-    pw_f1: 'アンフォロー分析',
-    pw_f2: '上位10件無料',
-    pw_f3: '全リスト表示',
-    pw_f4: 'アンフォロー比較',
-    pw_f5: '履歴無制限',
+    pw_f1: '未フォロバ分析',
+    pw_f2: '相互フォロー確認',
+    pw_f3: '片思いフォロワー確認',
+    pw_f4: '結果表示（上位10件）',
+    pw_f5: 'アンフォロー追跡（比較）',
+    pw_f6: '履歴保存（最大3件）',
     paywall_premium_label: 'プレミアム',
-    pw_p1: 'アンフォロー分析',
-    pw_p2: '上位10件表示',
-    pw_p3: '全リスト無制限',
-    pw_p4: 'アンフォロー比較分析',
-    pw_p5: '履歴無制限',
+    pw_p1: '未フォロバ分析',
+    pw_p2: '相互フォロー確認',
+    pw_p3: '片思いフォロワー確認',
+    pw_p4: '全件結果表示',
+    pw_p5: 'アンフォロー追跡（比較）',
+    pw_p6: '履歴無制限保存',
     paywall_price: '$2.99',
     paywall_price_desc: '一回払い・永久利用',
     paywall_btn: 'プレミアムを解除',
@@ -1427,17 +1435,19 @@ const T = {
     paywall_title: 'Desbloquea el acceso completo',
     paywall_desc: 'Pago único. Desbloquea todo para siempre.',
     paywall_free_label: 'Gratis',
-    pw_f1: 'Análisis de unfollow',
-    pw_f2: 'Top 10 gratis',
-    pw_f3: 'Lista completa',
-    pw_f4: 'Comparación de unfollow',
-    pw_f5: 'Historial ilimitado',
+    pw_f1: 'Análisis de no seguidores',
+    pw_f2: 'Verificar seguidos mutuos',
+    pw_f3: 'Seguidores unilaterales',
+    pw_f4: 'Resultados (top 10)',
+    pw_f5: 'Rastreo de unfollows (comparar)',
+    pw_f6: 'Historial (hasta 3)',
     paywall_premium_label: 'Premium',
-    pw_p1: 'Análisis de unfollow',
-    pw_p2: 'Top 10 resultados',
-    pw_p3: 'Lista completa ilimitada',
-    pw_p4: 'Comparación de unfollow',
-    pw_p5: 'Historial ilimitado',
+    pw_p1: 'Análisis de no seguidores',
+    pw_p2: 'Verificar seguidos mutuos',
+    pw_p3: 'Seguidores unilaterales',
+    pw_p4: 'Resultados completos',
+    pw_p5: 'Rastreo de unfollows (comparar)',
+    pw_p6: 'Historial ilimitado',
     paywall_price: '$2.99',
     paywall_price_desc: 'Pago único · Acceso de por vida',
     paywall_btn: 'Desbloquear Premium',
@@ -1508,9 +1518,9 @@ function applyPaywallLang() {
   set('paywall-free-label','paywall_free_label');
   set('paywall-premium-label','paywall_premium_label');
   set('pw-f1','pw_f1'); set('pw-f2','pw_f2');
-  set('pw-f3','pw_f3'); set('pw-f4','pw_f4'); set('pw-f5','pw_f5');
+  set('pw-f3','pw_f3'); set('pw-f4','pw_f4'); set('pw-f5','pw_f5'); set('pw-f6','pw_f6');
   set('pw-p1','pw_p1'); set('pw-p2','pw_p2'); set('pw-p3','pw_p3');
-  set('pw-p4','pw_p4'); set('pw-p5','pw_p5');
+  set('pw-p4','pw_p4'); set('pw-p5','pw_p5'); set('pw-p6','pw_p6');
   set('paywall-price','paywall_price');
   set('paywall-price-desc','paywall_price_desc');
   set('paywall-btn','paywall_btn');
@@ -2113,8 +2123,9 @@ function runAnalyze(){
 /* ---------- history (saved on this device only) ---------- */
 let memHistory = [];
 function getHistory(){ try{ const v=localStorage.getItem('iuf_history'); if(v!=null) return JSON.parse(v); }catch(e){} return memHistory; }
-function setHistory(h){ try{ localStorage.setItem('iuf_history', JSON.stringify(h.slice(0,30))); }catch(e){ memHistory = h.slice(0,30); } }
+function setHistory(h){ const max = isPremium() ? 30 : 3; try{ localStorage.setItem('iuf_history', JSON.stringify(h.slice(0,max))); }catch(e){ memHistory = h.slice(0,max); } }
 function saveSnapshot(){
+  if(!isPremium() && getHistory().length >= 3){ showPaywall(); return; }
   const snap = { date: Date.now(), exportDate: state.exportDate || null, account: currentAccount() || null,
                  listFollowers: state.followers.slice(), listFollowing: state.following.slice(),
                  tsFollower: Object.fromEntries(state.tsFollower), tsFollowing: Object.fromEntries(state.tsFollowing) };
