@@ -39,6 +39,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   /* topbar replaced by app-header */
   .screen{flex:1; padding:max(22px, env(safe-area-inset-top)) 20px calc(110px + 56px + env(safe-area-inset-bottom)); display:none;}
   .screen.active{display:block; animation:slideIn .28s ease;}
+  #s-analyze.active{display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  #s-history.active{display:flex; flex-direction:column;}
   .screen.slide-back{animation:slideInBack .28s ease;}
   @keyframes slideIn{from{transform:translateX(100%); opacity:.6;} to{transform:translateX(0); opacity:1;}}
   @keyframes slideInBack{from{transform:translateX(-30%); opacity:.6;} to{transform:translateX(0); opacity:1;}}
@@ -351,7 +353,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   </section>
 
   <!-- 4. ANALYZING -->
-  <section class="screen" id="s-analyze" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <section class="screen" id="s-analyze">
     <div class="spin" style="margin:0 auto 26px;"></div>
     <h2 class="title" id="analyze-title" style="text-align:center; font-size:22px;"></h2>
     <p class="lead" style="text-align:center;" id="analyzeMeta"></p>
@@ -393,7 +395,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   </section>
 
   <!-- 6. HISTORY -->
-  <section class="screen" id="s-history" style="display:flex;flex-direction:column;">
+  <section class="screen" id="s-history">
     <div class="app-header"><span class="hdr-right"></span><span class="hdr-title" id="history-hdr-title"></span><span class="hdr-right"></span></div>
     <div class="hnote"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg> <span id="history-note"></span></div>
     <div class="hacts"><span id="histExport"></span><span id="histImport"></span><span id="histClear"></span></div>
