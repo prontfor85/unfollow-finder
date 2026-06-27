@@ -1889,15 +1889,17 @@ function renderButton(name){
     if(h.length === 0){
       row.appendChild(mk(T[window.lang].btn_analyze, ()=> go('guide')));
     } else {
+      // row를 세로 컨테이너로
+      row.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
       // 마지막 분석 요약
       const last = h[0]; const st = snapStats(last);
       const summaryEl = document.createElement('div');
-      summaryEl.style.cssText = 'font-size:12px;color:var(--sub);text-align:center;margin-bottom:10px;';
+      summaryEl.style.cssText = 'font-size:12px;color:var(--sub);text-align:center;';
       const acctLabel2 = last.account ? '@'+last.account+' · ' : '';
       const tpl = (T[window.lang].home_last_analysis||'{date} · 언팔 {n}명');
       summaryEl.textContent = acctLabel2 + tpl.replace('{date}', fmtDate(effDate(last))).replace('{n}', st.unfollow);
       row.appendChild(summaryEl);
-      // 버튼 두 개
+      // 버튼 두 개 (가로)
       const btnWrap = document.createElement('div');
       btnWrap.style.cssText = 'display:flex;gap:10px;width:100%;';
       const bAnalyze = document.createElement('button');
