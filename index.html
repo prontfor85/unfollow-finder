@@ -2196,7 +2196,14 @@ function confirmDelete(i){
     '<button class="danger" onclick="doDelete('+i+')">'+T[window.lang].btn_delete+'</button></div>');
 }
 function doDelete(i){
-  const h = getHistory(); h.splice(i,1); setHistory(h); closeModal(); renderHistory();
+  const h = getHistory(); const s = h[i];
+  if(s){
+    const users = new Set([...(s.listFollowers||[]), ...(s.listFollowing||[])]);
+    const v = getVisited();
+    users.forEach(u => delete v[u]);
+    setVisited(v);
+  }
+  h.splice(i,1); setHistory(h); closeModal(); renderHistory();
 }
 function exportHistory(){
   try{ const blob=new Blob([JSON.stringify(getHistory())],{type:'application/json'});
@@ -2213,7 +2220,7 @@ async function importHistory(file){
 function clearAllHistory(){
   openModal('<h3>'+T[window.lang].clear_title+'</h3><div class="sd">'+T[window.lang].clear_desc+'</div><div class="confirm"><button class="cancel" onclick="closeModal()">'+T[window.lang].btn_cancel+'</button><button class="danger" onclick="doClearHistory()">전체 삭제</button></div>');
 }
-function doClearHistory(){ setHistory([]); closeModal(); renderHistory(); }
+function doClearHistory(){ setHistory([]); setVisited({}); closeModal(); renderHistory(); }
 
 function showResult(){
   state.tab='notme'; state.sort='rec'; state.editMode=false; state.removed=new Set(); state.shown=50;
