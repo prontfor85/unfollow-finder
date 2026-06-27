@@ -351,8 +351,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   </section>
 
   <!-- 4. ANALYZING -->
-  <section class="screen" id="s-analyze">
-    <div class="spin"></div>
+  <section class="screen" id="s-analyze" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <div class="spin" style="margin:0 auto 26px;"></div>
     <h2 class="title" id="analyze-title" style="text-align:center; font-size:22px;"></h2>
     <p class="lead" style="text-align:center;" id="analyzeMeta"></p>
     <div class="secline"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg> 데이터는 이 기기를 벗어나지 않습니다. 네트워크 연결 없이 처리 중이에요.</div>
@@ -393,7 +393,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   </section>
 
   <!-- 6. HISTORY -->
-  <section class="screen" id="s-history">
+  <section class="screen" id="s-history" style="display:flex;flex-direction:column;">
     <div class="app-header"><span class="hdr-right"></span><span class="hdr-title" id="history-hdr-title"></span><span class="hdr-right"></span></div>
     <div class="hnote"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg> <span id="history-note"></span></div>
     <div class="hacts"><span id="histExport"></span><span id="histImport"></span><span id="histClear"></span></div>
@@ -2170,7 +2170,7 @@ function openHistory(){ renderHistory(); go('history'); }
 function renderHistory(){
   const h = getHistory();
   const box = $('#historyList');
-  if(!h.length){ box.style.cssText='display:flex;align-items:center;justify-content:center;min-height:50vh;'; box.innerHTML='<div class="empty">'+T[window.lang].history_empty+'</div>'; return; }
+  if(!h.length){ box.style.cssText='display:flex;align-items:center;justify-content:center;flex:1;min-height:60vh;'; box.innerHTML='<div class="empty" style="text-align:center;">'+T[window.lang].history_empty+'</div>'; return; }
   box.style.cssText='';
   box.innerHTML = h.map((s,i)=>{
     const st = snapStats(s);
