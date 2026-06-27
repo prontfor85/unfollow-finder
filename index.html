@@ -1899,14 +1899,14 @@ function renderButton(name){
       row.appendChild(summaryEl);
       // 버튼 두 개
       const btnWrap = document.createElement('div');
-      btnWrap.style.cssText = 'display:flex;flex-direction:column;gap:10px;width:100%;';
+      btnWrap.style.cssText = 'display:flex;gap:10px;width:100%;';
       const bAnalyze = document.createElement('button');
       bAnalyze.textContent = T[window.lang].btn_analyze;
-      bAnalyze.style.cssText = 'width:100%;background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;';
+      bAnalyze.style.cssText = 'flex:1;background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;';
       bAnalyze.onclick = ()=>{ state.compareMode=false; state.compareTargetIdx=null; go('guide'); };
       const bCompare = document.createElement('button');
       bCompare.textContent = T[window.lang].btn_compare||'비교 분석';
-      bCompare.style.cssText = 'width:100%;background:var(--grad);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;';
+      bCompare.style.cssText = 'flex:1;background:var(--grad);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;';
       bCompare.onclick = openCompareTargetList;
       btnWrap.appendChild(bAnalyze);
       btnWrap.appendChild(bCompare);
