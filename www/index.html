@@ -705,6 +705,8 @@ const T = {
     btn_analyze: '분석하기',
     btn_back: '이전',
     btn_skip: '건너뛰기',
+    btn_compare: '비교 분석',
+    home_last_analysis: '{date} 기준 · 언팔 {n}명',
     btn_settings: '설정 및 활동 바로가기 →',
     btn_acct_center: '계정센터 바로가기 →',
     btn_info_perms: '내 정보 및 권한 바로가기 →',
@@ -908,6 +910,8 @@ const T = {
     btn_analyze: 'Analyze',
     btn_back: 'Back',
     btn_skip: 'Skip',
+    btn_compare: 'Compare',
+    home_last_analysis: 'As of {date} · {n} unfollowed',
     btn_settings: 'Open Settings & Activity →',
     btn_acct_center: 'Open Account Center →',
     btn_info_perms: 'Your information & permissions →',
@@ -1111,6 +1115,8 @@ const T = {
     btn_analyze: '分析する',
     btn_back: '戻る',
     btn_skip: 'スキップ',
+    btn_compare: '比較分析',
+    home_last_analysis: '{date}時点 · アンフォロー{n}人',
     btn_settings: '設定とアクティビティを開く →',
     btn_acct_center: 'アカウントセンターを開く →',
     btn_info_perms: '情報とアクセス許可 →',
@@ -1314,6 +1320,8 @@ const T = {
     btn_analyze: 'Analizar',
     btn_back: 'Volver',
     btn_skip: 'Omitir',
+    btn_compare: 'Comparar',
+    home_last_analysis: 'A {date} · {n} dejaron de seguirte',
     btn_settings: 'Abrir Configuración y actividad →',
     btn_acct_center: 'Abrir centro de cuentas →',
     btn_info_perms: 'Tu información y permisos →',
@@ -1733,7 +1741,7 @@ function setLang(l) {
 }
 
 const state = { followers:null, following:null, tsFollower:new Map(), tsFollowing:new Map(),
-                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null, viewingHistoryIdx:null };
+                result:null, tab:'notme', sort:'rec', editMode:false, removed:new Set(), compareMode:false, exportDate:null, shown:50, account:null, viewingHistoryIdx:null, compareTargetIdx:null };
 const $ = s => document.querySelector(s);
 const screens = ['onboard','guide','upload','analyze','result','history','settings','privacy','compare'];
 
@@ -1840,6 +1848,7 @@ function goBack(currentScreen){
     'history': 'onboard',
     'analyze': 'upload',
     'privacy': 'settings',
+    'compare': state.compareMode ? 'onboard' : null,
   };
   // result는 스택 기반으로 이전 화면 결정 (history에서 왔으면 history로)
   const prev = backMap[currentScreen] || screenStack[screenStack.length-2] || 'onboard';
@@ -1876,7 +1885,32 @@ function renderButton(name){
   const mk = (label, fn, ghost) => { const b=document.createElement('button'); b.textContent=label; if(ghost)b.className='ghost'; b.onclick=fn; return b; };
   if(name==='analyze' || name==='history'){ $('#bottom').classList.add('hidden'); return; }
   if(name==='onboard'){
-    row.appendChild(mk(T[window.lang].btn_analyze, ()=> go('guide')));
+    const h = getHistory();
+    if(h.length === 0){
+      row.appendChild(mk(T[window.lang].btn_analyze, ()=> go('guide')));
+    } else {
+      // 마지막 분석 요약
+      const last = h[0]; const st = snapStats(last);
+      const summaryEl = document.createElement('div');
+      summaryEl.style.cssText = 'font-size:12px;color:var(--sub);text-align:center;margin-bottom:10px;';
+      const tpl = (T[window.lang].home_last_analysis||'{date} · 언팔 {n}명');
+      summaryEl.textContent = tpl.replace('{date}', fmtDate(effDate(last))).replace('{n}', st.unfollow);
+      row.appendChild(summaryEl);
+      // 버튼 두 개
+      const btnWrap = document.createElement('div');
+      btnWrap.style.cssText = 'display:flex;gap:10px;width:100%;';
+      const bAnalyze = document.createElement('button');
+      bAnalyze.textContent = T[window.lang].btn_analyze;
+      bAnalyze.style.cssText = 'flex:1;background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;';
+      bAnalyze.onclick = ()=>{ state.compareMode=false; state.compareTargetIdx=null; go('guide'); };
+      const bCompare = document.createElement('button');
+      bCompare.textContent = T[window.lang].btn_compare||'비교 분석';
+      bCompare.style.cssText = 'flex:1;background:var(--grad);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;';
+      bCompare.onclick = openCompareTargetList;
+      btnWrap.appendChild(bAnalyze);
+      btnWrap.appendChild(bCompare);
+      row.appendChild(btnWrap);
+    }
   }
   else if(name==='guide'){ $('#bottom').classList.add('hidden'); return; }
   else if(name==='upload'){
@@ -2039,7 +2073,13 @@ function runAnalyze(){
     state.result = { mutual:dedupe(mutual), iDontFollow:dedupe(iDontFollow), notFollowMe:dedupe(notFollowMe) };
     saveSnapshot();
     state.viewingHistoryIdx = null;
-    showResult();
+    if(state.compareMode && state.compareTargetIdx !== null){
+      // 새 스냅샷이 h[0]으로 들어갔으므로 타겟 인덱스 +1
+      compareWith(state.compareTargetIdx + 1);
+      state.compareTargetIdx = null;
+    } else {
+      showResult();
+    }
     // 자동 비교 안 함 — 결과 화면의 "지난 기록과 비교하기" 버튼으로만 비교
   }, 1100);
 }
@@ -2271,6 +2311,38 @@ function openContact(){
     '<div class="copyrow"><input id="contactMail" readonly value="prontfor.studio@gmail.com"><button onclick="copyField(\'contactMail\')">'+T[window.lang].btn_copy+'</button></div>'+
     '<div class="sd" style="margin-bottom:8px">'+T[window.lang].contact_note+'</div>'+
     '<button class="close" onclick="closeModal()">'+T[window.lang].btn_close+'</button>');
+}
+
+// 홈 "비교 분석" 버튼: 기준이 될 과거 기록 선택 후 guide로 이동
+function openCompareTargetList(){
+  const h = getHistory();
+  if(!h.length) return;
+  // 계정별 그룹핑
+  const groups = {};
+  h.forEach((s,i)=>{
+    const acct = s.account || '__none__';
+    if(!groups[acct]) groups[acct]=[]; groups[acct].push({s,i});
+  });
+  const accts = Object.keys(groups);
+  const multiAcct = accts.length > 1;
+  let body = '';
+  accts.forEach(acct=>{
+    if(multiAcct) body += '<div style="font-size:12px;color:var(--sub);font-weight:700;padding:10px 0 6px;">@'+escapeHtml(acct==='__none__'?'':acct)+'</div>';
+    groups[acct].forEach(({s,i})=>{
+      const st = snapStats(s);
+      body += '<div class="rec" onclick="selectCompareTarget('+i+')"><b>'+fmtDate(effDate(s))+'</b><span>팔로워 '+st.followers+'명 · 언팔 '+st.unfollow+'명</span></div>';
+    });
+  });
+  const hdr = document.getElementById('compare-hdr-title');
+  if(hdr) hdr.textContent = T[window.lang].compare_title||'비교할 기록 선택';
+  const content = document.getElementById('compare-content');
+  if(content) content.innerHTML = '<div class="sd" style="margin-bottom:16px;">비교 기준으로 사용할 과거 기록을 선택하세요.</div>'+body;
+  go('compare');
+}
+function selectCompareTarget(idx){
+  state.compareTargetIdx = idx;
+  state.compareMode = true;
+  go('guide');
 }
 
 function openCompareList(){
