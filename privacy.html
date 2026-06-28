@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개인정보처리방침 · Unfollow Finder</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f0f1a;
+    color: #d0d0e0;
+    line-height: 1.75;
+    padding: 0 16px 60px;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; }
+  header {
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    margin-bottom: 40px;
+  }
+  .app-name { font-size: 13px; color: #9370ff; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .meta { font-size: 13px; color: #888; }
+  .lang-switcher { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+  .lang-btn {
+    padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,.15);
+    background: transparent; color: #aaa; cursor: pointer; font-size: 13px; transition: .15s;
+  }
+  .lang-btn.active, .lang-btn:hover { background: #9370ff; border-color: #9370ff; color: #fff; }
+
+  section { margin-bottom: 36px; }
+  h2 { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 12px; padding-left: 12px; border-left: 3px solid #9370ff; }
+  p { margin-bottom: 10px; font-size: 15px; color: #c0c0d0; }
+  ul { padding-left: 20px; margin-bottom: 10px; }
+  li { font-size: 15px; color: #c0c0d0; margin-bottom: 6px; }
+  .highlight {
+    background: rgba(147,112,255,.1);
+    border: 1px solid rgba(147,112,255,.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .highlight p { color: #d0c8ff; margin: 0; font-size: 15px; }
+  a { color: #9370ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.08); font-size: 13px; color: #666; }
+
+  [data-lang] { display: none; }
+  [data-lang].active { display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="app-name">Unfollow Finder</div>
+    <h1 id="page-title">개인정보처리방침</h1>
+    <p class="meta" id="page-meta">최종 수정일: 2026년 6월 28일</p>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" onclick="setLang('en')">English</button>
+      <button class="lang-btn" onclick="setLang('ja')">日本語</button>
+      <button class="lang-btn" onclick="setLang('es')">Español</button>
+    </div>
+  </header>
+
+  <!-- ── 한국어 ── -->
+  <div data-lang="ko" class="active">
+    <div class="highlight">
+      <p>✅ <strong>이 앱은 사용자의 개인정보를 수집하거나 외부 서버로 전송하지 않습니다.</strong> 모든 데이터는 사용자의 기기 안에서만 처리됩니다.</p>
+    </div>
+
+    <section>
+      <h2>1. 수집하는 정보</h2>
+      <p>Unfollow Finder는 다음 정보를 처리합니다.</p>
+      <ul>
+        <li>사용자가 직접 업로드한 Instagram 팔로워/팔로잉 JSON 파일에 포함된 사용자명(username) 목록</li>
+      </ul>
+      <p>이 정보는 앱이 실행되는 동안 기기 메모리에서만 사용되며, 원본 JSON 파일은 앱이 저장하지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2>2. 정보 이용 목적</h2>
+      <ul>
+        <li>팔로우 관계 분석 (나를 팔로우하지 않는 계정, 맞팔 계정, 비교 분석)</li>
+        <li>분석 기록 저장 (기기 내 로컬 저장소에만 저장, 서버 전송 없음)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. 정보 보관</h2>
+      <p>분석 결과 요약(숫자 통계 및 사용자명 목록)은 사용자의 기기 내 로컬 저장소(LocalStorage)에 저장됩니다. 앱 설정에서 언제든지 삭제할 수 있습니다.</p>
+      <p>원본 JSON 파일은 분석 후 즉시 메모리에서 제거되며 저장되지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2>4. 제3자 제공 및 외부 전송</h2>
+      <p>수집된 어떠한 정보도 외부 서버, 제3자, 광고 네트워크 등에 전송되거나 공유되지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2>5. 외부 서비스</h2>
+      <p>이 앱은 결제 처리를 위해 Apple In-App Purchase 또는 Google Play Billing을 사용합니다. 해당 결제 정보는 각 플랫폼의 개인정보처리방침에 따라 처리되며 앱이 접근하지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2>6. 아동 개인정보 보호</h2>
+      <p>이 앱은 만 14세 미만 아동을 대상으로 하지 않으며, 해당 연령의 개인정보를 의도적으로 수집하지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2>7. 문의</h2>
+      <p>개인정보 처리에 관한 문의사항은 아래 이메일로 연락해 주세요.</p>
+      <p><a href="mailto:prontfor.studio@gmail.com">prontfor.studio@gmail.com</a></p>
+    </section>
+  </div>
+
+  <!-- ── English ── -->
+  <div data-lang="en">
+    <div class="highlight">
+      <p>✅ <strong>This app does not collect or transmit any personal data to external servers.</strong> All data is processed locally on your device only.</p>
+    </div>
+
+    <section>
+      <h2>1. Information We Process</h2>
+      <p>Unfollow Finder processes the following information:</p>
+      <ul>
+        <li>Username lists contained in the Instagram followers/following JSON files that you upload directly</li>
+      </ul>
+      <p>This information is used only in device memory while the app is running. The original JSON files are never stored by the app.</p>
+    </section>
+
+    <section>
+      <h2>2. Purpose of Processing</h2>
+      <ul>
+        <li>Analyzing follow relationships (accounts not following you back, mutual follows, comparison analysis)</li>
+        <li>Storing analysis history (stored only in local device storage, never transmitted to servers)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Data Storage</h2>
+      <p>Analysis result summaries (statistics and username lists) are stored in your device's local storage (LocalStorage). You can delete this data at any time from the app settings.</p>
+      <p>Original JSON files are removed from memory immediately after analysis and are never stored.</p>
+    </section>
+
+    <section>
+      <h2>4. Third-Party Sharing</h2>
+      <p>No information is transmitted to or shared with external servers, third parties, or advertising networks.</p>
+    </section>
+
+    <section>
+      <h2>5. External Services</h2>
+      <p>This app uses Apple In-App Purchase or Google Play Billing for payment processing. Payment information is handled according to each platform's privacy policy and is not accessible to this app.</p>
+    </section>
+
+    <section>
+      <h2>6. Children's Privacy</h2>
+      <p>This app is not directed at children under 13 and does not knowingly collect personal information from children under 13.</p>
+    </section>
+
+    <section>
+      <h2>7. Contact</h2>
+      <p>For questions about this privacy policy, please contact us at:</p>
+      <p><a href="mailto:prontfor.studio@gmail.com">prontfor.studio@gmail.com</a></p>
+    </section>
+  </div>
+
+  <!-- ── 日本語 ── -->
+  <div data-lang="ja">
+    <div class="highlight">
+      <p>✅ <strong>このアプリは、ユーザーの個人情報を収集したり、外部サーバーに送信したりしません。</strong>すべてのデータはお使いのデバイス内でのみ処理されます。</p>
+    </div>
+
+    <section>
+      <h2>1. 処理する情報</h2>
+      <p>Unfollow Finderは以下の情報を処理します。</p>
+      <ul>
+        <li>ユーザーが直接アップロードしたInstagramのフォロワー/フォロー中JSONファイルに含まれるユーザー名リスト</li>
+      </ul>
+      <p>この情報はアプリ実行中のデバイスメモリ内でのみ使用され、元のJSONファイルはアプリに保存されません。</p>
+    </section>
+
+    <section>
+      <h2>2. 利用目的</h2>
+      <ul>
+        <li>フォロー関係の分析（フォローバックしていないアカウント、相互フォロー、比較分析）</li>
+        <li>分析履歴の保存（デバイス内のローカルストレージのみ、サーバーへの送信なし）</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. データ保存</h2>
+      <p>分析結果のサマリー（統計とユーザー名リスト）はデバイスのローカルストレージ（LocalStorage）に保存されます。アプリ設定からいつでも削除できます。</p>
+      <p>元のJSONファイルは分析後すぐにメモリから削除され、保存されません。</p>
+    </section>
+
+    <section>
+      <h2>4. 第三者への提供</h2>
+      <p>いかなる情報も外部サーバー、第三者、広告ネットワーク等に送信または共有されません。</p>
+    </section>
+
+    <section>
+      <h2>5. 外部サービス</h2>
+      <p>このアプリは決済処理にApple In-App PurchaseまたはGoogle Play Billingを使用します。決済情報は各プラットフォームのプライバシーポリシーに従って処理され、本アプリはアクセスしません。</p>
+    </section>
+
+    <section>
+      <h2>6. 子どものプライバシー</h2>
+      <p>このアプリは13歳未満の子どもを対象としておらず、意図的に個人情報を収集しません。</p>
+    </section>
+
+    <section>
+      <h2>7. お問い合わせ</h2>
+      <p>プライバシーポリシーに関するご質問は下記までお問い合わせください。</p>
+      <p><a href="mailto:prontfor.studio@gmail.com">prontfor.studio@gmail.com</a></p>
+    </section>
+  </div>
+
+  <!-- ── Español ── -->
+  <div data-lang="es">
+    <div class="highlight">
+      <p>✅ <strong>Esta aplicación no recopila ni transmite datos personales a servidores externos.</strong> Todos los datos se procesan únicamente en tu dispositivo.</p>
+    </div>
+
+    <section>
+      <h2>1. Información que procesamos</h2>
+      <p>Unfollow Finder procesa la siguiente información:</p>
+      <ul>
+        <li>Listas de nombres de usuario contenidas en los archivos JSON de seguidores/seguidos de Instagram que el usuario carga directamente</li>
+      </ul>
+      <p>Esta información se usa solo en la memoria del dispositivo mientras la app está en ejecución. Los archivos JSON originales no son almacenados por la app.</p>
+    </section>
+
+    <section>
+      <h2>2. Finalidad del procesamiento</h2>
+      <ul>
+        <li>Análisis de relaciones de seguimiento (cuentas que no te siguen de vuelta, seguimiento mutuo, análisis comparativo)</li>
+        <li>Almacenamiento del historial de análisis (solo en almacenamiento local del dispositivo, sin transmisión a servidores)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Almacenamiento de datos</h2>
+      <p>Los resúmenes de resultados de análisis (estadísticas y listas de nombres de usuario) se almacenan en el almacenamiento local del dispositivo (LocalStorage). Puedes eliminar estos datos en cualquier momento desde la configuración de la app.</p>
+      <p>Los archivos JSON originales se eliminan de la memoria inmediatamente después del análisis y no se almacenan.</p>
+    </section>
+
+    <section>
+      <h2>4. Compartición con terceros</h2>
+      <p>Ninguna información es transmitida ni compartida con servidores externos, terceros o redes publicitarias.</p>
+    </section>
+
+    <section>
+      <h2>5. Servicios externos</h2>
+      <p>Esta app utiliza Apple In-App Purchase o Google Play Billing para el procesamiento de pagos. La información de pago es gestionada según la política de privacidad de cada plataforma y no es accesible para esta app.</p>
+    </section>
+
+    <section>
+      <h2>6. Privacidad de menores</h2>
+      <p>Esta app no está dirigida a menores de 13 años y no recopila intencionalmente información personal de menores de 13 años.</p>
+    </section>
+
+    <section>
+      <h2>7. Contacto</h2>
+      <p>Para consultas sobre esta política de privacidad, contáctanos en:</p>
+      <p><a href="mailto:prontfor.studio@gmail.com">prontfor.studio@gmail.com</a></p>
+    </section>
+  </div>
+
+  <footer>
+    <p>© 2026 Unfollow Finder · <a href="mailto:prontfor.studio@gmail.com">prontfor.studio@gmail.com</a></p>
+  </footer>
+</div>
+
+<script>
+function setLang(lang) {
+  document.querySelectorAll('[data-lang]').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+  document.querySelector('[data-lang="' + lang + '"]').classList.add('active');
+  event.target.classList.add('active');
+
+  const titles = { ko: '개인정보처리방침', en: 'Privacy Policy', ja: 'プライバシーポリシー', es: 'Política de Privacidad' };
+  const metas = {
+    ko: '최종 수정일: 2026년 6월 28일',
+    en: 'Last updated: June 28, 2026',
+    ja: '最終更新日：2026年6月28日',
+    es: 'Última actualización: 28 de junio de 2026'
+  };
+  document.getElementById('page-title').textContent = titles[lang];
+  document.getElementById('page-meta').textContent = metas[lang];
+  document.documentElement.lang = lang;
+}
+</script>
+</body>
+</html>
