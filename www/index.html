@@ -119,10 +119,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .search{width:100%; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:13px 15px; color:var(--txt); font-size:14px; margin-bottom:12px;}
   .row-u{display:flex; align-items:center; gap:12px; padding:12px 4px; border-bottom:1px solid var(--line);}
   .row-u .av{width:42px; height:42px; border-radius:50%; flex:none; background:linear-gradient(135deg,#7b5cff,#33d17a);}
-  .row-u .nm{flex:1; min-width:0;} .row-u .nm b{font-size:14px;} .row-u .nm span{display:block; color:var(--sub); font-size:11.5px; margin-top:1px;}
+  .row-u .nm{flex:1; min-width:0;} .row-u .nm b{font-size:14px; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;} .row-u .nm span{display:block; color:var(--sub); font-size:11.5px; margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .row-u a{margin-left:auto; font-size:12px; color:var(--pink); text-decoration:none; border:1px solid var(--line); padding:7px 12px; border-radius:9px;}
   .row-u .del{margin-left:auto; font-size:12.5px; font-weight:700; color:#FF187C; background:rgba(255,24,124,.18); border:none; padding:8px 16px; border-radius:9px; cursor:pointer;}
-  .row-u .nm{flex:1;}
   .visit{flex:none; font-size:11px; font-weight:600; color:var(--sub); background:var(--card2); padding:5px 11px; border-radius:999px; white-space:nowrap;}
   .visit.recent{color:#fff; background:var(--pink);}
   .cbadge{flex:none; margin-left:auto; font-size:11px; font-weight:700; padding:5px 11px; border-radius:999px; white-space:nowrap;}
@@ -212,7 +211,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   .choice:active{transform:scale(0.98);}
   /* app header */
   .app-header{display:flex;align-items:center;padding:max(14px, env(safe-area-inset-top)) 20px 14px;gap:0;min-height:52px;background:var(--bg);z-index:10;-webkit-user-select:none;user-select:none;margin-bottom:16px;}
-  .app-header .back-btn{width:auto;height:44px;border-radius:8px;background:none;border:none;color:var(--txt);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;padding:0 12px 0 0;margin-left:-16px;}
+  .app-header .back-btn{width:auto;height:44px;border-radius:8px;background:none;border:none;color:var(--txt);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;padding:0 12px 0 0;margin-left:-30px;}
   .app-header .back-btn:active{opacity:0.6;}
   .app-header .hdr-title{flex:1;text-align:center;font-size:16px;font-weight:700;color:var(--txt);}
   .app-header .hdr-right{width:36px;flex:none;}
@@ -1806,10 +1805,13 @@ function go(name, isBack){
   const fromHistory = name === 'result' && screenStack[screenStack.length-2] === 'history';
   const isHomeTab = homeScreens.includes(name) && !fromHistory;
   const isHistTab = name === 'history' || fromHistory;
+  const isSettingsTab = name === 'settings' || name === 'privacy';
   const tabHome = document.getElementById('tab-home');
   const tabHist = document.getElementById('tab-history');
+  const tabSettings = document.getElementById('tab-settings');
   if(tabHome){ tabHome.classList.toggle('active', isHomeTab); }
   if(tabHist){ tabHist.classList.toggle('active', isHistTab); }
+  if(tabSettings){ tabSettings.classList.toggle('active', isSettingsTab); }
   if(name==='guide'){ guideStep=0; setTimeout(guideUpdateView, 50); }
   renderButton(name);
   window.scrollTo(0,0);
