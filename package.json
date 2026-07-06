@@ -20,8 +20,12 @@
   "homepage": "https://github.com/prontfor85/unfollow-finder#readme",
   "dependencies": {
     "@capacitor/android": "^8.4.0",
+    "@capacitor/app": "^8.1.0",
     "@capacitor/cli": "^8.4.0",
     "@capacitor/core": "^8.4.0",
-    "@capacitor/ios": "^8.4.0"
+    "@capacitor/filesystem": "^8.1.2",
+    "@capacitor/ios": "^8.4.0",
+    "@capacitor/share": "^8.0.1",
+    "@revenuecat/purchases-capacitor": "^13.2.1"
   }
 }
