@@ -26,31 +26,29 @@
 - 백업: `index-backup-20260706.html` (수정 전 원본)
 
 ## Android 빌드
-5. [ ] `build.gradle`에 keystore 서명 설정
-6. [ ] Android Studio에서 AAB 빌드 (Release)  
-       `🔑 Keystore 비밀번호 필요`
+5. ✅ `build.gradle`에 keystore 서명 설정 (`android/app/build.gradle` — 비밀번호는 하드코딩 없이 `KEYSTORE_PASSWORD` 환경변수/gradle property로 주입)
+6. ✅ AAB 빌드 완료 (`gradlew bundleRelease`, 터미널) — `android/app/build/outputs/bundle/release/app-release.aab`
+       (keystore 비밀번호 분실로 upload-keystore.jks 재발급 — 기존 파일은 `upload-keystore-old-lost-password.jks`로 백업)
 
 ## iOS 빌드
-7. [ ] Xcode에서 개발자 인증서 + 프로비저닝 프로파일 설정  
-       `🔑 Apple Developer 계정 로그인 필요`
-8. [ ] Xcode Archive → IPA 내보내기
+7. ✅ Xcode에서 개발자 인증서 + 프로비저닝 프로파일 설정 (개인 Apple 계정, Automatically manage signing)
+8. ✅ Xcode Archive → Distribute App → App Store Connect 업로드 완료
 
 ## 스토어 앱 등록
-9. [ ] Google Play Console 앱 등록 + AAB 업로드  
-       `🔑 Google 개발자 계정 로그인 필요`
-10. [ ] App Store Connect 앱 등록 + IPA 업로드 (TestFlight)  
-        `🔑 Apple Developer 계정 로그인 필요`
+9. ✅ Google Play Console 앱 등록 + AAB 업로드 완료 (내부 테스트 트랙, 패키지명 `com.prontfor.unfollowfinder2`)
+10. ✅ App Store Connect 앱 등록 + 빌드 업로드 완료 (TestFlight에 곧 표시됨, 처리에 몇 분~1시간 소요될 수 있음)
 
 ## 인앱구매 설정
-11. [ ] Google Play Console 인앱 상품 생성 (`unfollow_finder_premium` / $2.99)  
-        `🔑 Google 개발자 계정`
-12. [ ] App Store Connect 인앱 상품 생성 (`unfollow_finder_premium` / $2.99)  
-        `🔑 Apple Developer 계정`
-13. [ ] RevenueCat 계정 생성 및 iOS/Android 앱 연동  
-        `🔑 RevenueCat 신규 가입 (revenuecat.com)`  
-        → 대시보드에서 entitlement 식별자를 `premium`으로 생성하고 상품(`unfollow_finder_premium`)을 연결
-14. [ ] RevenueCat 공개 SDK 키 발급 → `www/index.html`의 `RC_API_KEY_IOS` / `RC_API_KEY_ANDROID` 상수에 입력 → `npx cap sync` 후 재빌드  
-        (IAP 코드는 구현 완료 — 키가 비어 있으면 결제 버튼은 "결제를 진행할 수 없어요" 안내만 표시)
+11. ✅ Google Play Console 인앱 상품 생성 (`unfollow_finder_premium`, 구매 옵션 `premium-buy`, $2.99, 173개국 활성)
+12. ✅ App Store Connect 인앱 상품 생성 (`unfollow_finder_premium`, 비소모품, $2.99, 175개국) — 심사 제출 전 스크린샷 추가 필요
+13. ✅ RevenueCat 계정 생성 및 iOS/Android 앱 연동 완료
+        - App Store 앱: Bundle ID `com.prontfor.unfollowfinder`, In-App Purchase P8 키 연결 (Valid credentials)
+        - Play Store 앱: Package `com.prontfor.unfollowfinder2`, Service Account JSON 연결 (권한 반영 대기 가능성 있음)
+        - entitlement 식별자 `premium` 생성 + 상품 `unfollow_finder_premium`(iOS/Android 양쪽) 연결 완료
+14. ✅ RevenueCat 공개 SDK 키 입력 + 재빌드/업로드 완료
+        - `RC_API_KEY_IOS`=appl_..., `RC_API_KEY_ANDROID`=goog_... 입력 후 `npx cap sync`
+        - Android: versionCode 3으로 재빌드 → Play Console 내부 테스트 출시 완료
+        - iOS: Build 4로 Archive → App Store Connect 업로드 완료
 
 ## 테스트
 15. [ ] iOS: TestFlight 내부 테스트 (본인 기기)  
@@ -59,14 +57,22 @@
         `🔑 Android 기기 필요`
 17. [ ] IAP 샌드박스 결제 테스트
 
-## 스토어 자료 업로드
+## 스토어 자료 업로드 (자산 제작 2026-07-26 완료 — 업로드만 남음)
 18. [ ] 앱 아이콘 업로드 (iOS / Android)
-19. [ ] 스크린샷 업로드 (iOS 1290×2796 / Android 1080×1920)
-20. [ ] 온보딩 화면 이미지 업로드
+    - ⚠️ 기존 네이티브 아이콘/스플래시가 **Capacitor 기본 템플릿(파란 X)이었음** → 브랜드 아이콘(보라→핑크 그라데이션)으로 전체 재생성 완료 (`@capacitor/assets`, 소스: `assets/`)
+    - **아이콘이 바뀌었으므로 iOS/Android 재빌드 후 업로드 필수**
+    - 스토어용: iOS 1024 자동(에셋 카탈로그), Play 512 = `www/icon-512.png`
+19. [ ] 스크린샷 업로드 — 제작 완료
+    - iOS: `screenshots/png/` (1290×2796, kr/en 각 6장: onboarding·upload·result·compare·history·paywall)
+    - Play: `screenshots/png-android/` (1290×2280 — 9:16 이내, kr/en 각 6장)
+    - Play 그래픽 이미지(필수): `screenshots/store-assets/feature-graphic-{kr,en}.png` (1024×500)
+20. [x] 온보딩 화면 이미지 — 스크린샷 세트에 포함 (`*_onboarding.png`)
 
 ## 심사 제출
 21. [ ] Google Play 심사 제출 ⏱ 수일 ~ 2주
 22. [ ] App Store 심사 제출 ⏱ 1~3일
+    - 리뷰어 안내문·개인정보 설문 답변·데모 ZIP: `store-review-notes.md` 참고
+    - 제출 전 Vercel 재배포 필요 (데모 ZIP URL 활성화)
 
 ---
 
@@ -74,7 +80,8 @@
 
 | 항목 | 값 |
 |------|-----|
-| Bundle ID | `com.prontfor.unfollowfinder` |
+| Bundle ID (iOS) | `com.prontfor.unfollowfinder` |
+| Package name (Android) | `com.prontfor.unfollowfinder2` (기존 Play Console 등록 keystore 비번 분실로 변경) |
 | 개인정보처리방침 | `https://unfollow-finder-nu.vercel.app/privacy.html` |
 | Keystore 위치 | `android/upload-keystore.jks` |
 | Keystore alias | `upload` |
